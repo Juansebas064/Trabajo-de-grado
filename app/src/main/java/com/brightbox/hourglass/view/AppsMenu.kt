@@ -41,13 +41,12 @@ fun AppList(viewModel: AppsMenuViewModel) {
     ) {
         LazyColumn(
             modifier = Modifier
-                .clip(RoundedCornerShape(topStart = 8.dp))
-                .clip(RoundedCornerShape(topEnd = 8.dp))
+                .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
                 .background(Color.Gray)
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .fillMaxHeight(0.6f)
-                .padding(top = 15.dp)
+                .padding(top = 15.dp, start = 15.dp, end = 15.dp)
         ) {
             items(apps) { app ->
                 AppItem(app, viewModel)
@@ -61,6 +60,7 @@ fun AppItem(app: Map<String, String>, viewModel: AppsMenuViewModel) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
+            .clip(RoundedCornerShape(8.dp))
             .clickable {
                 app["packageName"]?.let { viewModel.openApp(it) }
             }
@@ -79,10 +79,9 @@ fun AppItem(app: Map<String, String>, viewModel: AppsMenuViewModel) {
 }
 
 
-
 //@Preview(showBackground = true, apiLevel = 29)
 //@Composable
-//fun GreetingPreview() {
+//fun GreetingPreview(appsMenuViewModel: AppsMenuViewModel) {
 //    HourglassProductivityLauncherTheme {
 //        AppList(appsMenuViewModel)
 //    }

@@ -2,12 +2,12 @@ package com.brightbox.hourglass.usecases
 
 import android.app.Application
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.util.Log
+import android.widget.Toast
 
-class GetInstalledApplicationsUseCase(private val application: Application) {
+class AppsMenuUseCase(private val application: Application) {
 
     fun getList(): List<Map<String, String>> {
         val packageManager = application.packageManager
@@ -23,5 +23,16 @@ class GetInstalledApplicationsUseCase(private val application: Application) {
                 "packageName" to it.activityInfo.packageName
             )
         }.sortedBy { it["appName"] }
+    }
+
+    fun openApp(packageName: String) {
+        val packageManager = application.packageManager
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            application.applicationContext.startActivity(intent)
+        } else {
+            Toast.makeText( application.applicationContext, "No se puede abrir la aplicación", Toast.LENGTH_SHORT).show()
+        }
     }
 }
