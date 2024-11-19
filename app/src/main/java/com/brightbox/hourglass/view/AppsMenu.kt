@@ -1,12 +1,15 @@
 package com.brightbox.hourglass.view
 
+import android.content.Context
 import android.content.pm.ApplicationInfo
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.brightbox.hourglass.ui.theme.HourglassProductivityLauncherTheme
 import com.brightbox.hourglass.viewmodel.AppsMenuViewModel
 
@@ -33,38 +37,53 @@ fun AppList(viewModel: AppsMenuViewModel) {
             .background(Color(0xFF131313))
             .padding(30.dp, 0.dp)
             .fillMaxSize()
+            .navigationBarsPadding()
     ) {
-        LazyColumn (modifier = Modifier
-            .clip(RoundedCornerShape(topStart = 8.dp))
-            .clip(RoundedCornerShape(topEnd = 8.dp))
-            .background(Color.Gray)
-            .align(Alignment.BottomCenter)
-            .fillMaxWidth()
-            .fillMaxHeight(0.6f)
+        LazyColumn(
+            modifier = Modifier
+                .clip(RoundedCornerShape(topStart = 8.dp))
+                .clip(RoundedCornerShape(topEnd = 8.dp))
+                .background(Color.Gray)
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .fillMaxHeight(0.6f)
+                .padding(top = 15.dp)
         ) {
-            items(apps) {app ->
-                AppItem(app)
+            items(apps) { app ->
+                AppItem(app, viewModel)
             }
         }
     }
 }
 
 @Composable
-fun AppItem(app: ApplicationInfo) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            text = app.name,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
+fun AppItem(app: Map<String, String>, viewModel: AppsMenuViewModel) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .clickable {
+                app["packageName"]?.let { viewModel.openApp(it) }
+            }
+    ) {
+        app["appName"]?.let {
+            Text(
+                text = it,
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+                modifier = Modifier
+                    .padding(15.dp)
+                    .fillMaxWidth()
+            )
+        }
     }
 }
 
-@Preview(showBackground = true, apiLevel = 29)
-@Composable
-fun GreetingPreview(appsMenuViewModel: AppsMenuViewModel) {
-    HourglassProductivityLauncherTheme {
-        AppList(appsMenuViewModel)
-    }
-}
+
+
+//@Preview(showBackground = true, apiLevel = 29)
+//@Composable
+//fun GreetingPreview() {
+//    HourglassProductivityLauncherTheme {
+//        AppList(appsMenuViewModel)
+//    }
+//}
