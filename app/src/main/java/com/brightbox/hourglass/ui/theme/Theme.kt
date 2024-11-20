@@ -1,6 +1,5 @@
 package com.brightbox.hourglass.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -12,15 +11,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    background = BoneDarker,
+    onBackground = Gray,
+    surface = Bone,
+    onSurface = Gray,
+    surfaceVariant = LightGray,
+    primary = Blue,
+    onPrimary = White,
+    secondary = Ocean,
+    onSecondary = White,
+    error = Red,
+    onError = White,
 )
 
+
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    background = Black,
+    onBackground = White,
+    surface = LightBlue,
+    onSurface = Black,
+    surfaceVariant = BlackSemiTransparent,
+    primary = BlueDarker,
+    onPrimary = White,
+    secondary = OceanDarker,
+    onSecondary = Black,
+    error = LightRed,
+    onError = White,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
