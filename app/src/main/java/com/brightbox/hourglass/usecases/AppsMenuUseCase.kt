@@ -22,7 +22,7 @@ class AppsMenuUseCase(private val application: Application) {
                 "appName" to it.loadLabel(packageManager).toString(),
                 "packageName" to it.activityInfo.packageName
             )
-        }.sortedBy { it["appName"] }
+        }.sortedBy { it["appName"]?.lowercase() }
     }
 
     fun openApp(packageName: String) {

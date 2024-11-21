@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,24 +34,26 @@ import com.brightbox.hourglass.viewmodel.AppsMenuViewModel
 @Composable
 fun AppList(viewModel: AppsMenuViewModel) {
     val apps by viewModel.appsList.observeAsState(emptyList())
-    Box(
-        modifier = Modifier
-            .background(Color(0xFF131313))
-            .padding(30.dp, 0.dp)
-            .fillMaxSize()
-            .navigationBarsPadding()
-    ) {
-        LazyColumn(
+    HourglassProductivityLauncherTheme {
+        Box(
             modifier = Modifier
-                .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
-                .background(Color.Gray)
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .fillMaxHeight(0.6f)
-                .padding(top = 15.dp, start = 15.dp, end = 15.dp)
+                .background(Color(0xFF131313))
+                .padding(30.dp, 0.dp)
+                .fillMaxSize()
+                .navigationBarsPadding()
         ) {
-            items(apps) { app ->
-                AppItem(app, viewModel)
+            LazyColumn(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+                    .background(MaterialTheme.colorScheme.surface)
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.6f)
+                    .padding(top = 15.dp, start = 15.dp, end = 15.dp)
+            ) {
+                items(apps) { app ->
+                    AppItem(app, viewModel)
+                }
             }
         }
     }
@@ -59,8 +63,10 @@ fun AppList(viewModel: AppsMenuViewModel) {
 fun AppItem(app: Map<String, String>, viewModel: AppsMenuViewModel) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
+            .fillMaxWidth()
             .clickable {
                 app["packageName"]?.let { viewModel.openApp(it) }
             }
@@ -68,11 +74,12 @@ fun AppItem(app: Map<String, String>, viewModel: AppsMenuViewModel) {
         app["appName"]?.let {
             Text(
                 text = it,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
-                fontSize = 16.sp,
                 modifier = Modifier
-                    .padding(15.dp)
-                    .fillMaxWidth()
+                    .padding(vertical = 15.dp, horizontal = 30.dp)
+
             )
         }
     }
