@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.brightbox.hourglass.usecases.AppsMenuUseCase
 
-class AppsMenuViewModel(private val application: Application) : AndroidViewModel(application) {
+class AppsMenuViewModel(application: Application) : AndroidViewModel(application) {
 
     private val appsMenuUseCase = AppsMenuUseCase(application)
 

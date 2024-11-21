@@ -2,6 +2,7 @@ package com.brightbox.hourglass.view
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -88,7 +89,9 @@ fun AppItem(app: Map<String, String>, viewModel: AppsMenuViewModel) {
 
 //@Preview(showBackground = true, apiLevel = 29)
 //@Composable
-//fun GreetingPreview(appsMenuViewModel: AppsMenuViewModel) {
+//fun GreetingPreview() {
+//    val appsMenuViewModel: AppsMenuViewModel by viewModels()
+//    val apps by viewModel.appsList.observeAsState(emptyList())
 //    HourglassProductivityLauncherTheme {
 //        AppList(appsMenuViewModel)
 //    }

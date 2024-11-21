@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         val appsMenuViewModel: AppsMenuViewModel by viewModels()
         setContent {
-            HourglassProductivityLauncherTheme {
+            HourglassProductivityLauncherTheme() {
                 AppList(appsMenuViewModel)
             }
         }
