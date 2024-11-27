@@ -1,6 +1,5 @@
 package com.brightbox.hourglass.view
 
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -21,11 +20,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.foundation.indication
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -47,7 +42,7 @@ import com.brightbox.hourglass.ui.theme.HourglassProductivityLauncherTheme
 import com.brightbox.hourglass.viewmodel.AppsMenuViewModel
 
 @Composable
-fun AppList(viewModel: AppsMenuViewModel) {
+fun AppMenu(viewModel: AppsMenuViewModel) {
     viewModel.getApps()
     val apps by viewModel.appsList.observeAsState(emptyList())
     var searchText by remember { mutableStateOf("") }
@@ -97,7 +92,27 @@ fun AppList(viewModel: AppsMenuViewModel) {
                     .padding(top = 15.dp, start = 15.dp, end = 15.dp)
             ) {
                 items(apps) { app ->
-                    AppItem(app, viewModel)
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(10.dp))
+                            .clickable {
+                                app["packageName"]?.let { viewModel.openApp(it) }
+                                searchText = ""
+                                viewModel.getApps()
+                            }
+                    ) {
+                        app["appName"]?.let {
+                            Text(
+                                text = it,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                modifier = Modifier
+                                    .padding(vertical = 16.dp)
+                            )
+                        }
+                    }
                 }
             }
             // Search bar
@@ -158,29 +173,6 @@ fun AppList(viewModel: AppsMenuViewModel) {
                         .focusable(false)
                 )
             }
-        }
-    }
-}
-
-@Composable
-fun AppItem(app: Map<String, String>, viewModel: AppsMenuViewModel) {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
-            .clickable {
-                app["packageName"]?.let { viewModel.openApp(it) }
-            }
-    ) {
-        app["appName"]?.let {
-            Text(
-                text = it,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .padding(vertical = 16.dp)
-            )
         }
     }
 }

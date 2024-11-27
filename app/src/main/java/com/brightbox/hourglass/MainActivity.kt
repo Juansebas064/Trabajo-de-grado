@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import com.brightbox.hourglass.ui.theme.HourglassProductivityLauncherTheme
-import com.brightbox.hourglass.view.AppList
+import com.brightbox.hourglass.view.AppMenu
 import com.brightbox.hourglass.viewmodel.AppsMenuViewModel
 
 class MainActivity : ComponentActivity() {
@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         val appsMenuViewModel: AppsMenuViewModel by viewModels()
         setContent {
             HourglassProductivityLauncherTheme() {
-                AppList(appsMenuViewModel)
+                AppMenu(appsMenuViewModel)
             }
         }
     }
