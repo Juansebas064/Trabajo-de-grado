@@ -9,7 +9,7 @@ import android.widget.Toast
 
 class AppsMenuUseCase(private val application: Application) {
 
-    fun getList(): List<Map<String, String>> {
+    fun getApps(): List<Map<String, String>> {
         val packageManager = application.packageManager
         val intent = Intent(Intent.ACTION_MAIN).apply {
             addCategory(Intent.CATEGORY_LAUNCHER)
@@ -34,5 +34,21 @@ class AppsMenuUseCase(private val application: Application) {
         } else {
             Toast.makeText( application.applicationContext, "No se puede abrir la aplicación", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun searchApps(appName: String): List<Map<String, String>> {
+        val packageManager = application.packageManager
+        val intent = Intent(Intent.ACTION_MAIN).apply {
+            addCategory(Intent.CATEGORY_LAUNCHER)
+        }
+        val packages: List<ResolveInfo> =
+            packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
+        Log.d("GetInstalledApplicationsUseCase", packages.toString())
+        return packages.map {
+            mapOf(
+                "appName" to it.loadLabel(packageManager).toString(),
+                "packageName" to it.activityInfo.packageName
+            )
+        }.filter { it["appName"]?.lowercase()!!.startsWith(appName) }.sortedBy { it["appName"]?.lowercase() }
     }
 }

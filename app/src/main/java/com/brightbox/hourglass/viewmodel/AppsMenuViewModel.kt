@@ -13,16 +13,16 @@ class AppsMenuViewModel(application: Application) : AndroidViewModel(application
     private val _appsList = MutableLiveData<List<Map<String, String>>>()
     val appsList: LiveData<List<Map<String, String>>> get() = _appsList
 
-    init {
-        getApps()
-    }
-
-    private fun getApps() {
-        _appsList.value = appsMenuUseCase.getList()
+    fun getApps() {
+        _appsList.value = appsMenuUseCase.getApps()
     }
 
     fun openApp(packageName: String) {
         appsMenuUseCase.openApp(packageName)
+    }
+
+    fun searchApps(appName: String) {
+        _appsList.value = appsMenuUseCase.searchApps(appName)
     }
 
 
