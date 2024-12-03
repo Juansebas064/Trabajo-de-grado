@@ -45,21 +45,21 @@ import com.brightbox.hourglass.model.ApplicationModel
 import com.brightbox.hourglass.viewmodel.AppsViewModel
 
 @Composable
-fun AppMenu(viewModel: AppsViewModel) {
+fun AppMenu(appsViewModel: AppsViewModel) {
 
     // States
-    val apps by viewModel.appsList.collectAsState()
+    val apps by appsViewModel.appsList.collectAsState()
     var searchText by remember { mutableStateOf("") }
 
     // Control functions
-    val getAppsLambda: () -> Unit = { viewModel.getApps() }
-    val openAppLambda: (String) -> Unit = { viewModel.openApp(it) }
+    val getAppsLambda: () -> Unit = { appsViewModel.getApps() }
+    val openAppLambda: (String) -> Unit = { appsViewModel.openApp(it) }
     val onSearchTextChangeLambda: (String) -> Unit = {
         searchText = it
-        viewModel.getApps(it)
+        appsViewModel.getApps(it)
     }
     val onEnterPressedWhenSearching: () -> Unit = {
-        viewModel.openApp(apps[0].packageName)
+        appsViewModel.openApp(apps[0].packageName)
     }
 
     // Parent container
