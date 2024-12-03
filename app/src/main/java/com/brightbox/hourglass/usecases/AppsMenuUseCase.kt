@@ -3,52 +3,59 @@ package com.brightbox.hourglass.usecases
 import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
-import android.util.Log
-import android.widget.Toast
+import androidx.room.Room
+import com.brightbox.hourglass.config.HourglassDatabase
+import com.brightbox.hourglass.model.ApplicationModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AppsMenuUseCase(private val application: Application) {
 
-    fun getApps(): List<Map<String, String>> {
-        val packageManager = application.packageManager
-        val intent = Intent(Intent.ACTION_MAIN).apply {
-            addCategory(Intent.CATEGORY_LAUNCHER)
-        }
-        val packages: List<ResolveInfo> =
-            packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-        Log.d("GetInstalledApplicationsUseCase", packages.toString())
-        return packages.map {
-            mapOf(
-                "appName" to it.loadLabel(packageManager).toString(),
-                "packageName" to it.activityInfo.packageName
-            )
-        }.sortedBy { it["appName"]?.lowercase() }
-    }
+    // Instantiate the database
+    private val db: HourglassDatabase = Room.databaseBuilder(
+        application.applicationContext,
+        HourglassDatabase::class.java,
+        "hourglass_database"
+    ).build()
 
-    fun openApp(packageName: String) {
-        val packageManager = application.packageManager
-        val intent = packageManager.getLaunchIntentForPackage(packageName)
-        if (intent != null) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            application.applicationContext.startActivity(intent)
+    // Get all apps from the database
+    suspend fun getApps(appNameFilter: String? = null): List<ApplicationModel> {
+        val appList = withContext(Dispatchers.IO) {
+            db.applicationDao().getApplications()
+        }
+
+        return if (appNameFilter.isNullOrBlank()) {
+            appList.sortedBy { it.name.lowercase() }
         } else {
-            Toast.makeText( application.applicationContext, "No se puede abrir la aplicación", Toast.LENGTH_SHORT).show()
+            appList.filter { it.name.lowercase().contains(appNameFilter.lowercase()) }
+                .sortedBy { it.name.lowercase() }
         }
     }
 
-    fun searchApps(appName: String): List<Map<String, String>> {
-        val packageManager = application.packageManager
-        val intent = Intent(Intent.ACTION_MAIN).apply {
-            addCategory(Intent.CATEGORY_LAUNCHER)
+    // Query apps installed on the device and add them to the database
+    fun queryInstalledApps() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val packageManager = application.packageManager
+            val intent = Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_LAUNCHER)
+            }
+            val installedAppsIntents =
+                packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
+
+            installedAppsIntents.forEach {
+                var app = db.applicationDao().findByPackageName(it.activityInfo.packageName)
+                if (app == null) {
+                    app = ApplicationModel(
+                        name = it.loadLabel(packageManager).toString(),
+                        packageName = it.activityInfo.packageName,
+                        isPinned = false,
+                        isRestricted = false
+                    )
+                    db.applicationDao().upsertApplication(app)
+                }
+            }
         }
-        val packages: List<ResolveInfo> =
-            packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-        Log.d("GetInstalledApplicationsUseCase", packages.toString())
-        return packages.map {
-            mapOf(
-                "appName" to it.loadLabel(packageManager).toString(),
-                "packageName" to it.activityInfo.packageName
-            )
-        }.filter { it["appName"]?.lowercase()!!.startsWith(appName) }.sortedBy { it["appName"]?.lowercase() }
     }
 }
