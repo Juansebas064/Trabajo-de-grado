@@ -4,44 +4,27 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.brightbox.hourglass.ui.theme.HourglassProductivityLauncherTheme
+import androidx.activity.viewModels
+import com.brightbox.hourglass.view.theme.HourglassProductivityLauncherTheme
+import com.brightbox.hourglass.view.Home
+import com.brightbox.hourglass.viewmodel.AppsViewModel
+import com.brightbox.hourglass.viewmodel.HomeViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val homeViewModel: HomeViewModel by viewModels()
+        val appsViewModel: AppsViewModel by viewModels()
         setContent {
-            HourglassProductivityLauncherTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Hourglass",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            HourglassProductivityLauncherTheme() {
+                Home(homeViewModel, appsViewModel)
             }
         }
     }
+
+//    override fun onBackPressed() {
+//
+//    }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    HourglassProductivityLauncherTheme {
-        Greeting("Android")
-    }
-}
