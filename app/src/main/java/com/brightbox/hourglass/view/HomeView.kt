@@ -68,7 +68,10 @@ fun Home(homeViewModel: HomeViewModel, appsViewModel: AppsViewModel) {
             sheetShape = RectangleShape,
             sheetShadowElevation = 0.dp,
             sheetContent = {
-                AppMenu(appsViewModel = appsViewModel)
+                AppMenu(
+                    appsViewModel = appsViewModel,
+                    scaffoldState = scaffoldState
+                )
             },
 //            sheetPeekHeight = 10.dp,
             sheetDragHandle = {
