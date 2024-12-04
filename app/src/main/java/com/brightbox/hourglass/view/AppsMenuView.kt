@@ -3,7 +3,7 @@ package com.brightbox.hourglass.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,19 +22,23 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -49,25 +53,16 @@ fun AppMenu(appsViewModel: AppsViewModel) {
 
     // States
     val apps by appsViewModel.appsList.collectAsState()
-    var searchText by remember { mutableStateOf("") }
-
-    // Control functions
-    val getAppsLambda: () -> Unit = { appsViewModel.getApps() }
-    val openAppLambda: (String) -> Unit = { appsViewModel.openApp(it) }
-    val onSearchTextChangeLambda: (String) -> Unit = {
-        searchText = it
-        appsViewModel.getApps(it)
-    }
-    val onEnterPressedWhenSearching: () -> Unit = {
-        appsViewModel.openApp(apps[0].packageName)
-    }
+    val searchText by appsViewModel.searchText.collectAsState()
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
 
     // Parent container
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 0.dp)
             .fillMaxSize()
             .navigationBarsPadding()
     ) {
@@ -93,9 +88,9 @@ fun AppMenu(appsViewModel: AppsViewModel) {
         )
         // App list
         AppColumnList(
+            appsViewModel = appsViewModel,
             apps = apps,
-            getApps = getAppsLambda,
-            openApp = openAppLambda,
+            focusManager = focusManager,
             modifier = Modifier
                 .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
                 .fillMaxWidth()
@@ -104,9 +99,10 @@ fun AppMenu(appsViewModel: AppsViewModel) {
         )
         // Search bar
         SearchBar(
+            appsViewModel = appsViewModel,
             searchText = searchText,
-            onSearchTextChange = onSearchTextChangeLambda,
-            onEnterPressedWhenSearching = onEnterPressedWhenSearching,
+            focusRequester = focusRequester,
+            focusManager = focusManager,
             modifier = Modifier
                 .padding(vertical = 15.dp)
                 .fillMaxWidth(0.9f)
@@ -131,9 +127,9 @@ fun FiltersBox(modifier: Modifier) {
 
 @Composable
 private fun AppColumnList(
+    appsViewModel: AppsViewModel,
     apps: List<ApplicationModel>,
-    getApps: () -> Unit,
-    openApp: (String) -> Unit,
+    focusManager: FocusManager,
     modifier: Modifier,
 ) {
     LazyColumn(
@@ -146,9 +142,12 @@ private fun AppColumnList(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(10.dp))
-                    .clickable {
-                        openApp(app.packageName)
-                        getApps()
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(color = MaterialTheme.colorScheme.surface.copy(alpha = 1f)),
+                    ) {
+                        appsViewModel.openApp(app.packageName)
+                        focusManager.clearFocus()
                     }
             ) {
                 Text(
@@ -166,9 +165,10 @@ private fun AppColumnList(
 
 @Composable
 private fun SearchBar(
+    appsViewModel: AppsViewModel,
     searchText: String,
-    onSearchTextChange: (String) -> Unit,
-    onEnterPressedWhenSearching: () -> Unit,
+    focusRequester: FocusRequester,
+    focusManager: FocusManager,
     modifier: Modifier,
 ) {
     Column(
@@ -177,14 +177,17 @@ private fun SearchBar(
     ) {
         BasicTextField(
             value = searchText,
-            onValueChange = { onSearchTextChange(it) },
+            onValueChange = { appsViewModel.onSearchTextChange(it) },
             keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Search,
+                imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Text
             ),
             keyboardActions = KeyboardActions(
-                onSearch = {
-                    onEnterPressedWhenSearching()
+                onNext = {
+                    if (searchText.isNotEmpty()) {
+                        appsViewModel.openFirstApp()
+                        focusManager.clearFocus()
+                    }
                 }
             ),
             textStyle = TextStyle.Default.copy(
@@ -223,7 +226,7 @@ private fun SearchBar(
                     shape = RoundedCornerShape(15.dp)
                 )
                 .height(50.dp)
-                .focusable(true)
+                .focusRequester(focusRequester)
         )
     }
 }

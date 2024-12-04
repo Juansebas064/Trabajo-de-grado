@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.ui.theme
+package com.brightbox.hourglass.view.theme
 
 import androidx.compose.ui.graphics.Color
 

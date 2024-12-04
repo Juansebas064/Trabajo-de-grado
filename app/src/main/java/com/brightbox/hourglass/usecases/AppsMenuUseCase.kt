@@ -26,10 +26,12 @@ class AppsMenuUseCase(private val application: Application) {
             db.applicationDao().getApplications()
         }
 
-        return if (appNameFilter.isNullOrBlank()) {
+        val appNameFilterNormalized = appNameFilter?.trim()?.lowercase()
+
+        return if (appNameFilterNormalized.isNullOrBlank()) {
             appList.sortedBy { it.name.lowercase() }
         } else {
-            appList.filter { it.name.lowercase().contains(appNameFilter.lowercase()) }
+            appList.filter { it.name.lowercase().contains(appNameFilterNormalized) }
                 .sortedBy { it.name.lowercase() }
         }
     }

@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.adapters
+package com.brightbox.hourglass.data
 
 import androidx.room.Dao
 import androidx.room.Delete
