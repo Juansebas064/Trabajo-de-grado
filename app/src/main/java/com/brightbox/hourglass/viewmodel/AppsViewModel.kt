@@ -25,6 +25,9 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
 
+    private val _isKeyboardOpened = MutableStateFlow(false)
+    val isKeyboardOpened = _isKeyboardOpened.asStateFlow()
+
     init {
         _appsMenuUseCase.queryInstalledApps()
         getApps()
@@ -52,5 +55,9 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     fun openFirstApp() {
         _appUseCase.openApp(_appsList.value.first().packageName)
         onSearchTextChange()    // Clear searchText
+    }
+
+    fun setKeyboardState(keyboardState: Boolean) {
+        _isKeyboardOpened.value = keyboardState // Clear searchText
     }
 }
