@@ -54,7 +54,10 @@ fun SearchBarComponent(
     ) {
         BasicTextField(
             value = searchText,
-            onValueChange = { appsViewModel.onSearchTextChange(it) },
+            onValueChange = {
+                appsViewModel.onSearchTextChange(it)
+                appsViewModel.setAppShowingOptions("none")
+            },
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Text

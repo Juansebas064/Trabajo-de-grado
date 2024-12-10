@@ -46,14 +46,15 @@ fun AppMenu(
     // States
     val apps by appsViewModel.appsList.collectAsState()
     val searchText by appsViewModel.searchText.collectAsState()
+    val isKeyboardOpen by appsViewModel.isKeyboardOpened.collectAsState()
+    val appShowingOptions by appsViewModel.appShowingOptions.collectAsState()
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
-    val isKeyboardOpen = remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
     // Open keyboard when menu is opened
     LaunchedEffect(scaffoldState.bottomSheetState.currentValue) {
-        if (scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+        if (scaffoldState.bottomSheetState.targetValue == SheetValue.Expanded) {
             focusRequester.requestFocus()
         } else {
             focusManager.clearFocus()
@@ -61,13 +62,13 @@ fun AppMenu(
     }
 
     BackHandler(true) {
-        if (scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+        if (scaffoldState.bottomSheetState.targetValue == SheetValue.Expanded) {
             scope.launch {
                 scaffoldState.bottomSheetState.partialExpand()
                 focusManager.clearFocus()
             }
         }
-        if (isKeyboardOpen.value) {
+        if (isKeyboardOpen) {
             focusManager.clearFocus()
             appsViewModel.setKeyboardState(false)
         }
@@ -121,6 +122,7 @@ fun AppMenu(
         AppColumnListComponent(
             appsViewModel = appsViewModel,
             apps = apps,
+            appShowingOptions = appShowingOptions,
             focusManager = focusManager,
             modifier = Modifier
                 .fillMaxWidth()
@@ -132,7 +134,7 @@ fun AppMenu(
             searchText = searchText,
             focusRequester = focusRequester,
             focusManager = focusManager,
-            isKeyboardOpen = isKeyboardOpen.value,
+            isKeyboardOpen = isKeyboardOpen,
             modifier = Modifier
                 .fillMaxWidth()
                 .imePadding()

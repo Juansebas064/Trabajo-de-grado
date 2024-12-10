@@ -1,5 +1,6 @@
 package com.brightbox.hourglass.view.components
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -38,15 +40,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.brightbox.hourglass.model.ApplicationModel
 import com.brightbox.hourglass.view.theme.Yellow
@@ -57,10 +64,10 @@ import com.brightbox.hourglass.viewmodel.AppsViewModel
 fun AppColumnListComponent(
     appsViewModel: AppsViewModel,
     apps: List<ApplicationModel>,
+    appShowingOptions: String,
     focusManager: FocusManager,
     modifier: Modifier,
 ) {
-    val appShowingOptions = remember { mutableStateOf("none") }
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Bottom),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -75,26 +82,28 @@ fun AppColumnListComponent(
                     .clip(RoundedCornerShape(10.dp))
                     .combinedClickable(
                         interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-//                        indication = rememberRipple(
-//                            color = MaterialTheme.colorScheme.onBackground
-//                                .copy(alpha = 0f)
-//                        ),
+                        indication = rememberRipple(
+                            color = MaterialTheme.colorScheme.onBackground
+                                .copy(alpha = 0f)
+                        ),
                         onClick = {
-                            if (appShowingOptions.value == app.packageName) {
-                                appShowingOptions.value = "none"
+                            if (appShowingOptions == app.packageName) {
+                                appsViewModel.setAppShowingOptions("none")
                             } else {
-                                appsViewModel.openApp(app.packageName)
-                                focusManager.clearFocus()
-                                appShowingOptions.value = "none"
+                                if (appShowingOptions != "none") {
+                                    appsViewModel.setAppShowingOptions("none")
+                                } else {
+                                    appsViewModel.openApp(app.packageName)
+                                    focusManager.clearFocus()
+                                }
                             }
                         },
                         onLongClick = {
-                            appShowingOptions.value = app.packageName
+                            appsViewModel.setAppShowingOptions(app.packageName)
                         }
                     )
                     .background(
-                        if (appShowingOptions.value == app.packageName)
+                        if (appShowingOptions == app.packageName)
                             MaterialTheme.colorScheme.surface
                         else
                             MaterialTheme.colorScheme.background
@@ -104,35 +113,58 @@ fun AppColumnListComponent(
                     .animateContentSize()
                     .height(IntrinsicSize.Min)
             ) {
+                AnimatedVisibility(
+                    visible = app.isPinned,
+                    enter = slideInHorizontally(initialOffsetX = { it }) + fadeIn(),
+                    exit = slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Star,
+                        contentDescription = "Pinned",
+                        tint = if (appShowingOptions != app.packageName)
+                            MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(horizontal = 2.dp)
+                    )
+                }
                 Text(
                     text = app.name,
                     style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Start,
                     softWrap = false,
-                    color = (
-                            if (appShowingOptions.value == app.packageName)
-                                MaterialTheme.colorScheme.onSurface
-                            else
-                                MaterialTheme.colorScheme.onBackground
-                            ),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = if (appShowingOptions != app.packageName)
+                        MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
-                        .padding(vertical = 16.dp)
+                        .padding(vertical = 16.dp, horizontal = 8.dp)
+                        .weight(3f)
                 )
 
                 AnimatedVisibility(
-                    visible = appShowingOptions.value == app.packageName,
+                    visible = appShowingOptions == app.packageName,
                     enter = slideInHorizontally(initialOffsetX = { it }) + fadeIn(),
                     exit = slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
                 ) {
                     Row(
+                        horizontalArrangement = Arrangement.spacedBy(5.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .width(150.dp)
+                            .weight(1.5f)
+                            .padding(3.dp)
                     ) {
                         // Pin
                         IconButton(
-                            onClick = { Unit },
+                            onClick = {
+                                appsViewModel.toggleAppPinnedState(app)
+                                appsViewModel.setAppShowingOptions("none")
+                            },
                             modifier = Modifier
-                                .fillParentMaxHeight()
-                                .width(20.dp)
-                                .background(MaterialTheme.colorScheme.tertiary)
+                                .height(45.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(MaterialTheme.colorScheme.surfaceVariant)
+                                .weight(1f)
+                                .padding(0.dp)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Star,
@@ -142,11 +174,16 @@ fun AppColumnListComponent(
                         }
                         // App info
                         IconButton(
-                            onClick = { Unit },
+                            onClick = {
+                                appsViewModel.openAppInfo(app)
+                                appsViewModel.setAppShowingOptions("none")
+                            },
                             modifier = Modifier
-                                .fillParentMaxHeight()
-                                .width(20.dp)
+                                .height(45.dp)
+                                .clip(RoundedCornerShape(10.dp))
                                 .background(MaterialTheme.colorScheme.secondary)
+                                .weight(1f)
+                                .padding(0.dp)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Info,
@@ -156,11 +193,15 @@ fun AppColumnListComponent(
                         }
                         // Delete
                         IconButton(
-                            onClick = { Unit },
+                            onClick = {
+                                appsViewModel.uninstallApp(app)
+                            },
                             modifier = Modifier
-                                .fillParentMaxHeight()
-                                .width(20.dp)
+                                .height(45.dp)
+                                .clip(RoundedCornerShape(10.dp))
                                 .background(MaterialTheme.colorScheme.error)
+                                .weight(1f)
+                                .padding(0.dp)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
@@ -174,59 +215,3 @@ fun AppColumnListComponent(
         }
     }
 }
-
-
-//Row(
-//horizontalArrangement = Arrangement.SpaceBetween,
-//modifier = Modifier
-//.clip(RoundedCornerShape(10.dp))
-//.clickable(
-//interactionSource = remember { MutableInteractionSource() },
-//indication = rememberRipple(
-//color = MaterialTheme.colorScheme.onBackground.copy(
-//alpha = 1f
-//)
-//),
-//onLongClick = {
-//    // Change style and show options
-//    // Implement the logic to change the style and show options
-//}
-//) {
-//    appsViewModel.openApp(app.packageName)
-//    focusManager.clearFocus()
-//}
-//.fillMaxWidth()
-//.padding(vertical = 16.dp, horizontal = 8.dp)
-//) {
-//    Text(
-//        text = app.name,
-//        style = MaterialTheme.typography.bodyLarge,
-//        color = MaterialTheme.colorScheme.onBackground,
-//        modifier = Modifier.align(Alignment.CenterVertically)
-//    )
-//    // Options that slide in from the right
-//    AnimatedVisibility(
-//        visible = /* condition to show options */,
-//        enter = slideInHorizontally(initialOffsetX = { it }),
-//        exit = slideOutHorizontally(targetOffsetX = { it })
-//    ) {
-//        Row(
-//            horizontalArrangement = Arrangement.End,
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            // Add your options here
-//            Text(
-//                text = "Option 1",
-//                style = MaterialTheme.typography.bodyLarge,
-//                color = MaterialTheme.colorScheme.onBackground,
-//                modifier = Modifier.padding(horizontal = 8.dp)
-//            )
-//            Text(
-//                text = "Option 2",
-//                style = MaterialTheme.typography.bodyLarge,
-//                color = MaterialTheme.colorScheme.onBackground,
-//                modifier = Modifier.padding(horizontal = 8.dp)
-//            )
-//        }
-//    }
-//}

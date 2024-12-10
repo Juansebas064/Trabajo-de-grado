@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.brightbox.hourglass.model.ApplicationModel
 import com.brightbox.hourglass.usecases.AppUseCase
 import com.brightbox.hourglass.usecases.AppsMenuUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -25,11 +26,13 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
 
+    private val _appShowingOptions = MutableStateFlow("none")
+    val appShowingOptions = _appShowingOptions.asStateFlow()
+
     private val _isKeyboardOpened = MutableStateFlow(false)
     val isKeyboardOpened = _isKeyboardOpened.asStateFlow()
 
     init {
-        _appsMenuUseCase.queryInstalledApps()
         getApps()
         Log.d("AppsViewModel", _appsList.value.toString())
     }
@@ -53,8 +56,33 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun openFirstApp() {
-        _appUseCase.openApp(_appsList.value.first().packageName)
-        onSearchTextChange()    // Clear searchText
+        if (_appsList.value.isNotEmpty()) {
+            _appUseCase.openApp(_appsList.value.first().packageName)
+            onSearchTextChange()    // Clear searchText
+        }
+    }
+
+    fun setAppShowingOptions(packageName: String) {
+        _appShowingOptions.value = packageName
+    }
+
+    fun toggleAppPinnedState(app: ApplicationModel) {
+        viewModelScope.launch {
+            _appUseCase.toggleAppPinnedState(app)
+            getApps(searchText.value)
+        }
+    }
+
+    fun uninstallApp(app: ApplicationModel) {
+        viewModelScope.launch {
+            _appUseCase.uninstallApp(app)
+            delay(5000)
+            getApps(searchText.value)
+        }
+    }
+
+    fun openAppInfo(app: ApplicationModel) {
+        _appUseCase.openAppInfo(app.packageName)
     }
 
     fun setKeyboardState(keyboardState: Boolean) {
