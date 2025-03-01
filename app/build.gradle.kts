@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.brightbox.hourglass"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.brightbox.hourglass"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1 //Consecutivo para publicaciones en Google Play
         versionName = "0.0.1"
 
@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.work.runtime.ktx)
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.junit.jupiter)

@@ -32,7 +32,7 @@ class AppUseCase(private val application: Application) {
     fun openAppInfo(packageName: String) {
         val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
             data = Uri.fromParts("package", packageName, null)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         application.applicationContext.startActivity(intent)
     }
@@ -42,6 +42,6 @@ class AppUseCase(private val application: Application) {
             data = Uri.parse("package:${app.packageName}")
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
-        application.applicationContext.startActivity(intent)
+//        application.applicationContext.startActivity(intent)
     }
 }

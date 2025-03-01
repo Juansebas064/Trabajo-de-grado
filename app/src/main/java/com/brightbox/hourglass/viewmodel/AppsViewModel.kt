@@ -15,6 +15,16 @@ import kotlinx.coroutines.launch
 
 class AppsViewModel(application: Application) : AndroidViewModel(application) {
 
+    companion object {
+        @Volatile
+        private var INSTANCE: AppsViewModel? = null
+        fun getInstance(application: Application): AppsViewModel {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: AppsViewModel(application).also { INSTANCE = it }
+            }
+        }
+    }
+
     // UseCases
     private val _appsMenuUseCase = AppsMenuUseCase(application)
     private val _appUseCase = AppUseCase(application)
@@ -42,6 +52,7 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     fun getApps(appNameFilter: String? = null) {
         viewModelScope.launch {
             _appsList.value = _appsMenuUseCase.getApps(appNameFilter)
+            _appShowingOptions.value = "none"
         }
     }
 
@@ -76,8 +87,7 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     fun uninstallApp(app: ApplicationModel) {
         viewModelScope.launch {
             _appUseCase.uninstallApp(app)
-            delay(5000)
-            getApps(searchText.value)
+//            Log.d("AppsViewModel", "uninstallApp: $result")
         }
     }
 

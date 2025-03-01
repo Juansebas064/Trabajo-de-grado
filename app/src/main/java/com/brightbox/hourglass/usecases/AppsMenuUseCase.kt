@@ -3,6 +3,7 @@ package com.brightbox.hourglass.usecases
 import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.room.Room
 import com.brightbox.hourglass.config.HourglassDatabase
 import com.brightbox.hourglass.model.ApplicationModel
@@ -40,6 +41,7 @@ class AppsMenuUseCase(private val application: Application) {
     // Query apps installed on the device and add them to the database
     private fun queryInstalledApps() {
         CoroutineScope(Dispatchers.IO).launch {
+            Log.d("queryInstalledApps", "Start queryInstalledApps")
             val packageManager = application.packageManager
             val intent = Intent(Intent.ACTION_MAIN).apply {
                 addCategory(Intent.CATEGORY_LAUNCHER)

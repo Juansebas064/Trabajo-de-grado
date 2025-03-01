@@ -25,5 +25,13 @@
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </activity>
+        <receiver
+            android:name=".receivers.AppUninstallReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>
