@@ -43,33 +43,39 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     val isKeyboardOpened = _isKeyboardOpened.asStateFlow()
 
     init {
+        queryInstalledApps()
         getApps()
         Log.d("AppsViewModel", _appsList.value.toString())
     }
 
     // Functions
 
-    fun getApps(appNameFilter: String? = null) {
+    fun queryInstalledApps() {
+        _appsMenuUseCase.queryInstalledApps()
+    }
+
+    fun getApps() {
         viewModelScope.launch {
-            _appsList.value = _appsMenuUseCase.getApps(appNameFilter)
-            _appShowingOptions.value = "none"
+            _appsList.value = _appsMenuUseCase.getApps(searchText.value)
+//            _appShowingOptions.value = "none"
         }
     }
 
     fun onSearchTextChange(searchText: String = "") {   // searchText will be "" if no argument is passed
         _searchText.value = searchText
-        getApps(searchText)
+        getApps()
     }
 
     fun openApp(packageName: String) {
         _appUseCase.openApp(packageName)
-        onSearchTextChange()    // Clear searchText
+        _searchText.value = ""
+        getApps()
     }
 
     fun openFirstApp() {
         if (_appsList.value.isNotEmpty()) {
             _appUseCase.openApp(_appsList.value.first().packageName)
-            onSearchTextChange()    // Clear searchText
+            _searchText.value = ""    // Clear searchText
         }
     }
 
@@ -80,7 +86,7 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     fun toggleAppPinnedState(app: ApplicationModel) {
         viewModelScope.launch {
             _appUseCase.toggleAppPinnedState(app)
-            getApps(searchText.value)
+//            getApps()
         }
     }
 

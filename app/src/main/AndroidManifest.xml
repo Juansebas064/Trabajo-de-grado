@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HourglassProductivityLauncher"
-        tools:targetApi="34">
+        tools:targetApi="35">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -26,10 +26,12 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name=".receivers.AppUninstallReceiver"
+            android:name=".receivers.AppChangeReceiver"
             android:exported="false">
             <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_CHANGED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>

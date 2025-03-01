@@ -1,5 +1,11 @@
 package com.brightbox.hourglass.view.components
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -45,12 +51,14 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
@@ -58,6 +66,8 @@ import androidx.compose.ui.unit.dp
 import com.brightbox.hourglass.model.ApplicationModel
 import com.brightbox.hourglass.view.theme.Yellow
 import com.brightbox.hourglass.viewmodel.AppsViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -68,6 +78,19 @@ fun AppColumnListComponent(
     focusManager: FocusManager,
     modifier: Modifier,
 ) {
+    val scope = rememberCoroutineScope()
+
+    val uninstallLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+//        appsViewModel.setAppShowingOptions("none")
+//        scope.launch {
+//            delay(4500)
+//        }
+//        appsViewModel.queryInstalledApps()
+//        appsViewModel.getApps()
+    }
+
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Bottom),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -194,7 +217,11 @@ fun AppColumnListComponent(
                         // Delete
                         IconButton(
                             onClick = {
-                                appsViewModel.uninstallApp(app)
+                                val intent = Intent(Intent.ACTION_DELETE).apply {
+                                    data = Uri.parse("package:${app.packageName}")
+                                    addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME)
+                                }
+                                uninstallLauncher.launch(intent)
                             },
                             modifier = Modifier
                                 .height(45.dp)

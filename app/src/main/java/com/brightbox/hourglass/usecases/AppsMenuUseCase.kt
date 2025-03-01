@@ -24,6 +24,7 @@ class AppsMenuUseCase(private val application: Application) {
     // Get all apps from the database
     suspend fun getApps(appNameFilter: String? = null): List<ApplicationModel> {
         queryInstalledApps()
+
         val appList = withContext(Dispatchers.IO) {
             db.applicationDao().getApplications()
         }
@@ -39,7 +40,7 @@ class AppsMenuUseCase(private val application: Application) {
     }
 
     // Query apps installed on the device and add them to the database
-    private fun queryInstalledApps() {
+    fun queryInstalledApps() {
         CoroutineScope(Dispatchers.IO).launch {
             Log.d("queryInstalledApps", "Start queryInstalledApps")
             val packageManager = application.packageManager
@@ -50,6 +51,7 @@ class AppsMenuUseCase(private val application: Application) {
                 packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
 
             val installedPackageNames = installedAppsIntents.map { it.activityInfo.packageName }.toSet()
+            Log.d("getApps", "App List: $installedPackageNames")
 
             val dbApps = db.applicationDao().getApplications()
 
