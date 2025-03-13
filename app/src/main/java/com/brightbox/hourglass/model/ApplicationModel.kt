@@ -5,10 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "applications")
 data class ApplicationModel(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
-    val name: String,
+    @PrimaryKey(autoGenerate = false)
     val packageName: String,
+    val name: String,
     val isPinned: Boolean,
     val isRestricted: Boolean,
 )

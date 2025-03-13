@@ -1,76 +1,108 @@
 package com.brightbox.hourglass.view
 
+import android.view.KeyEvent
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.Icon
+import androidx.compose.material3.BottomSheetScaffoldState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.nativeKeyCode
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.brightbox.hourglass.model.ApplicationModel
 import com.brightbox.hourglass.viewmodel.AppsViewModel
+import com.brightbox.hourglass.view.components.AppColumnListComponent
+import com.brightbox.hourglass.view.components.SearchBarComponent
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppMenu(appsViewModel: AppsViewModel) {
+fun AppMenu(
+    appsViewModel: AppsViewModel,
+    scaffoldState: BottomSheetScaffoldState,
+) {
 
     // States
     val apps by appsViewModel.appsList.collectAsState()
     val searchText by appsViewModel.searchText.collectAsState()
+    val isKeyboardOpen by appsViewModel.isKeyboardOpened.collectAsState()
+    val appShowingOptions by appsViewModel.appShowingOptions.collectAsState()
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
+    val scope = rememberCoroutineScope()
+
+    // Open keyboard when menu is opened
+    LaunchedEffect(scaffoldState.bottomSheetState.currentValue) {
+        if (scaffoldState.bottomSheetState.targetValue == SheetValue.Expanded) {
+            focusRequester.requestFocus()
+        } else {
+            focusManager.clearFocus()
+        }
+    }
+
+    BackHandler(true) {
+        if (scaffoldState.bottomSheetState.targetValue == SheetValue.Expanded) {
+            scope.launch {
+                scaffoldState.bottomSheetState.partialExpand()
+                focusManager.clearFocus()
+            }
+        }
+        if (isKeyboardOpen) {
+            focusManager.clearFocus()
+            appsViewModel.setKeyboardState(false)
+        }
+    }
 
     // Parent container
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 0.dp)
             .fillMaxSize()
+            .padding(horizontal = 16.dp)
             .navigationBarsPadding()
+            .onKeyEvent { event ->
+                if (event.key.nativeKeyCode == KeyEvent.KEYCODE_HOME) {
+                    scope.launch {
+                        scaffoldState.bottomSheetState.partialExpand()
+                        focusManager.clearFocus()
+                    }
+                    true
+                } else {
+                    false
+
+                }
+            }
     ) {
         // Menu text
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
+                .weight(
+                    fill = true,
+                    weight = 1f
+                )
         ) {
             Text(
                 text = "Menu",
@@ -83,30 +115,30 @@ fun AppMenu(appsViewModel: AppsViewModel) {
         FiltersBox(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(5.dp)
                 .weight(0.2f)
+                .padding(vertical = 16.dp)
         )
         // App list
-        AppColumnList(
+        AppColumnListComponent(
             appsViewModel = appsViewModel,
-            apps = apps,
+            apps = apps.applications,
+            appShowingOptions = appShowingOptions,
             focusManager = focusManager,
             modifier = Modifier
-                .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
                 .fillMaxWidth()
-                .weight(1.5f)
-                .padding(top = 15.dp, start = 15.dp, end = 15.dp)
+                .weight(1.3f)
         )
         // Search bar
-        SearchBar(
+        SearchBarComponent(
             appsViewModel = appsViewModel,
             searchText = searchText,
             focusRequester = focusRequester,
             focusManager = focusManager,
+            isKeyboardOpen = isKeyboardOpen,
             modifier = Modifier
-                .padding(vertical = 15.dp)
-                .fillMaxWidth(0.9f)
+                .fillMaxWidth()
                 .imePadding()
+                .padding(vertical = 16.dp)
         )
     }
 }
@@ -121,112 +153,6 @@ fun FiltersBox(modifier: Modifier) {
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.align(Alignment.Center)
-        )
-    }
-}
-
-@Composable
-private fun AppColumnList(
-    appsViewModel: AppsViewModel,
-    apps: List<ApplicationModel>,
-    focusManager: FocusManager,
-    modifier: Modifier,
-) {
-    LazyColumn(
-        verticalArrangement = Arrangement.Bottom,
-        modifier = modifier,
-    ) {
-        items(apps) { app ->
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(10.dp))
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = rememberRipple(color = MaterialTheme.colorScheme.surface.copy(alpha = 1f)),
-                    ) {
-                        appsViewModel.openApp(app.packageName)
-                        focusManager.clearFocus()
-                    }
-            ) {
-                Text(
-                    text = app.name,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier
-                        .padding(vertical = 16.dp)
-                )
-            }
-
-        }
-    }
-}
-
-@Composable
-private fun SearchBar(
-    appsViewModel: AppsViewModel,
-    searchText: String,
-    focusRequester: FocusRequester,
-    focusManager: FocusManager,
-    modifier: Modifier,
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-    ) {
-        BasicTextField(
-            value = searchText,
-            onValueChange = { appsViewModel.onSearchTextChange(it) },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Next,
-                keyboardType = KeyboardType.Text
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = {
-                    if (searchText.isNotEmpty()) {
-                        appsViewModel.openFirstApp()
-                        focusManager.clearFocus()
-                    }
-                }
-            ),
-            textStyle = TextStyle.Default.copy(
-                color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Center,
-            ),
-            cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
-            decorationBox = { innerTextField ->
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.padding(vertical = 10.dp, horizontal = 10.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.align(Alignment.CenterStart)
-                    )
-                    if (searchText.isEmpty()) {
-                        Text(
-                            text = "Search",
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-                    innerTextField()
-                }
-            },
-            singleLine = true,
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(
-                    width = 2.dp,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    shape = RoundedCornerShape(15.dp)
-                )
-                .height(50.dp)
-                .focusRequester(focusRequester)
         )
     }
 }

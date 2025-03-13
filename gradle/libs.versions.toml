@@ -16,6 +16,8 @@ accompanist = "0.30.0"
 navigationCompose = "2.8.4"
 serialization = "1.6.0"
 ksp = "2.0.21-1.0.27"
+workRuntimeKtx = "2.10.0"
+daggerhilt = "2.55"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -41,6 +43,9 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
+androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workRuntimeKtx" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android" , version.ref = "daggerhilt"}
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler" , version.ref = "daggerhilt"}
 
 
 [plugins]
@@ -50,3 +55,4 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 #ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization" }
+hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref ="daggerhilt" }

@@ -11,14 +11,17 @@ private val DarkColorScheme = darkColorScheme(
     onBackground = White,
     surface = LightBlue,
     onSurface = Black,
-    surfaceVariant = BlackSemiTransparent,
+    inverseSurface = BlackSemiTransparent,
     primary = BlueDarker,
     onPrimary = White,
     secondary = OceanDarker,
     onSecondary = Black,
+    tertiary = LightGreen,
+    onTertiary = Black,
+    surfaceVariant = LightYellow,
+    onSurfaceVariant = Black,
     error = LightRed,
     onError = White,
-
 )
 
 
@@ -27,11 +30,15 @@ private val LightColorScheme = lightColorScheme(
     onBackground = Gray,
     surface = Bone,
     onSurface = Gray,
-    surfaceVariant = LightGray,
+    inverseSurface = LightGray,
     primary = Blue,
     onPrimary = White,
     secondary = Ocean,
     onSecondary = White,
+    tertiary = Green,
+    onTertiary = White,
+    surfaceVariant = Yellow,
+    onSurfaceVariant = White,
     error = Red,
     onError = White,
 

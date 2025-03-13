@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import com.brightbox.hourglass.viewmodel.AppsViewModel
 import com.brightbox.hourglass.viewmodel.HomeViewModel
@@ -41,6 +42,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 fun Home(homeViewModel: HomeViewModel, appsViewModel: AppsViewModel) {
 
     val scaffoldState = rememberBottomSheetScaffoldState()
+    val view = LocalView.current
 
     rememberSystemUiController().setNavigationBarColor(
         color = MaterialTheme.colorScheme.background.copy(alpha = 0.1f),
@@ -68,7 +70,10 @@ fun Home(homeViewModel: HomeViewModel, appsViewModel: AppsViewModel) {
             sheetShape = RectangleShape,
             sheetShadowElevation = 0.dp,
             sheetContent = {
-                AppMenu(appsViewModel = appsViewModel)
+                AppMenu(
+                    appsViewModel = appsViewModel,
+                    scaffoldState = scaffoldState
+                )
             },
 //            sheetPeekHeight = 10.dp,
             sheetDragHandle = {
@@ -83,7 +88,7 @@ fun Home(homeViewModel: HomeViewModel, appsViewModel: AppsViewModel) {
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
                 .navigationBarsPadding()
-
+                .animateContentSize()
         ) {
 
         }
