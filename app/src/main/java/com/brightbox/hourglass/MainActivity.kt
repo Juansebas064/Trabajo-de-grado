@@ -18,18 +18,21 @@ import com.brightbox.hourglass.viewmodel.HomeViewModel
 class MainActivity : ComponentActivity() {
 
     private val appChangeReceiver = AppChangeReceiver()
-    private lateinit var appsViewModel: AppsViewModel
+    private val intentFilter = IntentFilter().apply {
+        addAction(Intent.ACTION_PACKAGE_REMOVED)
+        addAction(Intent.ACTION_PACKAGE_ADDED)
+        addDataScheme("package")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val homeViewModel: HomeViewModel by viewModels()
-//        val appsViewModel: AppsViewModel by viewModels()
-        appsViewModel = AppsViewModel.getInstance(this.applicationContext as Application)
+        val appsViewModel: AppsViewModel by viewModels()
 
         registerReceiver(
             appChangeReceiver,
-            IntentFilter(Intent.ACTION_PACKAGE_FULLY_REMOVED)
+            intentFilter
         )
 
         setContent {
@@ -42,10 +45,20 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         Log.d("MainActivity", "onResume called")
+        registerReceiver(
+            appChangeReceiver,
+            intentFilter
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(appChangeReceiver)
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        unregisterReceiver(appChangeReceiver)
     }
 }
 

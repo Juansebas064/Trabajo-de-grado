@@ -121,7 +121,7 @@ fun AppMenu(
         // App list
         AppColumnListComponent(
             appsViewModel = appsViewModel,
-            apps = apps,
+            apps = apps.applications,
             appShowingOptions = appShowingOptions,
             focusManager = focusManager,
             modifier = Modifier

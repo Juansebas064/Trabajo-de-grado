@@ -64,6 +64,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.brightbox.hourglass.model.ApplicationModel
+import com.brightbox.hourglass.states.ApplicationState
 import com.brightbox.hourglass.view.theme.Yellow
 import com.brightbox.hourglass.viewmodel.AppsViewModel
 import kotlinx.coroutines.delay
@@ -78,18 +79,6 @@ fun AppColumnListComponent(
     focusManager: FocusManager,
     modifier: Modifier,
 ) {
-    val scope = rememberCoroutineScope()
-
-    val uninstallLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-//        appsViewModel.setAppShowingOptions("none")
-//        scope.launch {
-//            delay(4500)
-//        }
-//        appsViewModel.queryInstalledApps()
-//        appsViewModel.getApps()
-    }
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Bottom),
@@ -217,11 +206,7 @@ fun AppColumnListComponent(
                         // Delete
                         IconButton(
                             onClick = {
-                                val intent = Intent(Intent.ACTION_DELETE).apply {
-                                    data = Uri.parse("package:${app.packageName}")
-                                    addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME)
-                                }
-                                uninstallLauncher.launch(intent)
+                                appsViewModel.uninstallApp(app.packageName)
                             },
                             modifier = Modifier
                                 .height(45.dp)

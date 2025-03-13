@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.hiltAndroid)
 //    alias(libs.plugins.ksp)
 }
 
@@ -68,4 +69,6 @@ dependencies {
 //    implementation(libs.kotlinx.serialization.json)
     implementation(libs.room.ktx)
     implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 }
