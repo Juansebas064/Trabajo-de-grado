@@ -9,6 +9,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.view.WindowCompat
 import com.brightbox.hourglass.receivers.AppChangeReceiver
 import com.brightbox.hourglass.view.theme.HourglassProductivityLauncherTheme
 import com.brightbox.hourglass.view.Home

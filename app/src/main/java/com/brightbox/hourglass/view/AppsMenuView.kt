@@ -61,18 +61,18 @@ fun AppMenu(
         }
     }
 
-    BackHandler(true) {
-        if (scaffoldState.bottomSheetState.targetValue == SheetValue.Expanded) {
-            scope.launch {
-                scaffoldState.bottomSheetState.partialExpand()
-                focusManager.clearFocus()
-            }
-        }
-        if (isKeyboardOpen) {
-            focusManager.clearFocus()
-            appsViewModel.setKeyboardState(false)
-        }
-    }
+//    BackHandler(true) {
+//        if (scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+//            scope.launch {
+//                scaffoldState.bottomSheetState.partialExpand()
+//                focusManager.clearFocus()
+//            }
+//        }
+//        if (isKeyboardOpen) {
+//            focusManager.clearFocus()
+//            appsViewModel.setKeyboardState(false)
+//        }
+//    }
 
     // Parent container
     Column(
@@ -82,18 +82,18 @@ fun AppMenu(
             .fillMaxSize()
             .padding(horizontal = 16.dp)
             .navigationBarsPadding()
-            .onKeyEvent { event ->
-                if (event.key.nativeKeyCode == KeyEvent.KEYCODE_HOME) {
-                    scope.launch {
-                        scaffoldState.bottomSheetState.partialExpand()
-                        focusManager.clearFocus()
-                    }
-                    true
-                } else {
-                    false
-
-                }
-            }
+//            .onKeyEvent { event ->
+//                if (event.key.nativeKeyCode == KeyEvent.KEYCODE_HOME) {
+//                    scope.launch {
+//                        scaffoldState.bottomSheetState.partialExpand()
+//                        focusManager.clearFocus()
+//                    }
+//                    true
+//                } else {
+//                    false
+//
+//                }
+//            }
     ) {
         // Menu text
         Box(

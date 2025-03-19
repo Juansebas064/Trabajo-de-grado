@@ -4,14 +4,22 @@ import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.BottomSheetScaffold
@@ -20,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,6 +37,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalView
@@ -57,138 +67,75 @@ fun Home(homeViewModel: HomeViewModel, appsViewModel: AppsViewModel) {
     }
 
     // Container
-    Column(
-        verticalArrangement = Arrangement.Bottom,
+//    Column(
+//        verticalArrangement = Arrangement.Bottom,
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .background(MaterialTheme.colorScheme.background)
+//            .navigationBarsPadding()
+//            .statusBarsPadding()
+//    )
+//    {
+    BottomSheetScaffold(
+        scaffoldState = scaffoldState,
+        sheetShape = RectangleShape,
+//            sheetShadowElevation = 0.dp,
+        sheetContent = {
+            AppMenu(
+                appsViewModel = appsViewModel,
+                scaffoldState = scaffoldState
+            )
+        },
+//            sheetPeekHeight = IntrinsicSize.Min.toD,
+        sheetDragHandle = {
+            if (scaffoldState.bottomSheetState.hasPartiallyExpandedState) {
+                Log.d(
+                    "HomeView",
+                    "State of BottomSheet is ${scaffoldState.bottomSheetState.currentValue}"
+                )
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.background)
+                        .border(1.dp, Color.Red)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowUp,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+            } else false
+
+        },
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
-            .fillMaxSize()
+            .animateContentSize()
             .navigationBarsPadding()
-    )
-    {
-        BottomSheetScaffold(
-            scaffoldState = scaffoldState,
-            sheetShape = RectangleShape,
-            sheetShadowElevation = 0.dp,
-            sheetContent = {
-                AppMenu(
-                    appsViewModel = appsViewModel,
-                    scaffoldState = scaffoldState
-                )
-            },
-//            sheetPeekHeight = 10.dp,
-            sheetDragHandle = {
-                PinnedApps(
-                    homeViewModel = homeViewModel,
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.background)
-                        .animateContentSize(animationSpec = tween(durationMillis = 1000))
-                        .offset(y = if (scaffoldState.bottomSheetState.targetValue == SheetValue.Expanded) (-50).dp else 0.dp)
-                )
-            },
+            .statusBarsPadding()
+    ) { innerPadding ->
+        Column(
+            verticalArrangement = Arrangement.Bottom,
             modifier = Modifier
+                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .navigationBarsPadding()
-                .animateContentSize()
-        ) {
+//                .padding(innerPadding)
+        )
+        {
+            PinnedApps(
+                appsViewModel = appsViewModel,
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.background)
+                    .animateContentSize(animationSpec = tween(durationMillis = 1000))
+                    .border(1.dp, Color.Red)
+//                    .padding(innerPadding)
 
+//                        .offset(y = if (scaffoldState.bottomSheetState.targetValue == SheetValue.Expanded) (-70).dp else -15.dp)
+            )
         }
     }
 }
-
-@Composable
-fun PinnedApps(
-    homeViewModel: HomeViewModel,
-    modifier: Modifier
-) {
-    Column(
-        modifier = modifier
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowUp,
-                contentDescription = "",
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-        }
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Text(
-                text = "Pinned apps...",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-        }
-
-    }
-}
-
-
-//@Composable
-//fun PinnedApps(
-//    appsViewModel: AppsViewModel
-//) {
-//
-//    val scope = rememberCoroutineScope()
-//    val isVisible = remember { mutableStateOf(false) }
-//    val sheetHeight: Float = 0.5f
-//    Column(
-//        modifier = Modifier
-//            .background(MaterialTheme.colorScheme.background)
-//            .border(1.dp, MaterialTheme.colorScheme.onBackground)
-////            .pointerInput(Unit) {
-////                detectVerticalDragGestures { _, dragAmount ->
-////                    scope.launch {
-////                        if (dragAmount < -10) { // Detect upward swipe
-////                            isVisible.value = true
-////                        } else if (dragAmount > 10) { // Detect downward swipe
-////                            isVisible.value = false
-////                        }
-////                    }
-////                }
-////            }
-//
-//    ) {
-//        if (!isVisible.value) {
-//            Row(
-//                horizontalArrangement = Arrangement.Center,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//            ) {
-//                Icon(
-//                    imageVector = Icons.Default.KeyboardArrowUp,
-//                    contentDescription = "",
-//                    tint = MaterialTheme.colorScheme.onBackground
-//                )
-//            }
-//            Row(
-//                horizontalArrangement = Arrangement.Center,
-//                modifier = Modifier
-////                .padding(vertical = 20.dp)
-//                    .fillMaxWidth()
-//            ) {
-//                Text(
-//                    text = "Pinned apps...",
-//                    style = MaterialTheme.typography.bodyLarge,
-//                    color = MaterialTheme.colorScheme.onBackground
-//                )
-//            }
-//        }
-//        AnimatedVisibility(
-//            visible = isVisible.value,
-////            enter = expandIn(expandFrom = Alignment.BottomCenter, ) + fadeIn(),
-//            enter = expandIn(animationSpec = tween(600), expandFrom = Alignment.BottomStart),
-//            exit = fadeOut(),
-//        ) {
-//            AppMenu(appsViewModel = appsViewModel)
-//        }
-//    }
 //}
 
 //.pointerInput(Unit) {
