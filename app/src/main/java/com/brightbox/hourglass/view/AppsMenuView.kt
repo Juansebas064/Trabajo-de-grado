@@ -1,5 +1,6 @@
 package com.brightbox.hourglass.view
 
+import android.util.Log
 import android.view.KeyEvent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -10,9 +11,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,11 +43,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun AppMenu(
     appsViewModel: AppsViewModel,
-    scaffoldState: BottomSheetScaffoldState,
+    sheetState: SheetState,
 ) {
 
     // States
-    val apps by appsViewModel.appsList.collectAsState()
+    val apps by appsViewModel.filteredAppList.collectAsState()
     val searchText by appsViewModel.searchText.collectAsState()
     val isKeyboardOpen by appsViewModel.isKeyboardOpened.collectAsState()
     val appShowingOptions by appsViewModel.appShowingOptions.collectAsState()
@@ -53,26 +56,15 @@ fun AppMenu(
     val scope = rememberCoroutineScope()
 
     // Open keyboard when menu is opened
-    LaunchedEffect(scaffoldState.bottomSheetState.currentValue) {
-        if (scaffoldState.bottomSheetState.targetValue == SheetValue.Expanded) {
+    LaunchedEffect(sheetState) {
+        if (sheetState.hasExpandedState) {
             focusRequester.requestFocus()
-        } else {
-            focusManager.clearFocus()
         }
     }
 
-//    BackHandler(true) {
-//        if (scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
-//            scope.launch {
-//                scaffoldState.bottomSheetState.partialExpand()
-//                focusManager.clearFocus()
-//            }
-//        }
-//        if (isKeyboardOpen) {
-//            focusManager.clearFocus()
-//            appsViewModel.setKeyboardState(false)
-//        }
-//    }
+    BackHandler(enabled = sheetState.isVisible) {
+        scope.launch { sheetState.hide() }
+    }
 
     // Parent container
     Column(
@@ -82,18 +74,7 @@ fun AppMenu(
             .fillMaxSize()
             .padding(horizontal = 16.dp)
             .navigationBarsPadding()
-//            .onKeyEvent { event ->
-//                if (event.key.nativeKeyCode == KeyEvent.KEYCODE_HOME) {
-//                    scope.launch {
-//                        scaffoldState.bottomSheetState.partialExpand()
-//                        focusManager.clearFocus()
-//                    }
-//                    true
-//                } else {
-//                    false
-//
-//                }
-//            }
+            .statusBarsPadding()
     ) {
         // Menu text
         Box(

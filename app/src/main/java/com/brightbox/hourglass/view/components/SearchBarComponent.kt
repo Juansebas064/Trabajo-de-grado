@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
@@ -37,6 +38,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brightbox.hourglass.viewmodel.AppsViewModel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchBarComponent(
@@ -47,6 +50,7 @@ fun SearchBarComponent(
     isKeyboardOpen: Boolean,
     modifier: Modifier,
 ) {
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -55,8 +59,10 @@ fun SearchBarComponent(
         BasicTextField(
             value = searchText,
             onValueChange = {
-                appsViewModel.onSearchTextChange(it)
-                appsViewModel.setAppShowingOptions("none")
+                coroutineScope.launch {
+                    appsViewModel.onSearchTextChange(it)
+                    appsViewModel.setAppShowingOptions("none")
+                }
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next,

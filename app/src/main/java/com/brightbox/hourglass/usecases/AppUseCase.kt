@@ -35,6 +35,7 @@ class AppUseCase(private val application: Application) {
                 when (event) {
                     is AppChangeEvent.AppUninstalled -> {
                         Log.d("AppUseCase", "App uninstalled: ${event.packageName}")
+
                         deleteAppFromDatabase(event.packageName)
                     }
 
@@ -72,8 +73,10 @@ class AppUseCase(private val application: Application) {
     }
 
     suspend fun toggleAppPinnedState(app: ApplicationModel) {
-        val pinnedApp = app.copy(isPinned = !app.isPinned)
-        db.applicationDao().upsertApplication(pinnedApp)
+        withContext(Dispatchers.IO) {
+            val pinnedApp = app.copy(isPinned = !app.isPinned)
+            db.applicationDao().upsertApplication(pinnedApp)
+        }
     }
 
     fun openAppInfo(packageName: String) {
