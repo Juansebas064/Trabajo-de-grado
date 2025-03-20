@@ -30,20 +30,24 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
 
-    val appsList = combine(
-        _appUseCase.getApplicationsFromDatabase(),
+    val appsList = _appUseCase.getApplicationsFromDatabase()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val filteredAppList = combine(
+        appsList,
         _searchText
-    ) { applicationsFromDatabase, searchText ->
+    ) { appsList, searchText ->
         val filteredApplications = if (searchText.isBlank()) {
-            applicationsFromDatabase
+            appsList
         } else {
-            applicationsFromDatabase.filter { it.name.contains(searchText, ignoreCase = true) }
+            appsList.filter { it.name.contains(searchText, ignoreCase = true) }
         }
         ApplicationState(
             applications = filteredApplications,
             searchText = searchText
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ApplicationState())
+
 
     private val _appShowingOptions = MutableStateFlow("none")
 
@@ -53,26 +57,10 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     val isKeyboardOpened = _isKeyboardOpened.asStateFlow()
 
 
-    // Functions
-
-//    fun onEvent(event: AppChangeEvent) {
-//        when (event) {
-//            is AppChangeEvent.AppUninstalled -> {
-//                Log.d("AppsViewModel", "onEvent: App uninstalled: ${event.packageName}")
-//                viewModelScope.launch {
-//                    _appUseCase.queryInstalledApplicationsToDatabase()
-//                }
-//        }
-//            is AppChangeEvent.AppInstalled -> {
-//                Log.d("AppsViewModel", "onEvent: App installed: ${event.packageName}")
-//            }
-//        }
-//    }
-
-    fun onSearchTextChange(searchText: String = "") {   // searchText will be "" if no argument is passed
+    suspend fun onSearchTextChange(searchText: String = "") {   // searchText will be "" if no argument is passed
         Log.d("AppsViewModel", "onSearchTextChange: searchText = $searchText")
         _searchText.value = searchText
-        CoroutineScope(Dispatchers.IO).launch {
+        withContext(Dispatchers.IO) {
             _appUseCase.queryInstalledApplicationsToDatabase()
         }
     }
@@ -83,8 +71,8 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun openFirstApp() {
-        if (appsList.value.applications.isNotEmpty()) {
-            _appUseCase.openApp(appsList.value.applications.first().packageName)
+        if (appsList.value.isNotEmpty()) {
+            _appUseCase.openApp(appsList.value.first().packageName)
             _searchText.value = ""    // Clear searchText
         }
     }
