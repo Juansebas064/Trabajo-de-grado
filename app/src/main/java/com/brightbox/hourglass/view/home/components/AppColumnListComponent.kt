@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.view.components
+package com.brightbox.hourglass.view.home.components
 
 import android.app.Activity
 import android.content.Intent
