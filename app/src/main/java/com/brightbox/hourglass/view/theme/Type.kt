@@ -14,6 +14,13 @@ val sofiaSansFontFamily = FontFamily(
 
 // Set of Material typography styles to start with
 val Typography = Typography(
+    displayLarge = TextStyle(
+        fontFamily = sofiaSansFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 80.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
+    ),
     titleLarge = TextStyle(
         fontFamily = sofiaSansFontFamily,
         fontWeight = FontWeight.Bold,
