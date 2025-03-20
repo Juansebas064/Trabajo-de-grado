@@ -72,7 +72,7 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
 
     fun openFirstApp() {
         if (appsList.value.isNotEmpty()) {
-            _appUseCase.openApp(appsList.value.first().packageName)
+            _appUseCase.openApp(filteredAppList.value.applications.first().packageName)
             _searchText.value = ""    // Clear searchText
         }
     }
