@@ -2,11 +2,8 @@ package com.brightbox.hourglass.view.home
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -22,8 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import com.brightbox.hourglass.view.home.pages.TasksPage
+import com.brightbox.hourglass.view.home.pages.tasks_page.TasksPage
 import com.brightbox.hourglass.viewmodel.AppsViewModel
 import com.brightbox.hourglass.viewmodel.HomeViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -78,6 +74,7 @@ fun Home(homeViewModel: HomeViewModel, appsViewModel: AppsViewModel) {
                     }
                     1 -> {
                         TasksPage(
+                            appsViewModel = appsViewModel,
                             modifier = Modifier.fillMaxSize()
                         )
                     }
