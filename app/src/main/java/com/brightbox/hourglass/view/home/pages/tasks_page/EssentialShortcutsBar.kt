@@ -3,8 +3,6 @@ package com.brightbox.hourglass.view.home.pages.tasks_page
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Call
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,11 +22,13 @@ fun EssentialShortcutsBar(
         modifier = modifier
             .padding(spacing.spaceSmall)
     ) {
-        EssentialShortcutComponent(
-            essentialShortcutEnum = EssentialShortcutsEnum.PHONE,
-            onClick = {
-                appsViewModel.openApp("com.samsung.android.dialer")
-            },
-        )
+        EssentialShortcutsEnum.entries.toTypedArray().forEach {
+            EssentialShortcutComponent(
+                essentialShortcutEnum = it,
+                onClick = {
+                    appsViewModel.openApp(it.intent)
+                },
+            )
+        }
     }
 }

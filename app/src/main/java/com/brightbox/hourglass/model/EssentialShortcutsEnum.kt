@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class EssentialShortcutsEnum(
@@ -16,4 +17,9 @@ enum class EssentialShortcutsEnum(
         "Phone",
         Intent(Intent.ACTION_DIAL)
     ),
+    EMAIL(
+        Icons.Default.Email,
+        "Email",
+        Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_EMAIL)
+    )
 }
