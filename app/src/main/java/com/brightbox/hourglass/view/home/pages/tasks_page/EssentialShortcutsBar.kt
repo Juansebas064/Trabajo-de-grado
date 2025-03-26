@@ -18,7 +18,7 @@ fun EssentialShortcutsBar(
 ) {
     val spacing = LocalSpacing.current
     Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium),
         modifier = modifier
             .padding(spacing.spaceSmall)
     ) {
