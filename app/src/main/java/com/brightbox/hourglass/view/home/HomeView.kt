@@ -19,7 +19,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.brightbox.hourglass.view.home.pages.tasks_page.TasksPage
+import com.brightbox.hourglass.view.home.menu.PinnedAppsAndMenuModalView
+import com.brightbox.hourglass.view.home.pages.tasks_page.TasksPageView
 import com.brightbox.hourglass.viewmodel.AppsViewModel
 import com.brightbox.hourglass.viewmodel.HomeViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -73,7 +74,7 @@ fun Home(homeViewModel: HomeViewModel, appsViewModel: AppsViewModel) {
                         )
                     }
                     1 -> {
-                        TasksPage(
+                        TasksPageView(
                             appsViewModel = appsViewModel,
                             modifier = Modifier.fillMaxSize()
                         )
@@ -87,7 +88,7 @@ fun Home(homeViewModel: HomeViewModel, appsViewModel: AppsViewModel) {
                 }
             }
         )
-        PinnedAppsAndMenuModal(
+        PinnedAppsAndMenuModalView(
             sheetState = sheetState,
             appsViewModel = appsViewModel,
             modifier = Modifier

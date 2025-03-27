@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.view.home.components
+package com.brightbox.hourglass.view.home.menu
 
 import android.view.KeyEvent
 import androidx.compose.foundation.border
@@ -37,7 +37,7 @@ import com.brightbox.hourglass.viewmodel.AppsViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun SearchBarComponent(
+fun SearchBarView(
     appsViewModel: AppsViewModel,
     searchText: String,
     focusRequester: FocusRequester,

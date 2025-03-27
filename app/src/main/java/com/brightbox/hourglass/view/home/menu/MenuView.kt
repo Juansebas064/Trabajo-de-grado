@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.view.home
+package com.brightbox.hourglass.view.home.menu
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -26,13 +26,12 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.brightbox.hourglass.viewmodel.AppsViewModel
-import com.brightbox.hourglass.view.home.components.AppColumnListComponent
-import com.brightbox.hourglass.view.home.components.SearchBarComponent
+import com.brightbox.hourglass.view.home.components.MenuAppListComponent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppMenu(
+fun MenuView(
     appsViewModel: AppsViewModel,
     sheetState: SheetState,
 ) {
@@ -91,7 +90,7 @@ fun AppMenu(
                 .padding(vertical = 16.dp)
         )
         // App list
-        AppColumnListComponent(
+        MenuAppListComponent(
             appsViewModel = appsViewModel,
             apps = apps.applications,
             appShowingOptions = appShowingOptions,
@@ -101,7 +100,7 @@ fun AppMenu(
                 .weight(1.3f)
         )
         // Search bar
-        SearchBarComponent(
+        SearchBarView(
             appsViewModel = appsViewModel,
             searchText = searchText,
             focusRequester = focusRequester,
