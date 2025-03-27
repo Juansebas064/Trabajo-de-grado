@@ -33,7 +33,7 @@ fun DaysOfWeekComponent(
                 PilledTextButtonComponent(
                     text = currentDay,
                     textColor = MaterialTheme.colorScheme.onSurface,
-                    textStyle = MaterialTheme.typography.bodyMedium,
+                    textStyle = MaterialTheme.typography.bodyLarge,
                     backgroundColor = MaterialTheme.colorScheme.surface,
                     onClick = { onClick() },
                 )
@@ -42,7 +42,7 @@ fun DaysOfWeekComponent(
                 Text(
                     text = "${day[0]}",
                     color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
         }
