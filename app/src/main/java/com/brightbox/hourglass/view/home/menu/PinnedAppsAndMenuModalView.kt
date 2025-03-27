@@ -1,29 +1,22 @@
-package com.brightbox.hourglass.view.home
+package com.brightbox.hourglass.view.home.menu
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import com.brightbox.hourglass.view.home.components.PinnedAppsComponent
 import com.brightbox.hourglass.viewmodel.AppsViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PinnedAppsAndMenuModal(
+fun PinnedAppsAndMenuModalView(
     sheetState: SheetState,
     appsViewModel: AppsViewModel,
     modifier: Modifier = Modifier
@@ -35,7 +28,7 @@ fun PinnedAppsAndMenuModal(
         Column(
             verticalArrangement = Arrangement.Bottom,
         ) {
-            PinnedAppsComponent(
+            PinnedAppsView(
                 appsViewModel = appsViewModel,
                 sheetState = sheetState,
                 modifier = Modifier
@@ -56,7 +49,7 @@ fun PinnedAppsAndMenuModal(
                 windowInsets = WindowInsets(0), // Para corregir el padding del handle
                 modifier = Modifier.fillMaxHeight()
             ) {
-                AppMenu(
+                MenuView(
                     appsViewModel = appsViewModel,
                     sheetState = sheetState
                 )
