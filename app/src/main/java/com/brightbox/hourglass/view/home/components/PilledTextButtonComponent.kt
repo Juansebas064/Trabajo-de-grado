@@ -26,7 +26,7 @@ fun PilledTextButtonComponent(
             onClick()
         },
         modifier = Modifier
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(15.dp))
             .background(backgroundColor)
     ) {
         Text(
