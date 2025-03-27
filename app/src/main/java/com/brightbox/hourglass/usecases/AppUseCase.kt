@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AppUseCase(private val application: Application) {
+
     private val db: HourglassDatabase = Room.databaseBuilder(
         application.applicationContext,
         HourglassDatabase::class.java,
@@ -52,13 +53,6 @@ class AppUseCase(private val application: Application) {
     fun getApplicationsFromDatabase(appNameFilter: String? = null): Flow<List<ApplicationModel>> {
         Log.d("AppUseCase", "getApplicationsFromDatabase: map called, filter = $appNameFilter")
         val appList = db.applicationDao().getApplications()
-//            val appNameFilterNormalized = appNameFilter?.trim()?.lowercase()
-//            if (appNameFilterNormalized.isNullOrBlank()) {
-//                appList.sortedBy { it.name.lowercase() }
-//            } else {
-//                appList.filter { it.name.lowercase().contains(appNameFilterNormalized) }
-//                    .sortedBy { it.name.lowercase() }
-//            }
         return appList
     }
 
@@ -70,6 +64,11 @@ class AppUseCase(private val application: Application) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             application.applicationContext.startActivity(intent)
         }
+    }
+
+    fun openApp(intent: Intent) {
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        application.applicationContext.startActivity(intent)
     }
 
     suspend fun toggleAppPinnedState(app: ApplicationModel) {

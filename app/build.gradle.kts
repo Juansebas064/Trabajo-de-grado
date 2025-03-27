@@ -70,5 +70,6 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.hilt.android)
+    implementation(libs.material.icons.extended)
     kapt(libs.hilt.compiler)
 }

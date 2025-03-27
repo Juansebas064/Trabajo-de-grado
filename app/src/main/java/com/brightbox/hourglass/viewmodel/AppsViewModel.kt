@@ -1,6 +1,7 @@
 package com.brightbox.hourglass.viewmodel
 
 import android.app.Application
+import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -68,6 +69,10 @@ class AppsViewModel(application: Application) : AndroidViewModel(application) {
     fun openApp(packageName: String) {
         _appUseCase.openApp(packageName)
         _searchText.value = ""
+    }
+
+    fun openApp(intent: Intent) {
+        _appUseCase.openApp(intent)
     }
 
     fun openFirstApp() {
