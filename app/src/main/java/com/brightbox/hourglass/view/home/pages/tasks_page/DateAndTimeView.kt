@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.brightbox.hourglass.view.home.components.ClockComponent
+import com.brightbox.hourglass.view.home.components.DateComponent
 import com.brightbox.hourglass.view.home.components.DaysOfWeekComponent
 import com.brightbox.hourglass.view.theme.LocalSpacing
 import com.brightbox.hourglass.viewmodel.AppsViewModel
@@ -47,8 +48,6 @@ fun DateAndTimeView(
         modifier = Modifier
             .clip(RoundedCornerShape(10.dp))
             .padding(vertical = spacing.spaceExtraLarge)
-
-
     ) {
         ClockComponent(
             currentTime = currentTimeMillis.longValue,
@@ -63,6 +62,16 @@ fun DateAndTimeView(
                 currentTimeMillis.longValue,
                 DateUtils.FORMAT_SHOW_WEEKDAY
             ),
+            onClick = {
+                appsViewModel.openApp(
+                    Intent(Intent.ACTION_MAIN)
+                        .addCategory(Intent.CATEGORY_APP_CALENDAR)
+                )
+            }
+        )
+
+        DateComponent(
+            currentTimeMillis = currentTimeMillis.longValue,
             onClick = {
                 appsViewModel.openApp(
                     Intent(Intent.ACTION_MAIN)
