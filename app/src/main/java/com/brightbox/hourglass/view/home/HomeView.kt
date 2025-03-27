@@ -50,9 +50,9 @@ fun Home(homeViewModel: HomeViewModel, appsViewModel: AppsViewModel) {
         )
     }
 
-    LaunchedEffect(pagerState) {
-        Log.d("HomeView", "Current page: ${pagerState.currentPage}")
-    }
+//    LaunchedEffect(pagerState) {
+//        Log.d("HomeView", "Current page: ${pagerState.currentPage}")
+//    }
 
     Column(
         modifier = Modifier
@@ -65,29 +65,30 @@ fun Home(homeViewModel: HomeViewModel, appsViewModel: AppsViewModel) {
             modifier = Modifier
                 .weight(1f),
             state = pagerState,
-            pageContent = {
-                when (pagerState.currentPage) {
-                    0 -> {
-                        Text(
-                            text = "Page ${pagerState.currentPage}",
-                            color = Color.Red
-                        )
-                    }
-                    1 -> {
-                        TasksPageView(
-                            appsViewModel = appsViewModel,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
-                    2 -> {
-                        Text(
-                            text = "Page ${pagerState.currentPage}",
-                            color = Color.Green
-                        )
-                    }
+        ) { page ->
+            when (page) {
+                0 -> {
+                    Text(
+                        text = "Page ${pagerState.currentPage}",
+                        color = Color.Red
+                    )
+                }
+
+                1 -> {
+                    TasksPageView(
+                        appsViewModel = appsViewModel,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+
+                2 -> {
+                    Text(
+                        text = "Page ${pagerState.currentPage}",
+                        color = Color.Green
+                    )
                 }
             }
-        )
+        }
         PinnedAppsAndMenuModalView(
             sheetState = sheetState,
             appsViewModel = appsViewModel,
