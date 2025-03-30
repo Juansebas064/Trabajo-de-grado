@@ -1,31 +1,27 @@
 package com.brightbox.hourglass.viewmodel
 
-import android.app.Application
 import android.content.Intent
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.brightbox.hourglass.events.AppChangeEvent
 import com.brightbox.hourglass.model.ApplicationModel
 import com.brightbox.hourglass.states.ApplicationState
 import com.brightbox.hourglass.usecases.AppUseCase
-import kotlinx.coroutines.CoroutineScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.text.contains
+import javax.inject.Inject
 
-class AppsViewModel(application: Application) : AndroidViewModel(application) {
-
-    // UseCases
-    private val _appUseCase = AppUseCase(application)
+@HiltViewModel
+class AppsViewModel @Inject constructor(
+    private val _appUseCase: AppUseCase
+) : ViewModel() {
 
     // States
     private val _searchText = MutableStateFlow("")

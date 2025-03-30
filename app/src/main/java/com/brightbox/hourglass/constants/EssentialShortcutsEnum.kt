@@ -1,10 +1,8 @@
-package com.brightbox.hourglass.model
+package com.brightbox.hourglass.constants
 
 import android.content.Intent
 import android.provider.MediaStore
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Email

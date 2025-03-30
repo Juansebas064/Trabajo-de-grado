@@ -1,14 +1,15 @@
 package com.brightbox.hourglass.usecases
 
-import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Log
-import androidx.room.Room
+import com.brightbox.hourglass.Application
 import com.brightbox.hourglass.config.HourglassDatabase
 import com.brightbox.hourglass.events.AppChangeEvent
 import com.brightbox.hourglass.model.ApplicationModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -16,14 +17,12 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class AppUseCase(private val application: Application) {
-
-    private val db: HourglassDatabase = Room.databaseBuilder(
-        application.applicationContext,
-        HourglassDatabase::class.java,
-        "hourglass_database"
-    ).build()
+class AppUseCase @Inject constructor(
+    private val db: HourglassDatabase,
+    @ApplicationContext private val application: Context
+) {
 
     companion object {
         val eventBus = MutableSharedFlow<AppChangeEvent>()

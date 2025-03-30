@@ -3,8 +3,6 @@ package com.brightbox.hourglass.view.home.pages.tasks_page
 import android.content.Intent
 import android.provider.AlarmClock
 import android.text.format.DateUtils
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.brightbox.hourglass.view.home.components.ClockComponent
@@ -30,6 +27,7 @@ fun DateAndTimeView(
     appsViewModel: AppsViewModel,
     modifier: Modifier = Modifier
 ) {
+
     val spacing = LocalSpacing.current
 
     val currentTimeMillis = remember {
@@ -45,15 +43,13 @@ fun DateAndTimeView(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(10.dp))
             .padding(vertical = spacing.spaceExtraLarge)
     ) {
         ClockComponent(
             currentTime = currentTimeMillis.longValue,
-            onClick = {
-                appsViewModel.openApp(Intent(AlarmClock.ACTION_SHOW_ALARMS))
-            }
+            onClick = { appsViewModel.openApp(Intent(AlarmClock.ACTION_SHOW_ALARMS)) }
         )
 
         DaysOfWeekComponent(

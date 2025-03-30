@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.brightbox.hourglass.view.home.components.ClockComponent
 import com.brightbox.hourglass.view.theme.LocalSpacing
 import com.brightbox.hourglass.viewmodel.AppsViewModel
 
@@ -28,7 +27,7 @@ fun TasksPageView(
             DateAndTimeView(appsViewModel)
         }
         EssentialShortcutsBarView(
-            appsViewModel = appsViewModel,
+            appsViewModel,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
         )
