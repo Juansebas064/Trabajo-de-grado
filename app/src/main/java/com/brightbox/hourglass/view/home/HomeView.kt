@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.brightbox.hourglass.view.home.menu.PinnedAppsAndMenuModalView
+import com.brightbox.hourglass.view.menu.PinnedAppsAndMenuModalView
 import com.brightbox.hourglass.view.home.pages.tasks_page.TasksPageView
 import com.brightbox.hourglass.viewmodel.AppsViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController

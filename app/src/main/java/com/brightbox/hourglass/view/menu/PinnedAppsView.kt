@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.view.home.menu
+package com.brightbox.hourglass.view.menu
 
 import android.util.Log
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
