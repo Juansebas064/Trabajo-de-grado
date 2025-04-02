@@ -3,7 +3,6 @@ package com.brightbox.hourglass.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.util.Log
 import com.brightbox.hourglass.events.AppChangeEvent
 import com.brightbox.hourglass.usecases.AppUseCase

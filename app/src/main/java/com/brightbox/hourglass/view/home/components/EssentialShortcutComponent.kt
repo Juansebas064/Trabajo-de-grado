@@ -9,9 +9,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.brightbox.hourglass.model.EssentialShortcutsEnum
+import com.brightbox.hourglass.constants.EssentialShortcutsEnum
 import com.brightbox.hourglass.view.theme.LocalSpacing
 
 @Composable
