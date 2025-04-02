@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.view.menu
+package com.brightbox.hourglass.view.home.menu
 
 import android.view.KeyEvent
 import androidx.compose.foundation.border

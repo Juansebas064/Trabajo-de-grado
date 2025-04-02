@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.view.menu
+package com.brightbox.hourglass.view.home.menu
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
-import com.brightbox.hourglass.view.menu.components.MenuAppListComponent
+import com.brightbox.hourglass.view.home.components.MenuAppListComponent
 import com.brightbox.hourglass.viewmodel.AppsViewModel
 import kotlinx.coroutines.launch
 

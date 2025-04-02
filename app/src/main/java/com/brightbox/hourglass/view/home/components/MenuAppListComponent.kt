@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.view.menu.components
+package com.brightbox.hourglass.view.home.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize

@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.view.menu
+package com.brightbox.hourglass.view.home.menu
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
