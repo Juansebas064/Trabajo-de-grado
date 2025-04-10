@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
 <!--        <receiver-->
-<!--            android:name=".receivers.AppChangeReceiver"-->
+<!--            android:name=".receivers.ApplicationsChangeReceiver"-->
 <!--            android:exported="false">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.PACKAGE_ADDED" />-->
