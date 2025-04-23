@@ -12,6 +12,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.brightbox.hourglass.views.theme.LocalSpacing
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
 import kotlinx.coroutines.launch
@@ -51,6 +52,7 @@ fun PinnedAppsAndMenuModalView(
 
                 },
                 sheetState = sheetState,
+                containerColor = Color.Transparent,
                 windowInsets = WindowInsets(0), // Para corregir el padding del handle
                 modifier = Modifier.fillMaxHeight()
             ) {

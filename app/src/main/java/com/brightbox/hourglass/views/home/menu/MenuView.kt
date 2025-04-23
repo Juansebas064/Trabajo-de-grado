@@ -59,7 +59,7 @@ fun MenuView(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.7f))
             .fillMaxSize()
             .padding(horizontal = 16.dp)
             .navigationBarsPadding()

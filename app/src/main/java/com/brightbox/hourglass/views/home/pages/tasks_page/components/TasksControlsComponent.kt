@@ -3,6 +3,7 @@ package com.brightbox.hourglass.views.home.pages.tasks_page.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -27,6 +28,7 @@ fun TasksControlsComponent(
 //        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
+            .padding(top = spacing.spaceMedium)
     ) {
 //        Text(
 //            text = "Today",
@@ -50,7 +52,7 @@ fun TasksControlsComponent(
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = "",
+                contentDescription = "Add task",
                 tint = MaterialTheme.colorScheme.onSurface
             )
         }

@@ -16,4 +16,12 @@ class TasksUseCase @Inject constructor(
     suspend fun deleteTask(task: TasksModel) {
         db.tasksDao().deleteTask(task)
     }
+
+    suspend fun setTaskCompleted(id: Int) {
+        db.tasksDao().setTaskCompleted(id)
+    }
+
+    suspend fun setTaskUncompleted(id: Int) {
+        db.tasksDao().setTaskUncompleted(id)
+    }
 }

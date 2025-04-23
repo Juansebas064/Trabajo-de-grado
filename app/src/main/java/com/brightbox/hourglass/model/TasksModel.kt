@@ -20,7 +20,7 @@ data class TasksModel(
     val id: Int? = null,
     val title: String,
     val description: String,
-    val priority: Int,
+    val priority: String,
     val dateCreated: String?,
     val dateDue: String?,
     val dateCompleted: String?,

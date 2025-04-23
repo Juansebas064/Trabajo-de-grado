@@ -1,5 +1,5 @@
 [versions]
-agp = "8.7.2"
+agp = "8.8.2"
 kotlin = "2.0.0"
 coreKtx = "1.13.0"
 junit = "4.13.2"
@@ -11,14 +11,15 @@ activityCompose = "1.9.3"
 composeBom = "2024.04.01"
 mockkVersion = "1.13.13"
 junitJupiter = "5.8.1"
-room = "2.6.1"
+room = "2.7.0"
 accompanist = "0.30.0"
-navigationCompose = "2.8.4"
+navigationCompose = "2.8.9"
 serialization = "1.6.0"
 ksp = "2.0.21-1.0.27"
 workRuntimeKtx = "2.10.0"
-daggerhilt = "2.55"
+daggerhilt = "2.56.1"
 materialIconsExtended = "1.7.8"
+roomRuntimeAndroid = "2.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -48,6 +49,7 @@ androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx"
 hilt-android = { group = "com.google.dagger", name = "hilt-android" , version.ref = "daggerhilt"}
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler" , version.ref = "daggerhilt"}
 material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+androidx-room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomRuntimeAndroid" }
 
 
 [plugins]

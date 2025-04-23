@@ -35,6 +35,7 @@ fun DaysOfWeekComponent(
                     textStyle = MaterialTheme.typography.bodyLarge,
                     backgroundColor = MaterialTheme.colorScheme.surface,
                     onClick = { onClick() },
+                    modifier = Modifier
                 )
             }
             else {

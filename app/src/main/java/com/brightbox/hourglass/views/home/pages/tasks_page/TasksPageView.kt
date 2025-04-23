@@ -10,12 +10,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.brightbox.hourglass.views.theme.LocalSpacing
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
+import com.brightbox.hourglass.viewmodel.CategoriesViewModel
 import com.brightbox.hourglass.viewmodel.TasksViewModel
 
 @Composable
 fun TasksPageView(
     applicationsViewModel: ApplicationsViewModel,
     tasksViewModel: TasksViewModel,
+    categoriesViewModel: CategoriesViewModel,
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
@@ -32,7 +34,8 @@ fun TasksPageView(
             DateAndTimeView(applicationsViewModel)
             TasksView(
                 tasksViewModel,
-                modifier = Modifier.padding(horizontal = spacing.tasksPadding)
+                categoriesViewModel,
+//                modifier = Modifier.padding(horizontal = spacing.tasksPadding)
             )
         }
         EssentialShortcutsBarView(

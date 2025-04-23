@@ -82,6 +82,7 @@ fun PinnedAppsView(
                     onClick = {
                         applicationsViewModel.openApp(app.packageName)
                     },
+                    modifier = Modifier
                 )
             }
         }

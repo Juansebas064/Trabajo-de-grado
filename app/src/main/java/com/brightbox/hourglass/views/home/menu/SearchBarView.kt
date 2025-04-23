@@ -108,15 +108,15 @@ fun SearchBarView(
                 )
                 .height(50.dp)
                 .focusRequester(focusRequester)
-                .onKeyEvent { event ->
-                    if (event.key.nativeKeyCode == KeyEvent.KEYCODE_BACK) {
-                        focusManager.clearFocus()
-                        true
-                    } else {
-                        false
-
-                    }
-                }
+//                .onKeyEvent { event ->
+//                    if (event.key.nativeKeyCode == KeyEvent.KEYCODE_BACK) {
+//                        focusManager.clearFocus()
+//                        true
+//                    } else {
+//                        false
+//
+//                    }
+//                }
         )
     }
 }

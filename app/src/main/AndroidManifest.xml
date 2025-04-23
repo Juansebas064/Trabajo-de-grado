@@ -27,6 +27,19 @@
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </activity>
+<!--        <service-->
+<!--            android:name=".services.AccessibilityService"-->
+<!--            android:exported="true"-->
+<!--            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.accessibilityservice.AccessibilityService" />-->
+<!--            </intent-filter>-->
+
+<!--            <meta-data-->
+<!--                android:name="android.accessibilityservice"/>-->
+<!--&lt;!&ndash;                android:resource="@xml/shade_accessibility_config" &ndash;&gt;-->
+
+<!--        </service>-->
 <!--        <receiver-->
 <!--            android:name=".receivers.ApplicationsChangeReceiver"-->
 <!--            android:exported="false">-->
