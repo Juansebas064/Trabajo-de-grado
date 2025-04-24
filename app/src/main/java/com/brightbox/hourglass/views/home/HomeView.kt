@@ -69,7 +69,7 @@ fun HomeView(
                 detectVerticalDragGestures { _, dragAmount ->
                     if (dragAmount < 10) { // Detect upward swipe
                         val toast = Toast.makeText(context, "Downward swipe detected", Toast.LENGTH_SHORT)
-//                        toast.show()
+                        toast.show()
 //                        AccessibilityService.instance?.openShade()
 //                            ?: run { /* servicio no habilitado → pide al usuario */ }
 //                        coroutineScope.launch {

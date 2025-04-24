@@ -26,7 +26,6 @@ fun DateComponent(
 
     Row(
         modifier = modifier
-            .padding(spacing.spaceMedium)
     ) {
         Text(
             text = formattedDate,

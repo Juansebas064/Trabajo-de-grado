@@ -1,6 +1,7 @@
 package com.brightbox.hourglass.views.home.pages.tasks_page.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -46,10 +48,11 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerComponent(
+    date: Long? = null,
     setDate: (date: Long) -> Unit
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState()
+    val datePickerState = rememberDatePickerState(if (date == 0L) null else date)
     val selectedDate = datePickerState.selectedDateMillis?.let {
         convertMillisToDate(it)
     } ?: ""
@@ -85,7 +88,7 @@ fun DatePickerComponent(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp)
-                .pointerInput(selectedDate) {
+                .pointerInput(Unit) {
                     awaitEachGesture {
                         // Modifier.clickable doesn't work for text fields, so we use Modifier.pointerInput
                         // in the Initial pass to observe events before the text field consumes them

@@ -3,6 +3,7 @@ package com.brightbox.hourglass.views.home.pages.tasks_page
 import android.content.Intent
 import android.provider.AlarmClock
 import android.text.format.DateUtils
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,9 +44,10 @@ fun DateAndTimeView(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(spacing.spaceSmall),
         modifier = modifier
             .clip(RoundedCornerShape(10.dp))
-            .padding(vertical = spacing.spaceMedium)
+            .padding(vertical = spacing.spaceExtraSmall)
     ) {
         ClockComponent(
             currentTime = currentTimeMillis.longValue,

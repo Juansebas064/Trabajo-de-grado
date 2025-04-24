@@ -15,12 +15,12 @@ interface TasksDao {
     @Upsert
     suspend fun upsertTask(task: TasksModel)
 
-    @Delete
-    suspend fun deleteTask(task: TasksModel)
+    @Query("DELETE FROM tasks WHERE id = :id")
+    suspend fun deleteTask(id: Int)
 
-    @Query("UPDATE tasks SET isCompleted = 1 WHERE id = :id")
-    suspend fun setTaskCompleted(id: Int)
+    @Query("UPDATE tasks SET isCompleted = 1, dateCompleted = :dateCompleted WHERE id = :id")
+    suspend fun setTaskCompleted(id: Int, dateCompleted: String?)
 
-    @Query("UPDATE tasks SET isCompleted = 0 WHERE id = :id")
+    @Query("UPDATE tasks SET isCompleted = 0, dateCompleted = NULL WHERE id = :id")
     suspend fun setTaskUncompleted(id: Int)
 }

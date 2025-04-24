@@ -1,19 +1,32 @@
 package com.brightbox.hourglass.views.home.pages.tasks_page
 
+import android.util.Log
+import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.brightbox.hourglass.viewmodel.CategoriesViewModel
 import com.brightbox.hourglass.viewmodel.TasksViewModel
@@ -28,51 +41,94 @@ fun TasksView(
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
+    val context = LocalContext.current
     val tasksState = tasksViewModel.state.collectAsState()
     val categoriesState = categoriesViewModel.state.collectAsState()
+    val selectedTasks = tasksViewModel.selectedTasks.collectAsState()
+    val isSelectingTasks = remember { mutableStateOf(selectedTasks.value.isNotEmpty()) }
 
-    Column(
-        verticalArrangement = Arrangement.Top,
-        modifier = modifier
-            .width(LocalConfiguration.current.screenWidthDp.dp * 0.6f)
+    LaunchedEffect(key1 = selectedTasks.value) {
+        isSelectingTasks.value = selectedTasks.value.isNotEmpty()
+//        val toast = Toast.makeText(context,
+//            if (isSelectingTasks.value) "Selecting" else "Nothing selected", Toast.LENGTH_SHORT)
+//        toast.show()
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxHeight()
+            .width(LocalConfiguration.current.screenWidthDp.dp * 0.65f)
     ) {
-        if (tasksState.value.isAddingTask) {
-            AddTaskDialog(
-                onTasksEvent = tasksViewModel::onEvent,
-                onCategoriesEvent = categoriesViewModel::onEvent,
-                tasksState = tasksState.value,
-                categoriesState = categoriesState.value
-            )
-        }
 
-        if (categoriesState.value.isAddingCategory) {
-            AddCategoryDialog(
-                onTasksEvent = tasksViewModel::onEvent,
-                onCategoriesEvent = categoriesViewModel::onEvent,
-                categoriesState = categoriesState.value
-            )
-        }
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-        }
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier
-                .weight(1f)
-        ) {
-            items(tasksState.value.tasks) { task ->
-                TaskComponent(
-                    task,
-                    onTasksEvent = tasksViewModel::onEvent
+        if (tasksState.value.tasks.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(horizontal = spacing.spaceExtraLarge)
+            ) {
+                Text(
+                    modifier = Modifier,
+                    text = "Tap + button to create a task",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }
-        TasksControlsComponent(
-            onEvent = tasksViewModel::onEvent
-        )
+
+        Column(
+            verticalArrangement = Arrangement.Top,
+            modifier = modifier
+        ) {
+            if (tasksState.value.isAddingTask) {
+                AddTaskDialog(
+                    onTasksEvent = tasksViewModel::onEvent,
+                    onCategoriesEvent = categoriesViewModel::onEvent,
+                    tasksState = tasksState.value,
+                    categoriesState = categoriesState.value
+                )
+            }
+
+            if (categoriesState.value.isAddingCategory) {
+                AddCategoryDialog(
+                    onTasksEvent = tasksViewModel::onEvent,
+                    onCategoriesEvent = categoriesViewModel::onEvent,
+                    categoriesState = categoriesState.value
+                )
+            }
+
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+                items(tasksState.value.tasks) { task ->
+                    TaskComponent(
+                        task = task,
+                        selectedTasks = selectedTasks.value,
+                        isSelectingTasks = isSelectingTasks.value,
+                        category = categoriesState.value.categories.find { it.id == task.categoryId },
+                        onTasksEvent = tasksViewModel::onEvent
+                    )
+//                    if (!task.isCompleted && task.dateDue != "")
+//                    if (task.dateDue == "" || task.dateDue!! >= tasksViewModel.formatMilisToDate(System.currentTimeMillis()))
+//                    {
+//                        TaskComponent(
+//                            task = task,
+//                            selectedTasks = selectedTasks.value,
+//                            isSelectingTasks = isSelectingTasks.value,
+//                            category = categoriesState.value.categories.find { it.id == task.categoryId },
+//                            onTasksEvent = tasksViewModel::onEvent
+//                        )
+//                    }
+                }
+            }
+
+            TasksControlsComponent(
+                selectedTasks = selectedTasks.value,
+                isSelectingTasks = isSelectingTasks.value,
+                onEvent = tasksViewModel::onEvent
+            )
+        }
     }
 }

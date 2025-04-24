@@ -1,12 +1,16 @@
 package com.brightbox.hourglass.views.home.pages.tasks_page.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +24,8 @@ import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
 fun TasksControlsComponent(
+    selectedTasks: List<Int>,
+    isSelectingTasks: Boolean,
     onEvent: (TasksEvent) -> Unit,
 ) {
     val spacing = LocalSpacing.current
@@ -41,20 +47,64 @@ fun TasksControlsComponent(
 //        )
 //
         // Add task
-        IconButton(
-            onClick = {
-                onEvent(TasksEvent.ShowDialog)
-            },
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(spacing.spaceSmall),
             modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.surface)
                 .align(Alignment.Center)
         ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = "Add task",
-                tint = MaterialTheme.colorScheme.onSurface
-            )
+            if (!isSelectingTasks) {
+                IconButton(
+                    onClick = {
+                        onEvent(TasksEvent.ShowDialog)
+                    },
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(MaterialTheme.colorScheme.surface)
+//                        .align(Alignment.Center)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add task",
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+
+            if (isSelectingTasks) {
+                if (selectedTasks.size == 1) {
+                    IconButton(
+                        onClick = {
+                            onEvent(TasksEvent.EditTask(selectedTasks[0]))
+                        },
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(MaterialTheme.colorScheme.secondary)
+//                            .align(Alignment.Center)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Add task",
+                            tint = MaterialTheme.colorScheme.onSecondary
+                        )
+                    }
+                }
+
+                IconButton(
+                    onClick = {
+                        onEvent(TasksEvent.DeleteTasks)
+                    },
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(MaterialTheme.colorScheme.error)
+//                        .align(Alignment.Center)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Add task",
+                        tint = MaterialTheme.colorScheme.onError
+                    )
+                }
+            }
         }
     }
 }

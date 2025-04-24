@@ -76,6 +76,8 @@ fun AddTaskDialog(
     val categoriesDropdownPosition = remember {
         mutableIntStateOf(-1)
     }
+    val categoryInitialValue = categoriesState.categories.find { it.id == tasksState.taskCategory }?.name
+        ?: ""
 
 
     BasicAlertDialog(
@@ -154,6 +156,7 @@ fun AddTaskDialog(
             )
 
             DatePickerComponent(
+                date = tasksState.taskDueDate,
                 setDate = {
                     onTasksEvent(TasksEvent.SetTaskDueDate(it))
                 }
@@ -171,7 +174,7 @@ fun AddTaskDialog(
                         .weight(1f)
                 ) {
                     OutlinedTextField(
-                        value = if (categoriesDropdownPosition.intValue == -1) "" else categoriesState.categories[categoriesDropdownPosition.intValue].name,
+                        value = if (categoriesDropdownPosition.intValue == -1) categoryInitialValue else categoriesState.categories[categoriesDropdownPosition.intValue].name,
                         onValueChange = {
                             onTasksEvent(TasksEvent.SetTaskCategory(it.toInt()))
                         },
