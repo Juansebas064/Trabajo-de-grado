@@ -63,6 +63,20 @@ fun TaskComponent(
     val spacing = LocalSpacing.current
     val context = LocalContext.current
     val isSelected = selectedTasks.contains(task.id)
+    val prioritiesColors = mapOf(
+        "High" to listOf(
+            MaterialTheme.colorScheme.error,
+            MaterialTheme.colorScheme.onError
+        ),
+        "Medium" to listOf(
+            MaterialTheme.colorScheme.surfaceVariant,
+            MaterialTheme.colorScheme.onSecondary
+        ),
+        "Low" to listOf(
+            MaterialTheme.colorScheme.tertiary,
+            MaterialTheme.colorScheme.onTertiary
+        ),
+    )
 
     ElevatedCard(
         colors = CardDefaults.cardColors(
@@ -160,7 +174,7 @@ fun TaskComponent(
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(spacing.spaceSmall))
-                            .background(MaterialTheme.colorScheme.error)
+                            .background(prioritiesColors[task.priority]!![0])
                             .padding(
                                 horizontal = spacing.spaceSmall,
                                 vertical = spacing.spaceExtraSmall
@@ -169,15 +183,16 @@ fun TaskComponent(
                         Text(
                             text = task.priority,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onError
+                            color = prioritiesColors[task.priority]!![1],
+                            fontWeight = FontWeight.Bold
                         )
                     }
                 }
 
+                // Description
                 if (task.description.isNotEmpty()) {
                     Box(
                         modifier = Modifier
-                            .padding(vertical = spacing.spaceExtraSmall)
                     ) {
                         Text(
                             text = task.description,

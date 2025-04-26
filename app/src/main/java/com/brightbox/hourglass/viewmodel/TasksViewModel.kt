@@ -27,7 +27,7 @@ class TasksViewModel @Inject constructor(
     private val _tasksUseCase: TasksUseCase,
 ) : ViewModel() {
 
-    private val _tasksList = _tasksUseCase.getTasks(formatMilisToDate(System.currentTimeMillis()))
+    private val _tasksList = _tasksUseCase.getTasks(formatMillisToDate(System.currentTimeMillis()))
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _state = MutableStateFlow(TasksState())
@@ -42,7 +42,7 @@ class TasksViewModel @Inject constructor(
     val selectedTasks = _selectedTasks.asStateFlow()
 
     // Format the date according to SQLite dates best practices
-    fun formatMilisToDate(date: Long): String {
+    fun formatMillisToDate(date: Long): String {
         val localDate = Instant.ofEpochMilli(date)
             .atZone(ZoneOffset.UTC)
             .toLocalDate()
@@ -51,7 +51,7 @@ class TasksViewModel @Inject constructor(
         return localDate.format(formatter)
     }
 
-    fun formatDateToMilis(date: String): Long {
+    fun formatDateToMillis(date: String): Long {
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val formattedDate = formatter.parse(date)
         return formattedDate?.time ?: 0L
@@ -61,6 +61,7 @@ class TasksViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isAddingTask = false,
+                taskId = null,
                 taskTitle = "",
                 taskDescription = "",
                 taskDueDate = 0,
@@ -103,9 +104,9 @@ class TasksViewModel @Inject constructor(
                 val taskId = state.value.taskId
                 val taskTitle = state.value.taskTitle
                 val taskDescription = state.value.taskDescription
-                val taskDateCreated = formatMilisToDate(System.currentTimeMillis())
+                val taskDateCreated = formatMillisToDate(System.currentTimeMillis())
                 val taskDueDate =
-                    if (state.value.taskDueDate == 0L) "" else formatMilisToDate(state.value.taskDueDate)
+                    if (state.value.taskDueDate == 0L) "" else formatMillisToDate(state.value.taskDueDate)
                 val taskCategory = state.value.taskCategory
                 val taskPriority = state.value.taskPriority
 
@@ -149,7 +150,7 @@ class TasksViewModel @Inject constructor(
                         taskId = task!!.id,
                         taskTitle = task.title,
                         taskDescription = task.description,
-                        taskDueDate = if (task.dateDue!!.isEmpty()) 0L else formatDateToMilis(task.dateDue),
+                        taskDueDate = if (task.dateDue!!.isEmpty()) 0L else formatDateToMillis(task.dateDue),
                         taskPriority = task.priority,
                         taskCategory = task.categoryId,
                     )
@@ -205,7 +206,7 @@ class TasksViewModel @Inject constructor(
                     event.id?.let {
                         _tasksUseCase.setTaskCompleted(
                             it,
-                            formatMilisToDate(System.currentTimeMillis())
+                            formatMillisToDate(System.currentTimeMillis())
                         )
                     }
                 }

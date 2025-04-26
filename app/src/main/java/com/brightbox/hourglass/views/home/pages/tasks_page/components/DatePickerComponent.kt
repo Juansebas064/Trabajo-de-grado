@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
@@ -51,10 +52,19 @@ fun DatePickerComponent(
     date: Long? = null,
     setDate: (date: Long) -> Unit
 ) {
+    val minDate: SelectableDates = object : SelectableDates {
+        override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+            return utcTimeMillis >= System.currentTimeMillis() - 86400000
+        }
+    }
     var showDatePicker by remember { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState(if (date == 0L) null else date)
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = if (date == 0L) null else date,
+        selectableDates = minDate
+    )
+    datePickerState.selectableDates
     val selectedDate = datePickerState.selectedDateMillis?.let {
-        convertMillisToDate(it)
+        formatMillisToDate(it)
     } ?: ""
 
     val coroutineScope = rememberCoroutineScope()
@@ -125,11 +135,18 @@ fun DatePickerComponent(
     }
 }
 
-fun convertMillisToDate(millis: Long): String {
-    val localDate = Instant.ofEpochMilli(millis)
-        .atZone(ZoneOffset.UTC)   // convierte correctamente a tu zona
+// Format the date according to SQLite dates best practices
+fun formatMillisToDate(date: Long): String {
+    val localDate = Instant.ofEpochMilli(date)
+        .atZone(ZoneOffset.UTC)
         .toLocalDate()
 
-    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     return localDate.format(formatter)
+}
+
+fun formatDateToMillis(date: String): Long {
+    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val formattedDate = formatter.parse(date)
+    return formattedDate?.time ?: 0L
 }
