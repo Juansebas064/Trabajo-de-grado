@@ -2,7 +2,6 @@ package com.brightbox.hourglass.views.home.pages.tasks_page
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,12 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -25,9 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -35,7 +28,6 @@ import com.brightbox.hourglass.events.CategoriesEvent
 import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.states.CategoriesState
 import com.brightbox.hourglass.views.common.PilledTextButtonComponent
-import com.brightbox.hourglass.views.home.pages.tasks_page.components.DatePickerComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -113,7 +105,7 @@ fun AddCategoryDialog(
                     onClick = {
                         onCategoriesEvent(CategoriesEvent.ClearDialogFields)
                         onCategoriesEvent(CategoriesEvent.HideDialog)
-                        onTasksEvent(TasksEvent.ShowDialog)
+                        onTasksEvent(TasksEvent.ShowAddTaskDialog)
                     },
                     modifier = Modifier
                         .padding(spacing.spaceExtraSmall)
@@ -127,7 +119,7 @@ fun AddCategoryDialog(
                     backgroundColor = MaterialTheme.colorScheme.primary,
                     onClick = {
                         onCategoriesEvent(CategoriesEvent.SaveCategory)
-                        onTasksEvent(TasksEvent.ShowDialog)
+                        onTasksEvent(TasksEvent.ShowAddTaskDialog)
                     },
                     modifier = Modifier
                         .padding(spacing.spaceExtraSmall)

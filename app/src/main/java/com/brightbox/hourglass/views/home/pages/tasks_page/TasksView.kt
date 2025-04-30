@@ -14,8 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -28,6 +30,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.viewmodel.CategoriesViewModel
 import com.brightbox.hourglass.viewmodel.TasksViewModel
 import com.brightbox.hourglass.views.home.pages.tasks_page.components.TaskComponent
@@ -49,9 +52,6 @@ fun TasksView(
 
     LaunchedEffect(key1 = selectedTasks.value) {
         isSelectingTasks.value = selectedTasks.value.isNotEmpty()
-//        val toast = Toast.makeText(context,
-//            if (isSelectingTasks.value) "Selecting" else "Nothing selected", Toast.LENGTH_SHORT)
-//        toast.show()
     }
 
     Box(
@@ -94,6 +94,39 @@ fun TasksView(
                     onTasksEvent = tasksViewModel::onEvent,
                     onCategoriesEvent = categoriesViewModel::onEvent,
                     categoriesState = categoriesState.value
+                )
+            }
+
+            if (tasksState.value.isDeletingTasks) {
+                AlertDialog(
+                    onDismissRequest = {
+                        tasksViewModel.onEvent(TasksEvent.HideDeleteTasksDialog)
+                    },
+                    title = {
+                        Text(text = "Delete tasks")
+                    },
+                    text = {
+                        Text(text = "Are you sure you want to delete these tasks?")
+                    },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                tasksViewModel.onEvent(TasksEvent.DeleteTasks)
+                                tasksViewModel.onEvent(TasksEvent.HideDeleteTasksDialog)
+                            },
+                        ) {
+                            Text(text = "Delete")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(
+                            onClick = {
+                                tasksViewModel.onEvent(TasksEvent.HideDeleteTasksDialog)
+                            },
+                        ) {
+                            Text(text = "Cancel")
+                        }
+                    },
                 )
             }
 

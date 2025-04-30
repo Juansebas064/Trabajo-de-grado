@@ -52,10 +52,11 @@ fun TasksControlsComponent(
             modifier = Modifier
                 .align(Alignment.Center)
         ) {
+            // Add task
             if (!isSelectingTasks) {
                 IconButton(
                     onClick = {
-                        onEvent(TasksEvent.ShowDialog)
+                        onEvent(TasksEvent.ShowAddTaskDialog)
                     },
                     modifier = Modifier
                         .clip(RoundedCornerShape(16.dp))
@@ -68,9 +69,8 @@ fun TasksControlsComponent(
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
-            }
-
-            if (isSelectingTasks) {
+            } else {
+                // Show edit button only if one task is selected
                 if (selectedTasks.size == 1) {
                     IconButton(
                         onClick = {
@@ -89,9 +89,10 @@ fun TasksControlsComponent(
                     }
                 }
 
+                // Delete tasks
                 IconButton(
                     onClick = {
-                        onEvent(TasksEvent.DeleteTasks)
+                        onEvent(TasksEvent.ShowDeleteTasksDialog)
                     },
                     modifier = Modifier
                         .clip(RoundedCornerShape(16.dp))

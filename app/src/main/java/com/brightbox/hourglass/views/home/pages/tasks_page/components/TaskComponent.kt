@@ -61,7 +61,6 @@ fun TaskComponent(
 ) {
 
     val spacing = LocalSpacing.current
-    val context = LocalContext.current
     val isSelected = selectedTasks.contains(task.id)
     val prioritiesColors = mapOf(
         "High" to listOf(
@@ -149,7 +148,7 @@ fun TaskComponent(
                 // Title
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.Top,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = spacing.spaceExtraSmall)
@@ -161,11 +160,12 @@ fun TaskComponent(
                     ) {
                         Text(
                             text = task.title,
-                            style = MaterialTheme.typography.titleSmall,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.ExtraBold,
                             textAlign = TextAlign.Start,
                             lineHeight = MaterialTheme.typography.titleSmall.fontSize,
                             textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
-                            maxLines = 1,
+                            maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
                     }

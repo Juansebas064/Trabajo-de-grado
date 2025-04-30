@@ -3,18 +3,14 @@ package com.brightbox.hourglass.views.home.pages.tasks_page
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -76,13 +72,17 @@ fun AddTaskDialog(
     val categoriesDropdownPosition = remember {
         mutableIntStateOf(-1)
     }
+    val isTitleValid = remember {
+        mutableStateOf(true)
+    }
     val categoryInitialValue = categoriesState.categories.find { it.id == tasksState.taskCategory }?.name
         ?: ""
 
 
     BasicAlertDialog(
         onDismissRequest = {
-            onTasksEvent(TasksEvent.HideDialog)
+            isTitleValid.value = true
+            onTasksEvent(TasksEvent.HideAddTaskDialog)
         },
         modifier = modifier
             .padding(top = halfScreenDp)
@@ -107,30 +107,44 @@ fun AddTaskDialog(
                 )
             }
 
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                value = tasksState.taskTitle,
-                onValueChange = {
-                    onTasksEvent(TasksEvent.SetTaskTitle(it))
-                },
-                label = {
-                    Text(
-                        text = "Title",
-                    )
-                },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Next,
-                    keyboardType = KeyboardType.Text
-                ),
-                keyboardActions = KeyboardActions(
-                    onNext = {
-                        Log.d("AddTaskDialog", "Next action fired")
-                        focusManager.moveFocus(FocusDirection.Down)
-                    }
-                ),
-            )
+            // Title
+            Column {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = tasksState.taskTitle,
+                    onValueChange = {
+                        isTitleValid.value = true
+                        onTasksEvent(TasksEvent.SetTaskTitle(it))
+                    },
+                    isError = !isTitleValid.value,
+                    label = {
+                        Text(
+                            text = "Title",
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Next,
+                        keyboardType = KeyboardType.Text
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            Log.d("AddTaskDialog", "Next action fired")
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
+                    ),
+                )
 
+                if (!isTitleValid.value) {
+                    Text(
+                        text = "Title is required",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+            }
+
+            // Description
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -233,7 +247,7 @@ fun AddTaskDialog(
 
                 IconButton(
                     onClick = {
-                        onTasksEvent(TasksEvent.HideDialog)
+                        onTasksEvent(TasksEvent.HideAddTaskDialog)
                         onCategoriesEvent(CategoriesEvent.ShowDialog)
                     },
                     modifier = Modifier
@@ -314,6 +328,7 @@ fun AddTaskDialog(
                 }
             }
 
+            // Cancel
             Row(
                 horizontalArrangement = Arrangement.spacedBy(spacing.spaceMedium),
                 modifier = Modifier
@@ -326,22 +341,30 @@ fun AddTaskDialog(
                     textStyle = MaterialTheme.typography.bodyMedium,
                     backgroundColor = MaterialTheme.colorScheme.error,
                     onClick = {
+                        isTitleValid.value = true
                         onTasksEvent(TasksEvent.ClearDialogFields)
-                        onTasksEvent(TasksEvent.HideDialog)
+                        onTasksEvent(TasksEvent.HideAddTaskDialog)
                     },
                     modifier = Modifier
 //                        .padding(spacing.spaceExtraSmall)
                         .weight(1f)
                 )
 
+                // Save task
                 PilledTextButtonComponent(
                     text = "Save",
                     textColor = MaterialTheme.colorScheme.onPrimary,
                     textStyle = MaterialTheme.typography.bodyMedium,
                     backgroundColor = MaterialTheme.colorScheme.primary,
                     onClick = {
-                        onTasksEvent(TasksEvent.SaveTask)
-                        onTasksEvent(TasksEvent.HideDialog)
+                        if (tasksState.taskTitle.isNotEmpty()) {
+                            isTitleValid.value = true
+                            onTasksEvent(TasksEvent.SaveTask)
+                            onTasksEvent(TasksEvent.HideAddTaskDialog)
+                        }
+                        else {
+                            isTitleValid.value = false
+                        }
                     },
                     modifier = Modifier
 //                        .padding(vertical = spacing.spaceLarge)

@@ -73,7 +73,28 @@ class TasksViewModel @Inject constructor(
 
     fun onEvent(event: TasksEvent) {
         when (event) {
-            is TasksEvent.HideDialog -> {
+            TasksEvent.HideDeleteTasksDialog -> {
+                _state.update {
+                    it.copy(
+                        isDeletingTasks = false,
+                    )
+                }
+
+                _selectedTasks.update {
+                    emptyList()
+                }
+
+            }
+
+            TasksEvent.ShowDeleteTasksDialog -> {
+                _state.update {
+                    it.copy(
+                        isDeletingTasks = true
+                    )
+                }
+            }
+
+            is TasksEvent.HideAddTaskDialog -> {
                 _state.update {
                     it.copy(
                         isAddingTask = false
@@ -81,7 +102,7 @@ class TasksViewModel @Inject constructor(
                 }
             }
 
-            is TasksEvent.ShowDialog -> {
+            is TasksEvent.ShowAddTaskDialog -> {
                 _state.update {
                     it.copy(
                         isAddingTask = true
@@ -112,7 +133,6 @@ class TasksViewModel @Inject constructor(
 
                 if (
                     taskTitle.isBlank()
-                    || taskDescription.isBlank()
                     || taskPriority.isBlank()
                 ) {
                     return

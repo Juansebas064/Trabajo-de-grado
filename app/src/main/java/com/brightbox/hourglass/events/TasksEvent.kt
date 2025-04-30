@@ -1,7 +1,5 @@
 package com.brightbox.hourglass.events
 
-import com.brightbox.hourglass.model.TasksModel
-
 sealed interface TasksEvent {
     data class SetTaskTitle(val title: String): TasksEvent
     data class SetTaskDescription(val description: String): TasksEvent
@@ -20,6 +18,9 @@ sealed interface TasksEvent {
 
     data object ClearDialogFields: TasksEvent
 
-    data object ShowDialog: TasksEvent
-    data object HideDialog: TasksEvent
+    data object ShowAddTaskDialog: TasksEvent
+    data object HideAddTaskDialog: TasksEvent
+
+    data object ShowDeleteTasksDialog: TasksEvent
+    data object HideDeleteTasksDialog: TasksEvent
 }
