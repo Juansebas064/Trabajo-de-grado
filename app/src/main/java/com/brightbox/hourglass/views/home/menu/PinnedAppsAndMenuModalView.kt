@@ -53,7 +53,7 @@ fun PinnedAppsAndMenuModalView(
                 },
                 sheetState = sheetState,
                 containerColor = Color.Transparent,
-                windowInsets = WindowInsets(0), // Para corregir el padding del handle
+//                windowInsets = WindowInsets(0), // Para corregir el padding del handle
                 modifier = Modifier.fillMaxHeight()
             ) {
                 MenuView(

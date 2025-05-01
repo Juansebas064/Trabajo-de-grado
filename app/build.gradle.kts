@@ -67,7 +67,7 @@ dependencies {
     implementation(libs.room.runtime)
     kapt(libs.room.compiler)
     implementation(libs.androidx.navigation.compose)
-//    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.room.ktx)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.hilt.android)

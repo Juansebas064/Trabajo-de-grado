@@ -8,7 +8,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import com.brightbox.hourglass.navigation.NavigationRoot
 import com.brightbox.hourglass.views.home.HomeView
 import com.brightbox.hourglass.views.theme.HourglassProductivityLauncherTheme
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
@@ -35,17 +40,13 @@ class MainActivity : ComponentActivity() {
 //            intentFilter
 //        )
 
-        val applicationsViewModel: ApplicationsViewModel by viewModels()
-        val tasksViewModel: TasksViewModel by viewModels()
-        val categoriesViewModel: CategoriesViewModel by viewModels()
-
         setContent {
             HourglassProductivityLauncherTheme() {
                 Box(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
                 ) {
-
-                HomeView(applicationsViewModel, tasksViewModel, categoriesViewModel)
+                    NavigationRoot()
                 }
             }
         }

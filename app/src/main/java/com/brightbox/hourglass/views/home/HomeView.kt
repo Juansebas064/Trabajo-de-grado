@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeView(
+    onNavigateToSettings: () -> Unit,
     applicationsViewModel: ApplicationsViewModel,
     tasksViewModel: TasksViewModel,
     categoriesViewModel: CategoriesViewModel,
@@ -95,6 +96,7 @@ fun HomeView(
 
                 1 -> {
                     TasksPageView(
+                        onNavigateToSettings = onNavigateToSettings,
                         applicationsViewModel,
                         tasksViewModel,
                         categoriesViewModel,
