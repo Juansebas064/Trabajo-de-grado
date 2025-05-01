@@ -29,6 +29,7 @@ import androidx.compose.ui.input.key.nativeKeyCode
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -60,11 +61,12 @@ fun SearchBarView(
                 }
             },
             keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Next,
-                keyboardType = KeyboardType.Text
+                imeAction = ImeAction.Go,
+                keyboardType = KeyboardType.Text,
+                capitalization = KeyboardCapitalization.Sentences
             ),
             keyboardActions = KeyboardActions(
-                onNext = {
+                onGo = {
                     if (searchText.isNotEmpty()) {
                         applicationsViewModel.openFirstApp()
                         focusManager.clearFocus()

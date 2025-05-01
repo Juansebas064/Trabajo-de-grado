@@ -73,8 +73,12 @@ class ApplicationsViewModel @Inject constructor(
 
     fun openFirstApp() {
         if (appsList.value.isNotEmpty()) {
-            _applicationsUseCase.openApp(filteredAppList.value.applications.first().packageName)
-            _searchText.value = ""    // Clear searchText
+            if (filteredAppList.value.applications.isNotEmpty()) {
+                _applicationsUseCase.openApp(filteredAppList.value.applications.first().packageName)
+                _searchText.value = ""    // Clear searchText
+            } else {
+                searchOnInternet()
+            }
         }
     }
 
@@ -100,5 +104,9 @@ class ApplicationsViewModel @Inject constructor(
 
     fun setKeyboardState(keyboardState: Boolean) {
         _isKeyboardOpened.value = keyboardState // Clear searchText
+    }
+
+    fun searchOnInternet() {
+        _applicationsUseCase.searchOnInternet(_searchText.value)
     }
 }

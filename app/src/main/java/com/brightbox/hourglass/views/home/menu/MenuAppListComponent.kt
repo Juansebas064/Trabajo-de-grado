@@ -19,10 +19,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowRightAlt
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardReturn
+import androidx.compose.material.icons.filled.ArrowRightAlt
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.KeyboardReturn
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
@@ -31,10 +39,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -42,6 +52,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.brightbox.hourglass.model.ApplicationsModel
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
+import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
 fun MenuAppListComponent(
@@ -51,13 +62,15 @@ fun MenuAppListComponent(
     focusManager: FocusManager,
     modifier: Modifier,
 ) {
+    val spacing = LocalSpacing.current
+    val searchText = applicationsViewModel.searchText.collectAsState()
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Bottom),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
     ) {
-        items(items = apps) { app ->
+        itemsIndexed(items = apps) { index, app ->
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -193,6 +206,67 @@ fun MenuAppListComponent(
                                 tint = MaterialTheme.colorScheme.surface,
                             )
                         }
+                    }
+                }
+
+                if (appShowingOptions != app.packageName && index == 0) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowRightAlt,
+                        contentDescription = "Return",
+                        tint = MaterialTheme.colorScheme.onBackground,
+                    )
+                }
+            }
+        }
+        if (searchText.value.isNotEmpty()) {
+            item {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .combinedClickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(
+                                color = MaterialTheme.colorScheme.onBackground
+                                    .copy(alpha = 0f)
+                            ),
+                            onClick = {
+                                applicationsViewModel.searchOnInternet()
+                            },
+                        )
+                        .background(Color.Transparent)
+                        .fillMaxWidth()
+                        .height(IntrinsicSize.Min)
+                        .padding(vertical = spacing.spaceMedium)
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Language,
+                            contentDescription = "Search",
+                            tint = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier
+                                .scale(0.85f)
+                        )
+
+                        Text(
+                            text = "Search \"${searchText.value}\" on internet",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            textAlign = TextAlign.Start,
+                            softWrap = false,
+                            maxLines = 1,
+                        )
+                    }
+
+                    if (apps.isEmpty()) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowRightAlt,
+                            contentDescription = "Return",
+                            tint = MaterialTheme.colorScheme.onBackground,
+                        )
                     }
                 }
             }

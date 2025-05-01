@@ -154,4 +154,15 @@ class ApplicationsUseCase @Inject constructor(
             }
         }
     }
+
+    fun searchOnInternet(text: String) {
+        val query = Uri.encode(text)
+        val url = "https://www.google.com/search?q=$query"
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        // Ensure there's an app to handle the intent
+        intent.resolveActivity(application.packageManager)?.let {
+            application.applicationContext.startActivity(intent, null)
+        }
+    }
 }
