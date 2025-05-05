@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.views.theme.LocalSpacing
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
 import com.brightbox.hourglass.viewmodel.CategoriesViewModel
@@ -20,11 +21,9 @@ import com.brightbox.hourglass.viewmodel.TasksViewModel
 
 @Composable
 fun TasksPageView(
+    modifier: Modifier = Modifier,
     onNavigateToSettings: () -> Unit,
-    applicationsViewModel: ApplicationsViewModel,
-    tasksViewModel: TasksViewModel,
-    categoriesViewModel: CategoriesViewModel,
-    modifier: Modifier = Modifier
+    applicationsViewModel: ApplicationsViewModel = hiltViewModel()
 ) {
     val spacing = LocalSpacing.current
 
@@ -50,15 +49,15 @@ fun TasksPageView(
             verticalArrangement = Arrangement.spacedBy(spacing.spaceMedium),
             modifier = modifier
         ) {
-            DateAndTimeView(applicationsViewModel)
+            DateAndTimeView(
+                openApp = applicationsViewModel::openApp,
+            )
             TasksView(
-                tasksViewModel,
-                categoriesViewModel,
 //                modifier = Modifier.padding(horizontal = spacing.tasksPadding)
             )
         }
         EssentialShortcutsBarView(
-            applicationsViewModel,
+            openApp = applicationsViewModel::openApp,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
         )

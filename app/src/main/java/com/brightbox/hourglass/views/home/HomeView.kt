@@ -2,7 +2,6 @@ package com.brightbox.hourglass.views.home
 
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -12,37 +11,23 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
-import com.brightbox.hourglass.services.AccessibilityService
 import com.brightbox.hourglass.views.home.menu.PinnedAppsAndMenuModalView
 import com.brightbox.hourglass.views.home.pages.tasks_page.TasksPageView
-import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
-import com.brightbox.hourglass.viewmodel.CategoriesViewModel
-import com.brightbox.hourglass.viewmodel.TasksViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeView(
-    onNavigateToSettings: () -> Unit,
-    applicationsViewModel: ApplicationsViewModel,
-    tasksViewModel: TasksViewModel,
-    categoriesViewModel: CategoriesViewModel,
+    onNavigateToPreferences: () -> Unit,
 ) {
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
     val pagerState = rememberPagerState(
         initialPage = 1,
         pageCount = { 3 }
@@ -96,10 +81,7 @@ fun HomeView(
 
                 1 -> {
                     TasksPageView(
-                        onNavigateToSettings = onNavigateToSettings,
-                        applicationsViewModel,
-                        tasksViewModel,
-                        categoriesViewModel,
+                        onNavigateToSettings = onNavigateToPreferences,
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -113,11 +95,8 @@ fun HomeView(
             }
         }
         PinnedAppsAndMenuModalView(
-            sheetState = sheetState,
-            applicationsViewModel = applicationsViewModel,
             modifier = Modifier
                 .fillMaxWidth()
         )
     }
-
 }

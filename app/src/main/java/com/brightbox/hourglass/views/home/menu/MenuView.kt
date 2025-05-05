@@ -1,5 +1,6 @@
 package com.brightbox.hourglass.views.home.menu
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,35 +26,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
+import com.brightbox.hourglass.viewmodel.preferences.GeneralPreferencesViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuView(
-    applicationsViewModel: ApplicationsViewModel,
     sheetState: SheetState,
+    generalPreferencesViewModel: GeneralPreferencesViewModel = hiltViewModel()
 ) {
-
     // States
-    val apps by applicationsViewModel.filteredAppList.collectAsState()
-    val searchText by applicationsViewModel.searchText.collectAsState()
-    val isKeyboardOpen by applicationsViewModel.isKeyboardOpened.collectAsState()
-    val appShowingOptions by applicationsViewModel.appShowingOptions.collectAsState()
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
+    val generalPreferencesState by generalPreferencesViewModel.state.collectAsState()
     val scope = rememberCoroutineScope()
 
     // Open keyboard when menu is opened
     LaunchedEffect(sheetState) {
-        if (sheetState.hasExpandedState) {
+        Log.d("MenuView", "Opening keyboard value set to ${generalPreferencesState.openKeyboardInAppMenu}")
+        if (sheetState.hasExpandedState && generalPreferencesState.openKeyboardInAppMenu) {
             focusRequester.requestFocus()
         }
     }
 
-    BackHandler(enabled = sheetState.isVisible) {
-        scope.launch { sheetState.hide() }
-    }
+//    BackHandler(enabled = sheetState.isVisible) {
+//        scope.launch { sheetState.hide() }
+//    }
 
     // Parent container
     Column(
@@ -90,9 +90,6 @@ fun MenuView(
         )
         // App list
         MenuAppListComponent(
-            applicationsViewModel = applicationsViewModel,
-            apps = apps.applications,
-            appShowingOptions = appShowingOptions,
             focusManager = focusManager,
             modifier = Modifier
                 .fillMaxWidth()
@@ -100,11 +97,8 @@ fun MenuView(
         )
         // Search bar
         SearchBarView(
-            applicationsViewModel = applicationsViewModel,
-            searchText = searchText,
             focusRequester = focusRequester,
             focusManager = focusManager,
-            isKeyboardOpen = isKeyboardOpen,
             modifier = Modifier
                 .fillMaxWidth()
                 .imePadding()

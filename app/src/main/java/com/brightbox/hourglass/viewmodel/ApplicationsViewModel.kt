@@ -50,10 +50,6 @@ class ApplicationsViewModel @Inject constructor(
 
     val appShowingOptions = _appShowingOptions.asStateFlow()
 
-    private val _isKeyboardOpened = MutableStateFlow(false)
-    val isKeyboardOpened = _isKeyboardOpened.asStateFlow()
-
-
     suspend fun onSearchTextChange(searchText: String = "") {   // searchText will be "" if no argument is passed
         Log.d("AppsViewModel", "onSearchTextChange: searchText = $searchText")
         _searchText.value = searchText
@@ -100,10 +96,6 @@ class ApplicationsViewModel @Inject constructor(
 
     fun openAppInfo(app: ApplicationsModel) {
         _applicationsUseCase.openAppInfo(app.packageName)
-    }
-
-    fun setKeyboardState(keyboardState: Boolean) {
-        _isKeyboardOpened.value = keyboardState // Clear searchText
     }
 
     fun searchOnInternet() {

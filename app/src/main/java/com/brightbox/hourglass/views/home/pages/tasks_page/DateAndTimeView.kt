@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.views.home.pages.tasks_page.components.ClockComponent
 import com.brightbox.hourglass.views.home.pages.tasks_page.components.DateComponent
 import com.brightbox.hourglass.views.home.pages.tasks_page.components.DaysOfWeekComponent
@@ -25,8 +26,8 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun DateAndTimeView(
-    applicationsViewModel: ApplicationsViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    openApp: (Intent) -> Unit,
 ) {
 
     val spacing = LocalSpacing.current
@@ -51,7 +52,7 @@ fun DateAndTimeView(
     ) {
         ClockComponent(
             currentTime = currentTimeMillis.longValue,
-            onClick = { applicationsViewModel.openApp(Intent(AlarmClock.ACTION_SHOW_ALARMS)) }
+            onClick = { openApp(Intent(AlarmClock.ACTION_SHOW_ALARMS)) }
         )
 
         DaysOfWeekComponent(
@@ -61,7 +62,7 @@ fun DateAndTimeView(
                 DateUtils.FORMAT_SHOW_WEEKDAY
             ),
             onClick = {
-                applicationsViewModel.openApp(
+                openApp(
                     Intent(Intent.ACTION_MAIN)
                         .addCategory(Intent.CATEGORY_APP_CALENDAR)
                 )
@@ -71,7 +72,7 @@ fun DateAndTimeView(
         DateComponent(
             currentTimeMillis = currentTimeMillis.longValue,
             onClick = {
-                applicationsViewModel.openApp(
+                openApp(
                     Intent(Intent.ACTION_MAIN)
                         .addCategory(Intent.CATEGORY_APP_CALENDAR)
                 )

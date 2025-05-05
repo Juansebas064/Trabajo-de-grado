@@ -30,7 +30,9 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.events.TasksEvent
+import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
 import com.brightbox.hourglass.viewmodel.CategoriesViewModel
 import com.brightbox.hourglass.viewmodel.TasksViewModel
 import com.brightbox.hourglass.views.home.pages.tasks_page.components.TaskComponent
@@ -39,12 +41,11 @@ import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
 fun TasksView(
-    tasksViewModel: TasksViewModel,
-    categoriesViewModel: CategoriesViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    tasksViewModel: TasksViewModel = hiltViewModel(),
+    categoriesViewModel: CategoriesViewModel = hiltViewModel()
 ) {
     val spacing = LocalSpacing.current
-    val context = LocalContext.current
     val tasksState = tasksViewModel.state.collectAsState()
     val categoriesState = categoriesViewModel.state.collectAsState()
     val selectedTasks = tasksViewModel.selectedTasks.collectAsState()

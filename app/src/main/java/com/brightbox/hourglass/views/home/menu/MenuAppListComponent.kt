@@ -40,6 +40,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,27 +51,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.model.ApplicationsModel
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
 fun MenuAppListComponent(
-    applicationsViewModel: ApplicationsViewModel,
-    apps: List<ApplicationsModel>,
-    appShowingOptions: String,
+    applicationsViewModel: ApplicationsViewModel = hiltViewModel(),
     focusManager: FocusManager,
     modifier: Modifier,
 ) {
     val spacing = LocalSpacing.current
     val searchText = applicationsViewModel.searchText.collectAsState()
+    val apps by applicationsViewModel.filteredAppList.collectAsState()
+    val appShowingOptions by applicationsViewModel.appShowingOptions.collectAsState()
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Bottom),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
     ) {
-        itemsIndexed(items = apps) { index, app ->
+        itemsIndexed(items = apps.applications) { index, app ->
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -261,7 +263,7 @@ fun MenuAppListComponent(
                         )
                     }
 
-                    if (apps.isEmpty()) {
+                    if (apps.applications.isEmpty()) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowRightAlt,
                             contentDescription = "Return",
