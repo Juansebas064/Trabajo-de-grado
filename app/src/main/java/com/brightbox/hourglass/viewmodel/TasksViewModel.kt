@@ -1,5 +1,6 @@
 package com.brightbox.hourglass.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brightbox.hourglass.constants.PrioritiesEnum
@@ -7,7 +8,10 @@ import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.model.TasksModel
 import com.brightbox.hourglass.states.TasksState
 import com.brightbox.hourglass.usecases.TasksUseCase
+import com.brightbox.hourglass.utils.formatMillisecondsToSQLiteDate
+import com.brightbox.hourglass.utils.formatSQLiteDateToMilliseconds
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,11 +19,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,7 +26,7 @@ class TasksViewModel @Inject constructor(
     private val _tasksUseCase: TasksUseCase,
 ) : ViewModel() {
 
-    private val _tasksList = _tasksUseCase.getTasks(formatMillisToDate(System.currentTimeMillis()))
+    private val _tasksList = _tasksUseCase.getTodayTasks(formatMillisecondsToSQLiteDate(System.currentTimeMillis()))
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _state = MutableStateFlow(TasksState())
@@ -38,24 +37,15 @@ class TasksViewModel @Inject constructor(
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TasksState())
 
+    init {
+        viewModelScope.launch {
+            delay(3000)
+            Log.d("TasksViewModel", "Tasks: ${state.value.tasks}")
+        }
+    }
+
     private val _selectedTasks = MutableStateFlow(emptyList<Int>()) // Will store id's
     val selectedTasks = _selectedTasks.asStateFlow()
-
-    // Format the date according to SQLite dates best practices
-    fun formatMillisToDate(date: Long): String {
-        val localDate = Instant.ofEpochMilli(date)
-            .atZone(ZoneOffset.UTC)
-            .toLocalDate()
-
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        return localDate.format(formatter)
-    }
-
-    fun formatDateToMillis(date: String): Long {
-        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val formattedDate = formatter.parse(date)
-        return formattedDate?.time ?: 0L
-    }
 
     private fun clearDialogFields() {
         _state.update {
@@ -125,9 +115,9 @@ class TasksViewModel @Inject constructor(
                 val taskId = state.value.taskId
                 val taskTitle = state.value.taskTitle
                 val taskDescription = state.value.taskDescription
-                val taskDateCreated = formatMillisToDate(System.currentTimeMillis())
+                val taskDateCreated = formatMillisecondsToSQLiteDate(System.currentTimeMillis())
                 val taskDueDate =
-                    if (state.value.taskDueDate == 0L) "" else formatMillisToDate(state.value.taskDueDate)
+                    if (state.value.taskDueDate == 0L) "" else formatMillisecondsToSQLiteDate(state.value.taskDueDate)
                 val taskCategory = state.value.taskCategory
                 val taskPriority = state.value.taskPriority
 
@@ -170,7 +160,7 @@ class TasksViewModel @Inject constructor(
                         taskId = task!!.id,
                         taskTitle = task.title,
                         taskDescription = task.description,
-                        taskDueDate = if (task.dateDue!!.isEmpty()) 0L else formatDateToMillis(task.dateDue),
+                        taskDueDate = if (task.dateDue!!.isEmpty()) 0L else formatSQLiteDateToMilliseconds(task.dateDue),
                         taskPriority = task.priority,
                         taskCategory = task.categoryId,
                     )
@@ -226,7 +216,7 @@ class TasksViewModel @Inject constructor(
                     event.id?.let {
                         _tasksUseCase.setTaskCompleted(
                             it,
-                            formatMillisToDate(System.currentTimeMillis())
+                            formatMillisecondsToSQLiteDate(System.currentTimeMillis())
                         )
                     }
                 }
