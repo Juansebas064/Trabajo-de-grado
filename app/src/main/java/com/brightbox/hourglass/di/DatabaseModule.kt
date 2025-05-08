@@ -15,7 +15,9 @@ import javax.inject.Singleton
 object DatabaseModule {
     @Singleton
     @Provides
-    fun provideHourglassDatabase(@ApplicationContext applicationContext: Context): HourglassDatabase {
+    fun provideHourglassDatabase(
+        @ApplicationContext applicationContext: Context
+    ): HourglassDatabase {
         return Room.databaseBuilder(
             applicationContext,
             HourglassDatabase::class.java,

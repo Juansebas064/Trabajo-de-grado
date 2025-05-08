@@ -5,69 +5,74 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
-import com.brightbox.hourglass.views.home.HomeView
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.brightbox.hourglass.navigation.NavigationRoot
+import com.brightbox.hourglass.receivers.TasksWorker
 import com.brightbox.hourglass.views.theme.HourglassProductivityLauncherTheme
-import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
-import com.brightbox.hourglass.viewmodel.CategoriesViewModel
-import com.brightbox.hourglass.viewmodel.TasksViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-//    private val appChangeReceiver = ApplicationsChangeReceiver()
-//    private val intentFilter = IntentFilter().apply {
-//        addAction(Intent.ACTION_PACKAGE_REMOVED)
-//        addAction(Intent.ACTION_PACKAGE_ADDED)
-//        addDataScheme("package")
-//    }
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-//        registerReceiver(
-//            appChangeReceiver,
-//            intentFilter
-//        )
-
-        val applicationsViewModel: ApplicationsViewModel by viewModels()
-        val tasksViewModel: TasksViewModel by viewModels()
-        val categoriesViewModel: CategoriesViewModel by viewModels()
+        scheduleMidnightTask()
 
         setContent {
             HourglassProductivityLauncherTheme() {
                 Box(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
                 ) {
-
-                HomeView(applicationsViewModel, tasksViewModel, categoriesViewModel)
+                    NavigationRoot()
                 }
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d("MainActivity", "onResume called")
-//        registerReceiver(
-//            appChangeReceiver,
-//            intentFilter
-//        )
-    }
+    private fun scheduleMidnightTask() {
+        // Verifica si la tarea ya está programada para evitar duplicados
+        val existingWork = WorkManager.getInstance(this)
+            .getWorkInfosForUniqueWork(TasksWorker.WORK_NAME)
+            .get() // Bloquea el hilo hasta obtener el resultado (ok para onCreate)
 
-    override fun onPause() {
-        super.onPause()
-//        unregisterReceiver(appChangeReceiver)
-    }
+        val isScheduled = existingWork.any { !it.state.isFinished }
 
-    override fun onDestroy() {
-        super.onDestroy()
-//        unregisterReceiver(appChangeReceiver)
+        if (!isScheduled) {
+            // Calcula el delay hasta la próxima medianoche
+            val delayMillis = TasksWorker.calculateNextMidnightDelayMillis()
+
+            // Crea la solicitud de trabajo única (OneTimeWorkRequest)
+            val updateRequest = OneTimeWorkRequestBuilder<TasksWorker>()
+                .setInitialDelay(delayMillis, TimeUnit.MILLISECONDS)
+                .addTag(TasksWorker.WORK_NAME) // Añade el tag para identificarla
+                .build()
+
+            // Encola la tarea única
+            // ExistingWorkPolicy.KEEP: Si ya existe una tarea con el mismo nombre,
+            // la mantiene (útil para programar en cada inicio de app sin duplicar)
+            WorkManager.getInstance(this).enqueueUniqueWork(
+                TasksWorker.WORK_NAME,
+                ExistingWorkPolicy.KEEP,
+                updateRequest
+            )
+            Log.d("MainActivty", "Programación inicial de la tarea de medianoche en $delayMillis ms.")
+        } else {
+            Log.d("MainActivty", "La tarea de medianoche ya está programada.")
+        }
     }
 }
 

@@ -169,13 +169,16 @@ fun AddTaskDialog(
                 ),
             )
 
+            // Date picker
             DatePickerComponent(
                 date = tasksState.taskDueDate,
                 setDate = {
                     onTasksEvent(TasksEvent.SetTaskDueDate(it))
-                }
+                },
+                enabled = !tasksState.wasTaskDelayed
             )
 
+            // Categories section
             Row(
                 horizontalArrangement = Arrangement.spacedBy(spacing.spaceMedium),
                 verticalAlignment = Alignment.CenterVertically,
@@ -245,6 +248,7 @@ fun AddTaskDialog(
                     }
                 }
 
+                // Add category
                 IconButton(
                     onClick = {
                         onTasksEvent(TasksEvent.HideAddTaskDialog)

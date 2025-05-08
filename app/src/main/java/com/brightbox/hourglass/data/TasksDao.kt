@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TasksDao {
-    @Query("SELECT * FROM tasks ORDER BY isCompleted ASC")
+    @Query("SELECT * FROM tasks ORDER BY isCompleted ASC, dateDue ASC")
     fun getTasks(): Flow<List<TasksModel>>
 
     @Upsert
@@ -23,4 +23,7 @@ interface TasksDao {
 
     @Query("UPDATE tasks SET isCompleted = 0, dateCompleted = NULL WHERE id = :id")
     suspend fun setTaskUncompleted(id: Int)
+
+    @Query("UPDATE tasks SET wasDelayed = 1 WHERE id = :id")
+    suspend fun setTaskDelayed(id: Int)
 }

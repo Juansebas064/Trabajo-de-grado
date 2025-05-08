@@ -15,6 +15,7 @@ sealed interface TasksEvent {
     data object SaveTask: TasksEvent
     data object DeleteTasks: TasksEvent
     data class EditTask(val id: Int): TasksEvent
+    data object LoadTasks: TasksEvent
 
     data object ClearDialogFields: TasksEvent
 

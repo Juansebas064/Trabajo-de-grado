@@ -50,7 +50,8 @@ import java.util.Locale
 @Composable
 fun DatePickerComponent(
     date: Long? = null,
-    setDate: (date: Long) -> Unit
+    setDate: (date: Long) -> Unit,
+    enabled: Boolean = true,
 ) {
     val minDate: SelectableDates = object : SelectableDates {
         override fun isSelectableDate(utcTimeMillis: Long): Boolean {
@@ -83,6 +84,7 @@ fun DatePickerComponent(
         OutlinedTextField(
             value = selectedDate,
             onValueChange = { },
+            enabled = enabled,
             label = {
                 Text(
                     text = "Due date",
@@ -105,7 +107,7 @@ fun DatePickerComponent(
                         // in the Main pass.
                         awaitFirstDown(pass = PointerEventPass.Initial)
                         val upEvent = waitForUpOrCancellation(pass = PointerEventPass.Initial)
-                        if (upEvent != null) {
+                        if (upEvent != null && enabled) {
                             showDatePicker = true
                         }
                     }

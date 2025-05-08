@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.views.common.PilledTextButtonComponent
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
 import kotlinx.coroutines.launch
@@ -31,7 +32,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PinnedAppsView(
-    applicationsViewModel: ApplicationsViewModel,
+    applicationsViewModel: ApplicationsViewModel = hiltViewModel(),
     sheetState: SheetState,
     modifier: Modifier
 ) {

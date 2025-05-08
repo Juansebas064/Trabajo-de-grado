@@ -44,6 +44,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.runtime.livedata)
@@ -67,10 +68,13 @@ dependencies {
     implementation(libs.room.runtime)
     kapt(libs.room.compiler)
     implementation(libs.androidx.navigation.compose)
-//    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.room.ktx)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.hilt.android)
-    implementation(libs.material.icons.extended)
     kapt(libs.hilt.compiler)
+    implementation(libs.hilt.work)
+    implementation(libs.material.icons.extended)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.androidx.work.runtime)
 }
