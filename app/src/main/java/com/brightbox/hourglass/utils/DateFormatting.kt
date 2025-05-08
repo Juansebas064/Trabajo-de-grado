@@ -22,3 +22,13 @@ fun formatSQLiteDateToMilliseconds(date: String): Long {
     val formattedDate = formatter.parse(date)
     return formattedDate?.time ?: 0L
 }
+
+// Format the milliseconds date to String according to SQLite date's best practices
+fun formatMillisecondsToHours(date: Long): String {
+    val localDate = Instant.ofEpochMilli(date)
+        .atZone(ZoneOffset.UTC)
+        .toLocalDate()
+
+    val formatter = DateTimeFormatter.ofPattern("HH:mm")
+    return localDate.format(formatter)
+}

@@ -72,7 +72,9 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.hilt.android)
-    implementation(libs.material.icons.extended)
     kapt(libs.hilt.compiler)
+    implementation(libs.hilt.work)
+    implementation(libs.material.icons.extended)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.androidx.work.runtime)
 }

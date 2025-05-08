@@ -1,5 +1,6 @@
 package com.brightbox.hourglass.usecases
 
+import android.util.Log
 import com.brightbox.hourglass.config.HourglassDatabase
 import com.brightbox.hourglass.model.TasksModel
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +21,19 @@ class TasksUseCase @Inject constructor(
             }
         }
 
-    fun getAllTasks() = db.tasksDao().getTasks()
+    suspend fun validateCurrentTasksOnMidnight(
+        previousDate: String,
+        currentDate: String,
+        tasks: List<TasksModel>
+    ) {
+        Log.d("TasksUseCase", "Yesterday: $previousDate, Today: $currentDate")
+        tasks.forEach { task ->
+            Log.d("TasksUseCase", "${task.title}, Date: ${task.dateDue}")
+            if (task.dateDue == previousDate) {
+                setTaskDelayed(task.id!!)
+            }
+        }
+    }
 
     suspend fun upsertTask(task: TasksModel) {
         db.tasksDao().upsertTask(task)
@@ -36,5 +49,9 @@ class TasksUseCase @Inject constructor(
 
     suspend fun setTaskUncompleted(id: Int) {
         db.tasksDao().setTaskUncompleted(id)
+    }
+
+    suspend fun setTaskDelayed(id: Int) {
+        db.tasksDao().setTaskDelayed(id)
     }
 }

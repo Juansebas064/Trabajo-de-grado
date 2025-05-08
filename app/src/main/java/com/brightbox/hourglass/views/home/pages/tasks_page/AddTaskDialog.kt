@@ -174,7 +174,8 @@ fun AddTaskDialog(
                 date = tasksState.taskDueDate,
                 setDate = {
                     onTasksEvent(TasksEvent.SetTaskDueDate(it))
-                }
+                },
+                enabled = !tasksState.wasTaskDelayed
             )
 
             // Categories section
