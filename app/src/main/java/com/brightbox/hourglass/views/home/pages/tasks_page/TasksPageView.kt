@@ -1,5 +1,6 @@
 package com.brightbox.hourglass.views.home.pages.tasks_page
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.views.theme.LocalSpacing
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
@@ -30,6 +33,7 @@ fun TasksPageView(
     Box(
         modifier = modifier
             .fillMaxSize()
+//            .border(1.dp, Color.Red)
     ) {
 
         IconButton(

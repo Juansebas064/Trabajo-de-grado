@@ -54,21 +54,7 @@ fun TasksControlsComponent(
         ) {
             // Add task
             if (!isSelectingTasks) {
-                IconButton(
-                    onClick = {
-                        onEvent(TasksEvent.ShowAddTaskDialog)
-                    },
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(MaterialTheme.colorScheme.surface)
-//                        .align(Alignment.Center)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Add task",
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
+                AddElementsButton()
             } else {
                 // Show edit button only if one task is selected
                 if (selectedTasks.size == 1) {

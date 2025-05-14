@@ -77,4 +77,5 @@ dependencies {
     implementation(libs.material.icons.extended)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.androidx.work.runtime)
+    implementation(libs.androidx.constraintlayout.compose)
 }
