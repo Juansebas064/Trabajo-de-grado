@@ -4,6 +4,7 @@ import android.util.Log
 import com.brightbox.hourglass.config.HourglassDatabase
 import com.brightbox.hourglass.model.TasksModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -21,6 +22,23 @@ class TasksUseCase @Inject constructor(
             }
         }
 
+    suspend fun getTodayTasksAtMidnight(date: String): List<TasksModel> {
+        var todayTaskList: List<TasksModel> = emptyList()
+        db.tasksDao().getTasks().map { tasks ->
+            tasks.filter { task ->
+                if (task.isCompleted) {
+                    task.dateCompleted == date
+                } else {
+                    true
+                }
+            }
+        }.collectLatest { taskList ->
+            todayTaskList = taskList
+        } // Use toList() to collect the flow into a list
+        return todayTaskList
+    }
+
+
     suspend fun validateCurrentTasksOnMidnight(
         previousDate: String,
         currentDate: String,
@@ -32,6 +50,9 @@ class TasksUseCase @Inject constructor(
             if (task.dateDue == previousDate) {
                 setTaskDelayed(task.id!!)
             }
+            if (task.dateCompleted == previousDate) {
+                hideTask(task.id!!)
+            }
         }
     }
 
@@ -41,6 +62,10 @@ class TasksUseCase @Inject constructor(
 
     suspend fun deleteTask(id: Int) {
         db.tasksDao().deleteTask(id)
+    }
+
+    private suspend fun hideTask(id: Int) {
+        db.tasksDao().hideTask(id)
     }
 
     suspend fun setTaskCompleted(id: Int, dateCompleted: String) {

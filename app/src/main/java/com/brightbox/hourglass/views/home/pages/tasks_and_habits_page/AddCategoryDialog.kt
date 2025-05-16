@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.views.home.pages.tasks_page
+package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page
 
 import android.util.Log
 import androidx.compose.foundation.background

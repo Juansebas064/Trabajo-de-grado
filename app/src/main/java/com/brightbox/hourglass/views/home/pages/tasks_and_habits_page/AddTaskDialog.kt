@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.views.home.pages.tasks_page
+package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -49,7 +49,7 @@ import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.states.CategoriesState
 import com.brightbox.hourglass.states.TasksState
 import com.brightbox.hourglass.views.common.PilledTextButtonComponent
-import com.brightbox.hourglass.views.home.pages.tasks_page.components.DatePickerComponent
+import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.DatePickerComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -171,6 +171,9 @@ fun AddTaskDialog(
 
             // Date picker
             DatePickerComponent(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                label = "Due date",
                 date = tasksState.taskDueDate,
                 setDate = {
                     onTasksEvent(TasksEvent.SetTaskDueDate(it))

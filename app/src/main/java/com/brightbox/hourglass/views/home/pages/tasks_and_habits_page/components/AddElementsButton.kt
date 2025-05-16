@@ -1,42 +1,27 @@
-package com.brightbox.hourglass.views.home.pages.tasks_page.components
+package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,10 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.layout.positionOnScreen
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
@@ -57,8 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.brightbox.hourglass.events.HabitsEvent
 import com.brightbox.hourglass.events.TasksEvent
-import com.brightbox.hourglass.viewmodel.CategoriesViewModel
+import com.brightbox.hourglass.viewmodel.HabitsViewModel
 import com.brightbox.hourglass.viewmodel.TasksViewModel
 import kotlin.math.roundToInt
 
@@ -66,7 +49,7 @@ import kotlin.math.roundToInt
 fun AddElementsButton(
     modifier: Modifier = Modifier,
     tasksViewModel: TasksViewModel = hiltViewModel(),
-    categoriesViewModel: CategoriesViewModel = hiltViewModel(),
+    habitsViewModel: HabitsViewModel = hiltViewModel(),
 ) {
     var expanded by remember {
         mutableStateOf(false)
@@ -75,7 +58,6 @@ fun AddElementsButton(
     var refPosition by remember { mutableStateOf(Offset.Zero) }
     val density = LocalDensity.current
 
-    // FAB “normal” en tu Scaffold, Activity, etc.
     IconButton(
         onClick = {
             expanded = !expanded
@@ -130,34 +112,32 @@ fun AddElementsButton(
                 ) {
                     AnimatedVisibility(
                         visible = expanded,
-                        enter = fadeIn() + scaleIn(),
-                        exit = fadeOut(animationSpec = tween(100)) + scaleOut()
-                    ) {
-                        FabMenuItem(
-                            icon = Icons.Default.Add,
-                            label = "Task",
-                            onClick = {
-                                tasksViewModel.onEvent(TasksEvent.ShowAddTaskDialog)
-                                expanded = false
-                            },
-                        )
-                    }
-
-                    AnimatedVisibility(
-                        visible = expanded,
                         enter = fadeIn(animationSpec = tween(200)) + scaleIn(),
                         exit = fadeOut(animationSpec = tween(100)) + scaleOut()
                     ) {
 
-                        FabMenuItem(
-                            icon = Icons.Default.Add,
+                        FabMenuItemComponent(
                             label = "Habit",
                             onClick = {
-                                tasksViewModel.onEvent(TasksEvent.ShowAddTaskDialog)
                                 expanded = false
+                                habitsViewModel.onEvent(HabitsEvent.ShowAddHabitDialog)
                             },
                         )
 
+                    }
+
+                    AnimatedVisibility(
+                        visible = expanded,
+                        enter = fadeIn() + scaleIn(),
+                        exit = fadeOut(animationSpec = tween(100)) + scaleOut()
+                    ) {
+                        FabMenuItemComponent(
+                            label = "Task",
+                            onClick = {
+                                expanded = false
+                                tasksViewModel.onEvent(TasksEvent.ShowAddTaskDialog)
+                            },
+                        )
                     }
                 }
             }

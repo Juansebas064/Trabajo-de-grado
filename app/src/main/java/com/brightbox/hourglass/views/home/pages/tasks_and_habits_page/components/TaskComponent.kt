@@ -1,8 +1,6 @@
-package com.brightbox.hourglass.views.home.pages.tasks_page.components
+package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components
 
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
@@ -20,14 +18,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
@@ -37,25 +31,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.model.CategoriesModel
 import com.brightbox.hourglass.model.TasksModel
-import com.brightbox.hourglass.viewmodel.TasksViewModel
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TaskComponent(
     task: TasksModel,
     selectedTasks: List<Int>,
-    isSelectingTasks: Boolean,
+    isSelectingElements: Boolean,
     onTasksEvent: (TasksEvent) -> Unit,
     category: CategoriesModel?,
     modifier: Modifier = Modifier
@@ -107,7 +97,7 @@ fun TaskComponent(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                 ),
                 onClick = {
-                    when (isSelectingTasks) {
+                    when (isSelectingElements) {
                         true -> {
                             if (isSelected) {
                                 onTasksEvent(TasksEvent.UnmarkTaskSelected(task.id!!))

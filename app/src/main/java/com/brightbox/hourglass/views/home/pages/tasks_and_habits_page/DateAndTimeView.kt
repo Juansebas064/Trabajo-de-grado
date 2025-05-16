@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.views.home.pages.tasks_page
+package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page
 
 import android.content.Intent
 import android.provider.AlarmClock
@@ -10,18 +10,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.brightbox.hourglass.views.home.pages.tasks_page.components.ClockComponent
-import com.brightbox.hourglass.views.home.pages.tasks_page.components.DateComponent
-import com.brightbox.hourglass.views.home.pages.tasks_page.components.DaysOfWeekComponent
+import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.ClockComponent
+import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.DateComponent
+import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.DaysOfWeekComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
-import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
 import kotlinx.coroutines.delay
 
 @Composable
@@ -32,7 +30,7 @@ fun DateAndTimeView(
 
     val spacing = LocalSpacing.current
 
-    val currentTimeMillis = remember {
+    val currentTimeMillis = rememberSaveable {
         mutableLongStateOf(System.currentTimeMillis())
     }
 

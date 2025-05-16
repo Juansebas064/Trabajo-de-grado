@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.views.home.pages.tasks_page
+package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,27 +23,37 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.brightbox.hourglass.events.HabitsEvent
 import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.viewmodel.CategoriesViewModel
+import com.brightbox.hourglass.viewmodel.HabitsViewModel
 import com.brightbox.hourglass.viewmodel.TasksViewModel
-import com.brightbox.hourglass.views.home.pages.tasks_page.components.TaskComponent
-import com.brightbox.hourglass.views.home.pages.tasks_page.components.TasksControlsComponent
+import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.HabitComponent
+import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.TaskComponent
+import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.TasksControlsComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
-fun TasksView(
+fun TasksAndHabitsListView(
     modifier: Modifier = Modifier,
     tasksViewModel: TasksViewModel = hiltViewModel(),
-    categoriesViewModel: CategoriesViewModel = hiltViewModel()
+    categoriesViewModel: CategoriesViewModel = hiltViewModel(),
+    habitsViewModel: HabitsViewModel = hiltViewModel()
 ) {
     val spacing = LocalSpacing.current
     val tasksState = tasksViewModel.state.collectAsState()
-    val categoriesState = categoriesViewModel.state.collectAsState()
     val selectedTasks = tasksViewModel.selectedTasks.collectAsState()
-    val isSelectingTasks = remember { mutableStateOf(selectedTasks.value.isNotEmpty()) }
+    val habitsState = habitsViewModel.state.collectAsState()
+    val selectedHabits = habitsViewModel.selectedHabits.collectAsState()
+    val categoriesState = categoriesViewModel.state.collectAsState()
+    val isSelectingElements = remember {
+        mutableStateOf(
+            selectedTasks.value.isNotEmpty() || selectedHabits.value.isNotEmpty()
+        )
+    }
 
-    LaunchedEffect(key1 = selectedTasks.value) {
-        isSelectingTasks.value = selectedTasks.value.isNotEmpty()
+    LaunchedEffect(key1 = selectedTasks.value, key2 = selectedHabits.value) {
+        isSelectingElements.value = selectedTasks.value.isNotEmpty() || selectedHabits.value.isNotEmpty()
     }
 
     Box(
@@ -52,7 +62,7 @@ fun TasksView(
             .width(LocalConfiguration.current.screenWidthDp.dp * 0.65f)
     ) {
 
-        if (tasksState.value.tasks.isEmpty()) {
+        if (tasksState.value.tasks.isEmpty() && habitsState.value.habits.isEmpty()) {
             Box(
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -60,7 +70,7 @@ fun TasksView(
             ) {
                 Text(
                     modifier = Modifier,
-                    text = "Tap + button to create a task",
+                    text = "Tap + button to create a task or habit",
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onBackground
@@ -89,21 +99,31 @@ fun TasksView(
                 )
             }
 
-            if (tasksState.value.isDeletingTasks) {
+            if (habitsState.value.isAddingHabit) {
+                AddHabitDialog(
+                    habitsState = habitsState.value,
+                    categoriesState = categoriesState.value,
+                    onHabitsEvent = habitsViewModel::onEvent,
+                    onCategoriesEvent = categoriesViewModel::onEvent
+                )
+            }
+
+            if (tasksState.value.isDeletingTasks || habitsState.value.isDeletingHabits) {
                 AlertDialog(
                     onDismissRequest = {
                         tasksViewModel.onEvent(TasksEvent.HideDeleteTasksDialog)
                     },
                     title = {
-                        Text(text = "Delete tasks")
+                        Text(text = "Delete elements")
                     },
                     text = {
-                        Text(text = "Are you sure you want to delete these tasks?")
+                        Text(text = "Are you sure you want to delete these elements?")
                     },
                     confirmButton = {
                         TextButton(
                             onClick = {
                                 tasksViewModel.onEvent(TasksEvent.DeleteTasks)
+                                habitsViewModel.onEvent(HabitsEvent.DeleteHabits)
                                 tasksViewModel.onEvent(TasksEvent.HideDeleteTasksDialog)
                             },
                         ) {
@@ -127,32 +147,32 @@ fun TasksView(
                 modifier = Modifier
                     .weight(1f)
             ) {
+                items(habitsState.value.habits) { habit ->
+                    HabitComponent(
+                        habit = habit,
+                        selectedHabits = selectedHabits.value,
+                        isSelectingElements = isSelectingElements.value,
+                        onHabitsEvent = habitsViewModel::onEvent,
+                        category = categoriesState.value.categories.find { it.id == habit.categoryId },
+                    )
+                }
                 items(tasksState.value.tasks) { task ->
                     TaskComponent(
                         task = task,
                         selectedTasks = selectedTasks.value,
-                        isSelectingTasks = isSelectingTasks.value,
+                        isSelectingElements = isSelectingElements.value,
                         category = categoriesState.value.categories.find { it.id == task.categoryId },
                         onTasksEvent = tasksViewModel::onEvent
                     )
-//                    if (!task.isCompleted && task.dateDue != "")
-//                    if (task.dateDue == "" || task.dateDue!! >= tasksViewModel.formatMilisToDate(System.currentTimeMillis()))
-//                    {
-//                        TaskComponent(
-//                            task = task,
-//                            selectedTasks = selectedTasks.value,
-//                            isSelectingTasks = isSelectingTasks.value,
-//                            category = categoriesState.value.categories.find { it.id == task.categoryId },
-//                            onTasksEvent = tasksViewModel::onEvent
-//                        )
-//                    }
                 }
             }
 
             TasksControlsComponent(
                 selectedTasks = selectedTasks.value,
-                isSelectingTasks = isSelectingTasks.value,
-                onEvent = tasksViewModel::onEvent
+                selectedHabits = selectedHabits.value,
+                isSelectingTasks = isSelectingElements.value,
+                onTasksEvent = tasksViewModel::onEvent,
+                onHabitsEvent = habitsViewModel::onEvent
             )
         }
     }

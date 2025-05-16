@@ -56,7 +56,6 @@ class TasksViewModel @Inject constructor(
         override fun onReceive(context: Context?, intent: Intent?) {
             // El Worker envió el evento, actualizar la lista de tareas
             validateCurrentTasksOnMidnight()
-            loadTodayTaskList()
             Log.d("TasksViewModel", "Loading tasks on scheduled worker")
         }
     }
@@ -90,6 +89,7 @@ class TasksViewModel @Inject constructor(
                 formatMillisecondsToSQLiteDate(System.currentTimeMillis()),
                 state.value.tasks
             )
+            _tasksList.value = _tasksUseCase.getTodayTasksAtMidnight(formatMillisecondsToSQLiteDate(System.currentTimeMillis()))
         }
     }
 
@@ -185,6 +185,7 @@ class TasksViewModel @Inject constructor(
                     priority = taskPriority,
                     dateCreated = taskDateCreated,
                     dateCompleted = null,
+                    visible = true
                 )
 
                 viewModelScope.launch {
@@ -288,11 +289,6 @@ class TasksViewModel @Inject constructor(
                 _selectedTasks.update {
                     it - event.id
                 }
-            }
-
-            TasksEvent.LoadTasks -> {
-                Log.d("TasksViewModel", "Loading tasks on scheduled worker")
-                loadTodayTaskList()
             }
         }
     }
