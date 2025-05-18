@@ -2,44 +2,34 @@ package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page
 
 import android.content.Intent
 import android.provider.AlarmClock
-import android.text.format.DateUtils
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.brightbox.hourglass.utils.formatMillisecondsToDay
+import com.brightbox.hourglass.viewmodel.TimeViewModel
 import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.ClockComponent
 import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.DateComponent
 import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.DaysOfWeekComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
-import kotlinx.coroutines.delay
 
 @Composable
 fun DateAndTimeView(
     modifier: Modifier = Modifier,
     openApp: (Intent) -> Unit,
+    timeViewModel: TimeViewModel = hiltViewModel()
 ) {
 
     val spacing = LocalSpacing.current
 
-    val currentTimeMillis = rememberSaveable {
-        mutableLongStateOf(System.currentTimeMillis())
-    }
-
-    LaunchedEffect(key1 = currentTimeMillis) {
-        while (true) {
-            delay(250)
-            currentTimeMillis.longValue = System.currentTimeMillis()
-        }
-    }
+    val today = timeViewModel.currentTimeMillis.collectAsState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -49,16 +39,12 @@ fun DateAndTimeView(
             .padding(vertical = spacing.spaceExtraSmall)
     ) {
         ClockComponent(
-            currentTime = currentTimeMillis.longValue,
+            currentTime = today.value,
             onClick = { openApp(Intent(AlarmClock.ACTION_SHOW_ALARMS)) }
         )
 
         DaysOfWeekComponent(
-            currentDay = DateUtils.formatDateTime(
-                LocalContext.current,
-                currentTimeMillis.longValue,
-                DateUtils.FORMAT_SHOW_WEEKDAY
-            ),
+            today = formatMillisecondsToDay(today.value),
             onClick = {
                 openApp(
                     Intent(Intent.ACTION_MAIN)
@@ -68,7 +54,7 @@ fun DateAndTimeView(
         )
 
         DateComponent(
-            currentTimeMillis = currentTimeMillis.longValue,
+            currentTimeMillis = today.value,
             onClick = {
                 openApp(
                     Intent(Intent.ACTION_MAIN)

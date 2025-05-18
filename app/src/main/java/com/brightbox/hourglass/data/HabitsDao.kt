@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HabitsDao {
-    @Query("SELECT * FROM habits")
+    @Query("SELECT * FROM habits WHERE deleted = 0")
     fun getHabits(): Flow<List<HabitsModel>>
 
     @Upsert

@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.brightbox.hourglass.constants.daysOfWeek
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
@@ -25,8 +26,6 @@ fun DaysSelectorComponent(
     setHabitsDaysOfWeek: (List<String>) -> Unit
 ) {
     val spacing = LocalSpacing.current
-    val daysOfWeek =
-        listOf("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday")
 
     FlowRow(
         modifier = modifier.fillMaxWidth(),

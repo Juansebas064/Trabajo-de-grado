@@ -37,21 +37,6 @@ class TasksViewModel @Inject constructor(
     @ApplicationContext private val application: Context
 ) : ViewModel() {
 
-    private val _tasksList = MutableStateFlow(emptyList<TasksModel>())
-
-    private val _state = MutableStateFlow(TasksState())
-
-    val state = combine(_state, _tasksList) { state, tasks ->
-        state.copy(
-            tasks = tasks
-        )
-    }.onStart {
-        loadTodayTaskList()
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TasksState())
-
-    private val _selectedTasks = MutableStateFlow(emptyList<Int>()) // Will store id's
-    val selectedTasks = _selectedTasks.asStateFlow()
-
     private val updateTasksReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             // El Worker envió el evento, actualizar la lista de tareas
@@ -75,6 +60,21 @@ class TasksViewModel @Inject constructor(
         )
     }
 
+    private val _tasksList = MutableStateFlow(emptyList<TasksModel>())
+
+    private val _state = MutableStateFlow(TasksState())
+    val state = combine(_state, _tasksList) { state, tasks ->
+        state.copy(
+            tasks = tasks
+        )
+    }.onStart {
+        loadTodayTaskList()
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TasksState())
+
+    private val _selectedTasks = MutableStateFlow(emptyList<Int>()) // Will store id's
+
+    val selectedTasks = _selectedTasks.asStateFlow()
+
     private fun loadTodayTaskList() {
         _tasksUseCase.getTodayTasks(formatMillisecondsToSQLiteDate(System.currentTimeMillis()))
             .onEach { tasks ->
@@ -89,7 +89,7 @@ class TasksViewModel @Inject constructor(
                 formatMillisecondsToSQLiteDate(System.currentTimeMillis()),
                 state.value.tasks
             )
-            _tasksList.value = _tasksUseCase.getTodayTasksAtMidnight(formatMillisecondsToSQLiteDate(System.currentTimeMillis()))
+//            _tasksList.value = _tasksUseCase.getTodayTasksAtMidnight(formatMillisecondsToSQLiteDate(System.currentTimeMillis()))
         }
     }
 
@@ -167,6 +167,7 @@ class TasksViewModel @Inject constructor(
                     if (state.value.taskDueDate == 0L) "" else formatMillisecondsToSQLiteDate(state.value.taskDueDate)
                 val taskCategory = state.value.taskCategory
                 val taskPriority = state.value.taskPriority
+                val wasTaskDelayed = state.value.wasTaskDelayed
 
                 if (
                     taskTitle.isBlank()
@@ -180,7 +181,7 @@ class TasksViewModel @Inject constructor(
                     description = taskDescription,
                     dateDue = taskDueDate,
                     isCompleted = false,
-                    wasDelayed = false,
+                    wasDelayed = wasTaskDelayed,
                     categoryId = taskCategory,
                     priority = taskPriority,
                     dateCreated = taskDateCreated,

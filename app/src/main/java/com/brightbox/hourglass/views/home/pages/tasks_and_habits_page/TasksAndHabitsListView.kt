@@ -1,9 +1,13 @@
 package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,9 +29,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.events.HabitsEvent
 import com.brightbox.hourglass.events.TasksEvent
+import com.brightbox.hourglass.utils.formatMillisecondsToDay
+import com.brightbox.hourglass.utils.formatMillisecondsToSQLiteDate
 import com.brightbox.hourglass.viewmodel.CategoriesViewModel
 import com.brightbox.hourglass.viewmodel.HabitsViewModel
 import com.brightbox.hourglass.viewmodel.TasksViewModel
+import com.brightbox.hourglass.viewmodel.TimeViewModel
 import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.HabitComponent
 import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.TaskComponent
 import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.TasksControlsComponent
@@ -38,7 +45,8 @@ fun TasksAndHabitsListView(
     modifier: Modifier = Modifier,
     tasksViewModel: TasksViewModel = hiltViewModel(),
     categoriesViewModel: CategoriesViewModel = hiltViewModel(),
-    habitsViewModel: HabitsViewModel = hiltViewModel()
+    habitsViewModel: HabitsViewModel = hiltViewModel(),
+    timeViewModel: TimeViewModel = hiltViewModel()
 ) {
     val spacing = LocalSpacing.current
     val tasksState = tasksViewModel.state.collectAsState()
@@ -51,9 +59,16 @@ fun TasksAndHabitsListView(
             selectedTasks.value.isNotEmpty() || selectedHabits.value.isNotEmpty()
         )
     }
+    val today = timeViewModel.currentTimeMillis.collectAsState().let { time ->
+        mapOf(
+            "day" to formatMillisecondsToDay(time.value),
+            "date" to formatMillisecondsToSQLiteDate(time.value)
+        )
+    }
 
     LaunchedEffect(key1 = selectedTasks.value, key2 = selectedHabits.value) {
-        isSelectingElements.value = selectedTasks.value.isNotEmpty() || selectedHabits.value.isNotEmpty()
+        isSelectingElements.value =
+            selectedTasks.value.isNotEmpty() || selectedHabits.value.isNotEmpty()
     }
 
     Box(
@@ -62,7 +77,7 @@ fun TasksAndHabitsListView(
             .width(LocalConfiguration.current.screenWidthDp.dp * 0.65f)
     ) {
 
-        if (tasksState.value.tasks.isEmpty() && habitsState.value.habits.isEmpty()) {
+        if (tasksState.value.tasks.isEmpty() && habitsState.value.todayHabits.isEmpty()) {
             Box(
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -85,16 +100,7 @@ fun TasksAndHabitsListView(
             if (tasksState.value.isAddingTask) {
                 AddTaskDialog(
                     onTasksEvent = tasksViewModel::onEvent,
-                    onCategoriesEvent = categoriesViewModel::onEvent,
                     tasksState = tasksState.value,
-                    categoriesState = categoriesState.value
-                )
-            }
-
-            if (categoriesState.value.isAddingCategory) {
-                AddCategoryDialog(
-                    onTasksEvent = tasksViewModel::onEvent,
-                    onCategoriesEvent = categoriesViewModel::onEvent,
                     categoriesState = categoriesState.value
                 )
             }
@@ -110,6 +116,7 @@ fun TasksAndHabitsListView(
 
             if (tasksState.value.isDeletingTasks || habitsState.value.isDeletingHabits) {
                 AlertDialog(
+                    containerColor = MaterialTheme.colorScheme.surface,
                     onDismissRequest = {
                         tasksViewModel.onEvent(TasksEvent.HideDeleteTasksDialog)
                     },
@@ -144,26 +151,83 @@ fun TasksAndHabitsListView(
 
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .weight(1f)
             ) {
-                items(habitsState.value.habits) { habit ->
-                    HabitComponent(
-                        habit = habit,
-                        selectedHabits = selectedHabits.value,
-                        isSelectingElements = isSelectingElements.value,
-                        onHabitsEvent = habitsViewModel::onEvent,
-                        category = categoriesState.value.categories.find { it.id == habit.categoryId },
-                    )
+                if (habitsState.value.todayHabits.isNotEmpty() && tasksState.value.tasks.isNotEmpty()) {
+                    item {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Habits",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                            Box(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .background(MaterialTheme.colorScheme.onBackground)
+                                    .height(2.dp)
+                            )
+                        }
+                    }
                 }
+
+                items(habitsState.value.todayHabits) { habit ->
+                    if (
+                        !habit.deleted &&
+                        today["day"].toString() in habit.daysOfWeek
+                        && (habit.endDate == null || habit.endDate >= today["date"].toString())
+                    ) {
+                        HabitComponent(
+                            habit = habit,
+                            selectedHabits = selectedHabits.value,
+                            isSelectingElements = isSelectingElements.value,
+                            onHabitsEvent = habitsViewModel::onEvent,
+                            category = categoriesState.value.categories.find { it.id == habit.categoryId },
+                        )
+                    }
+                }
+
+                if (habitsState.value.todayHabits.isNotEmpty() && tasksState.value.tasks.isNotEmpty()) {
+                    item {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Tasks",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                            Box(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .background(MaterialTheme.colorScheme.onBackground)
+                                    .height(2.dp)
+                            )
+                        }
+                    }
+                }
+
                 items(tasksState.value.tasks) { task ->
-                    TaskComponent(
-                        task = task,
-                        selectedTasks = selectedTasks.value,
-                        isSelectingElements = isSelectingElements.value,
-                        category = categoriesState.value.categories.find { it.id == task.categoryId },
-                        onTasksEvent = tasksViewModel::onEvent
-                    )
+                    if (
+                        (task.isCompleted && task.dateCompleted == today["date"])
+                        || (!task.isCompleted)
+                    ) {
+                        TaskComponent(
+                            task = task,
+                            selectedTasks = selectedTasks.value,
+                            isSelectingElements = isSelectingElements.value,
+                            category = categoriesState.value.categories.find { it.id == task.categoryId },
+                            onTasksEvent = tasksViewModel::onEvent
+                        )
+                    }
                 }
             }
 

@@ -12,15 +12,16 @@ class TasksUseCase @Inject constructor(
     private val db: HourglassDatabase
 ) {
     fun getTodayTasks(date: String): Flow<List<TasksModel>> =
-        db.tasksDao().getTasks().map { tasks ->
-            tasks.filter { task ->
-                if (task.isCompleted) {
-                    task.dateCompleted == date
-                } else {
-                    true
-                }
-            }
-        }
+        db.tasksDao().getTasks()
+//        db.tasksDao().getTasks().map { tasks ->
+//            tasks.filter { task ->
+//                if (task.isCompleted) {
+//                    task.dateCompleted == date
+//                } else {
+//                    true
+//                }
+//            }
+//        }
 
     suspend fun getTodayTasksAtMidnight(date: String): List<TasksModel> {
         var todayTaskList: List<TasksModel> = emptyList()

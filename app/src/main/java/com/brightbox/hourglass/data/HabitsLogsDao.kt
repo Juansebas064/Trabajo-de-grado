@@ -19,4 +19,7 @@ interface HabitsLogsDao {
 
     @Query("UPDATE habits_logs SET completed = 0 WHERE id = :id")
     suspend fun setHabitLogUncompleted(id: Int)
+
+    @Query("DELETE FROM habits_logs WHERE id = :id")
+    suspend fun deleteHabitLog(id: Int)
 }

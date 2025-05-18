@@ -10,26 +10,30 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -37,11 +41,15 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.brightbox.hourglass.constants.daysOfWeek
 import com.brightbox.hourglass.events.HabitsEvent
-import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.model.CategoriesModel
+import com.brightbox.hourglass.model.HabitsLogsModel
 import com.brightbox.hourglass.model.HabitsModel
-import com.brightbox.hourglass.model.TasksModel
+import com.brightbox.hourglass.utils.formatMillisecondsToDay
+import com.brightbox.hourglass.utils.formatMillisecondsToSQLiteDate
+import com.brightbox.hourglass.viewmodel.HabitsViewModel
+import com.brightbox.hourglass.viewmodel.TimeViewModel
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
@@ -52,12 +60,28 @@ fun HabitComponent(
     isSelectingElements: Boolean,
     onHabitsEvent: (HabitsEvent) -> Unit,
     category: CategoriesModel?,
-//    habitsLogsViewModel: HabitsLogsViewModel = hiltViewModel(),
+    habitsViewModel: HabitsViewModel = hiltViewModel(),
+    timeViewModel: TimeViewModel = hiltViewModel()
 ) {
 
     val spacing = LocalSpacing.current
     val isSelected = selectedHabits.contains(habit.id)
-    val isCompletedForToday = false
+    val today = timeViewModel.currentTimeMillis.collectAsState().let { time ->
+        mapOf(
+            "day" to formatMillisecondsToDay(time.value),
+            "date" to formatMillisecondsToSQLiteDate(time.value)
+        )
+    }
+    val habitsLogs = habitsViewModel.habitsLogs.collectAsState()
+
+    var habitLog by remember {
+        mutableStateOf<HabitsLogsModel?>(null)
+    }
+    val isCompletedForToday = habitLog?.completed ?: false
+
+    LaunchedEffect(habitsLogs.value) {
+        habitLog = habitsLogs.value.find { it.habitId == habit.id && it.date == today["date"] }
+    }
 
     ElevatedCard(
         colors = CardDefaults.cardColors(
@@ -98,11 +122,15 @@ fun HabitComponent(
                         }
 
                         false -> {
-//                            if (isCompletedForToday) {
-//                                onTasksEvent(TasksEvent.SetTaskUncompleted(task.id))
-//                            } else {
-//                                onTasksEvent(TasksEvent.SetTaskCompleted(task.id))
-//                            }
+                            if (habitLog == null) {
+                                habitsViewModel.upsertHabitLog(habit.id!!, today["date"]!!)
+                            } else {
+                                if (isCompletedForToday) {
+                                    habitsViewModel.setHabitLogUncompleted(habitLog!!.id!!)
+                                } else {
+                                    habitsViewModel.setHabitLogCompleted(habitLog!!.id!!)
+                                }
+                            }
                         }
                     }
                 },
@@ -129,29 +157,52 @@ fun HabitComponent(
             ) {
                 // Title
                 Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.Top,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = spacing.spaceExtraSmall)
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .width(IntrinsicSize.Min)
-                            .weight(1f)
-                    ) {
-                        Text(
-                            text = habit.title,
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.ExtraBold,
-                            textAlign = TextAlign.Start,
-                            lineHeight = MaterialTheme.typography.titleSmall.fontSize,
-                            textDecoration = if (isCompletedForToday) TextDecoration.LineThrough else null,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
+                    Text(
+                        text = habit.title,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.ExtraBold,
+                        textAlign = TextAlign.Start,
+                        lineHeight = MaterialTheme.typography.titleSmall.fontSize,
+                        textDecoration = if (isCompletedForToday) TextDecoration.LineThrough else null,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+                Spacer(
+                    modifier.height(spacing.spaceSmall)
+                )
+
+                // Days of week the habit will be shown
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    daysOfWeek.forEach { day ->
+                        Box(
+                            modifier = Modifier
+                                .size(22.dp)
+                                .clip(CircleShape)
+                                .background(if (day in habit.daysOfWeek) (if (day == today["day"]) MaterialTheme.colorScheme.inversePrimary else MaterialTheme.colorScheme.secondary) else Color.Transparent)
+                        ) {
+                            Text(
+                                text = day[0].uppercase(),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = if (day in habit.daysOfWeek) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+                        }
                     }
                 }
+
 
                 // Container for type of element and category
                 Row(

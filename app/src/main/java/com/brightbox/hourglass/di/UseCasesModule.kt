@@ -6,6 +6,7 @@ import com.brightbox.hourglass.data.preferences.PreferencesImpl
 import com.brightbox.hourglass.usecases.ApplicationsUseCase
 import com.brightbox.hourglass.usecases.CategoriesUseCase
 import com.brightbox.hourglass.usecases.GeneralPreferencesUseCase
+import com.brightbox.hourglass.usecases.HabitsLogsUseCase
 import com.brightbox.hourglass.usecases.HabitsUseCase
 import com.brightbox.hourglass.usecases.TasksUseCase
 import dagger.Module
@@ -44,6 +45,12 @@ object UseCasesModule {
     @Provides
     fun provideHabitsUseCase(db: HourglassDatabase): HabitsUseCase {
         return HabitsUseCase(db)
+    }
+
+    @Singleton
+    @Provides
+    fun provideHabitsLogsUseCase(db: HourglassDatabase): HabitsLogsUseCase {
+        return HabitsLogsUseCase(db)
     }
 
     @Provides

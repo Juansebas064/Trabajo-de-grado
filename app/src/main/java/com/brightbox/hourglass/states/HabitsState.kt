@@ -3,7 +3,7 @@ package com.brightbox.hourglass.states
 import com.brightbox.hourglass.model.HabitsModel
 
 data class HabitsState (
-    val habits: List<HabitsModel> = emptyList(),
+    val todayHabits: List<HabitsModel> = emptyList(),
     val habitId: Int? = null,
     val habitTitle: String = "",
     val habitCategory: Int? = null,

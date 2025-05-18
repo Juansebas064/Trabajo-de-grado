@@ -49,6 +49,7 @@ import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.states.CategoriesState
 import com.brightbox.hourglass.states.TasksState
 import com.brightbox.hourglass.views.common.PilledTextButtonComponent
+import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.CategorySelectorComponent
 import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.DatePickerComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
@@ -58,26 +59,17 @@ fun AddTaskDialog(
     tasksState: TasksState,
     categoriesState: CategoriesState,
     onTasksEvent: (TasksEvent) -> Unit,
-    onCategoriesEvent: (CategoriesEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
     val halfScreenDp = (LocalConfiguration.current.screenHeightDp / 5).dp
-    val areCategoriesExpanded = remember {
-        mutableStateOf(false)
-    }
     val arePrioritiesExpanded = remember {
         mutableStateOf(false)
-    }
-    val categoriesDropdownPosition = remember {
-        mutableIntStateOf(-1)
     }
     val isTitleValid = remember {
         mutableStateOf(true)
     }
-    val categoryInitialValue = categoriesState.categories.find { it.id == tasksState.taskCategory }?.name
-        ?: ""
-
+    Log.d("AddTaskDialog", "tasksState: ${tasksState.taskDueDate}")
 
     BasicAlertDialog(
         onDismissRequest = {
@@ -182,95 +174,13 @@ fun AddTaskDialog(
             )
 
             // Categories section
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(spacing.spaceMedium),
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                // Categories Dropdown
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                ) {
-                    OutlinedTextField(
-                        value = if (categoriesDropdownPosition.intValue == -1) categoryInitialValue else categoriesState.categories[categoriesDropdownPosition.intValue].name,
-                        onValueChange = {
-                            onTasksEvent(TasksEvent.SetTaskCategory(it.toInt()))
-                        },
-                        readOnly = true,
-                        trailingIcon = {
-                            if (areCategoriesExpanded.value) {
-                                Icon(
-                                    imageVector = Icons.Default.ArrowDropUp,
-                                    contentDescription = "Add category"
-                                )
-                            } else {
-                                Icon(
-                                    imageVector = Icons.Default.ArrowDropDown,
-                                    contentDescription = "Add category"
-                                )
-                            }
-                        },
-                        label = {
-                            Text(text = "Category")
-                        },
-                        modifier = Modifier
-                            .pointerInput(categoriesDropdownPosition) {
-                                awaitEachGesture {
-                                    // Modifier.clickable doesn't work for text fields, so we use Modifier.pointerInput
-                                    // in the Initial pass to observe events before the text field consumes them
-                                    // in the Main pass.
-                                    awaitFirstDown(pass = PointerEventPass.Initial)
-                                    val upEvent =
-                                        waitForUpOrCancellation(pass = PointerEventPass.Initial)
-                                    if (upEvent != null) {
-                                        areCategoriesExpanded.value = !areCategoriesExpanded.value
-                                    }
-                                }
-                            }
-                    )
-                    DropdownMenu(
-                        expanded = areCategoriesExpanded.value,
-                        onDismissRequest = {
-                            areCategoriesExpanded.value = false
-                        }
-                    ) {
-                        categoriesState.categories.forEachIndexed { index, category ->
-                            DropdownMenuItem(
-                                text = {
-                                    Text(text = category.name)
-                                },
-                                onClick = {
-                                    onTasksEvent(TasksEvent.SetTaskCategory(category.id))
-                                    categoriesDropdownPosition.intValue = index
-                                    areCategoriesExpanded.value = !areCategoriesExpanded.value
-                                }
-                            )
-                        }
-                    }
+            CategorySelectorComponent(
+                categoryInitialValue = categoriesState.categories.find { it.id == tasksState.taskCategory }?.name
+                    ?: "",
+                onCategoryChange = {
+                    onTasksEvent(TasksEvent.SetTaskCategory(it))
                 }
-
-                // Add category
-                IconButton(
-                    onClick = {
-                        onTasksEvent(TasksEvent.HideAddTaskDialog)
-                        onCategoriesEvent(CategoriesEvent.ShowDialog)
-                    },
-                    modifier = Modifier
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Add category",
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
+            )
 
             // Priorities dropdown
             Box(
@@ -284,7 +194,7 @@ fun AddTaskDialog(
                     },
                     readOnly = true,
                     trailingIcon = {
-                        if (areCategoriesExpanded.value) {
+                        if (arePrioritiesExpanded.value) {
                             Icon(
                                 imageVector = Icons.Default.ArrowDropUp,
                                 contentDescription = "Add category"
@@ -319,7 +229,8 @@ fun AddTaskDialog(
                     expanded = arePrioritiesExpanded.value,
                     onDismissRequest = {
                         arePrioritiesExpanded.value = false
-                    }
+                    },
+                    containerColor = MaterialTheme.colorScheme.surface,
                 ) {
                     PrioritiesEnum.entries.forEach {
                         DropdownMenuItem(
