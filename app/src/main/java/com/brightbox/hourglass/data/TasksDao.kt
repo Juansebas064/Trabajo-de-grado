@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TasksDao {
-    @Query("SELECT * FROM tasks ORDER BY isCompleted ASC, dateDue ASC")
+    @Query("SELECT * FROM tasks WHERE visible = 1 ORDER BY isCompleted ASC, dateDue ASC")
     fun getTasks(): Flow<List<TasksModel>>
 
     @Upsert
@@ -17,6 +17,9 @@ interface TasksDao {
 
     @Query("DELETE FROM tasks WHERE id = :id")
     suspend fun deleteTask(id: Int)
+
+    @Query("UPDATE tasks SET visible = 0 WHERE id = :id")
+    suspend fun hideTask(id: Int)
 
     @Query("UPDATE tasks SET isCompleted = 1, dateCompleted = :dateCompleted WHERE id = :id")
     suspend fun setTaskCompleted(id: Int, dateCompleted: String?)

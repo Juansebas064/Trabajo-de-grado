@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.views.home.pages.tasks_page.components
+package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon

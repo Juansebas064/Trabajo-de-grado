@@ -1,10 +1,9 @@
-package com.brightbox.hourglass.views.home.pages.tasks_page
+package com.brightbox.hourglass.views.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
@@ -16,11 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.views.theme.LocalSpacing
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
-import com.brightbox.hourglass.viewmodel.CategoriesViewModel
-import com.brightbox.hourglass.viewmodel.TasksViewModel
+import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.DateAndTimeView
+import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.EssentialShortcutsBarView
+import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.TasksAndHabitsListView
 
 @Composable
-fun TasksPageView(
+fun TasksAndHabitsPageView(
     modifier: Modifier = Modifier,
     onNavigateToSettings: () -> Unit,
     applicationsViewModel: ApplicationsViewModel = hiltViewModel()
@@ -30,6 +30,7 @@ fun TasksPageView(
     Box(
         modifier = modifier
             .fillMaxSize()
+//            .border(1.dp, Color.Red)
     ) {
 
         IconButton(
@@ -52,7 +53,7 @@ fun TasksPageView(
             DateAndTimeView(
                 openApp = applicationsViewModel::openApp,
             )
-            TasksView(
+            TasksAndHabitsListView(
 //                modifier = Modifier.padding(horizontal = spacing.tasksPadding)
             )
         }

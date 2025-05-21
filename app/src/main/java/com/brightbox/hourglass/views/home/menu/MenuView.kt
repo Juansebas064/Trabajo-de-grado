@@ -1,7 +1,6 @@
 package com.brightbox.hourglass.views.home.menu
 
 import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,20 +26,18 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
-import com.brightbox.hourglass.viewmodel.preferences.GeneralPreferencesViewModel
-import kotlinx.coroutines.launch
+import com.brightbox.hourglass.viewmodel.preferences.PreferencesViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuView(
     sheetState: SheetState,
-    generalPreferencesViewModel: GeneralPreferencesViewModel = hiltViewModel()
+    preferencesViewModel: PreferencesViewModel = hiltViewModel()
 ) {
     // States
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
-    val generalPreferencesState by generalPreferencesViewModel.state.collectAsState()
+    val generalPreferencesState by preferencesViewModel.state.collectAsState()
     val scope = rememberCoroutineScope()
 
     // Open keyboard when menu is opened

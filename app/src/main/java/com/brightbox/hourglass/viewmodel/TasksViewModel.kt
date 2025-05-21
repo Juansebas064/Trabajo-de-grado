@@ -13,12 +13,10 @@ import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.model.TasksModel
 import com.brightbox.hourglass.states.TasksState
 import com.brightbox.hourglass.usecases.TasksUseCase
-import com.brightbox.hourglass.utils.formatMillisecondsToHours
 import com.brightbox.hourglass.utils.formatMillisecondsToSQLiteDate
 import com.brightbox.hourglass.utils.formatSQLiteDateToMilliseconds
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,26 +35,10 @@ class TasksViewModel @Inject constructor(
     @ApplicationContext private val application: Context
 ) : ViewModel() {
 
-    private val _tasksList = MutableStateFlow(emptyList<TasksModel>())
-
-    private val _state = MutableStateFlow(TasksState())
-
-    val state = combine(_state, _tasksList) { state, tasks ->
-        state.copy(
-            tasks = tasks
-        )
-    }.onStart {
-        loadTodayTaskList()
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TasksState())
-
-    private val _selectedTasks = MutableStateFlow(emptyList<Int>()) // Will store id's
-    val selectedTasks = _selectedTasks.asStateFlow()
-
     private val updateTasksReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             // El Worker envió el evento, actualizar la lista de tareas
             validateCurrentTasksOnMidnight()
-            loadTodayTaskList()
             Log.d("TasksViewModel", "Loading tasks on scheduled worker")
         }
     }
@@ -76,8 +58,23 @@ class TasksViewModel @Inject constructor(
         )
     }
 
-    private fun loadTodayTaskList() {
-        _tasksUseCase.getTodayTasks(formatMillisecondsToSQLiteDate(System.currentTimeMillis()))
+    private val _tasksList = MutableStateFlow(emptyList<TasksModel>())
+
+    private val _state = MutableStateFlow(TasksState())
+    val state = combine(_state, _tasksList) { state, tasks ->
+        state.copy(
+            tasks = tasks
+        )
+    }.onStart {
+        loadTasksList()
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TasksState())
+
+    private val _selectedTasks = MutableStateFlow(emptyList<Int>()) // Will store id's
+
+    val selectedTasks = _selectedTasks.asStateFlow()
+
+    private fun loadTasksList() {
+        _tasksUseCase.getTasks()
             .onEach { tasks ->
                 _tasksList.value = tasks
             }.launchIn(viewModelScope)
@@ -90,6 +87,7 @@ class TasksViewModel @Inject constructor(
                 formatMillisecondsToSQLiteDate(System.currentTimeMillis()),
                 state.value.tasks
             )
+//            _tasksList.value = _tasksUseCase.getTodayTasksAtMidnight(formatMillisecondsToSQLiteDate(System.currentTimeMillis()))
         }
     }
 
@@ -103,7 +101,7 @@ class TasksViewModel @Inject constructor(
                 taskDueDate = 0,
                 wasTaskDelayed = false,
                 taskCategory = null,
-                taskPriority = PrioritiesEnum.HIGH.priority
+                taskPriority = PrioritiesEnum.High.priority
             )
         }
     }
@@ -167,6 +165,7 @@ class TasksViewModel @Inject constructor(
                     if (state.value.taskDueDate == 0L) "" else formatMillisecondsToSQLiteDate(state.value.taskDueDate)
                 val taskCategory = state.value.taskCategory
                 val taskPriority = state.value.taskPriority
+                val wasTaskDelayed = state.value.wasTaskDelayed
 
                 if (
                     taskTitle.isBlank()
@@ -180,11 +179,12 @@ class TasksViewModel @Inject constructor(
                     description = taskDescription,
                     dateDue = taskDueDate,
                     isCompleted = false,
-                    wasDelayed = false,
+                    wasDelayed = wasTaskDelayed,
                     categoryId = taskCategory,
                     priority = taskPriority,
                     dateCreated = taskDateCreated,
                     dateCompleted = null,
+                    visible = true
                 )
 
                 viewModelScope.launch {
@@ -288,11 +288,6 @@ class TasksViewModel @Inject constructor(
                 _selectedTasks.update {
                     it - event.id
                 }
-            }
-
-            TasksEvent.LoadTasks -> {
-                Log.d("TasksViewModel", "Loading tasks on scheduled worker")
-                loadTodayTaskList()
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.views.home.pages.tasks_page.components
+package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
@@ -19,14 +18,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.brightbox.hourglass.events.HabitsEvent
 import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
 fun TasksControlsComponent(
     selectedTasks: List<Int>,
+    selectedHabits: List<Int>,
     isSelectingTasks: Boolean,
-    onEvent: (TasksEvent) -> Unit,
+    onTasksEvent: (TasksEvent) -> Unit,
+    onHabitsEvent: (HabitsEvent) -> Unit
 ) {
     val spacing = LocalSpacing.current
 
@@ -54,27 +56,17 @@ fun TasksControlsComponent(
         ) {
             // Add task
             if (!isSelectingTasks) {
-                IconButton(
-                    onClick = {
-                        onEvent(TasksEvent.ShowAddTaskDialog)
-                    },
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(MaterialTheme.colorScheme.surface)
-//                        .align(Alignment.Center)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Add task",
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
+                AddElementsButton()
             } else {
                 // Show edit button only if one task is selected
-                if (selectedTasks.size == 1) {
+                if (selectedTasks.size + selectedHabits.size == 1) {
                     IconButton(
                         onClick = {
-                            onEvent(TasksEvent.EditTask(selectedTasks[0]))
+                            if (selectedTasks.isNotEmpty()) {
+                                onTasksEvent(TasksEvent.EditTask(selectedTasks.first()))
+                            } else {
+                                onHabitsEvent(HabitsEvent.EditHabit(selectedHabits.first()))
+                            }
                         },
                         modifier = Modifier
                             .clip(RoundedCornerShape(16.dp))
@@ -92,7 +84,7 @@ fun TasksControlsComponent(
                 // Delete tasks
                 IconButton(
                     onClick = {
-                        onEvent(TasksEvent.ShowDeleteTasksDialog)
+                        onTasksEvent(TasksEvent.ShowDeleteTasksDialog)
                     },
                     modifier = Modifier
                         .clip(RoundedCornerShape(16.dp))

@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.views.home.pages.tasks_page
+package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page
 
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
@@ -6,11 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.constants.EssentialShortcutsEnum
-import com.brightbox.hourglass.views.home.pages.tasks_page.components.EssentialShortcutComponent
+import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.EssentialShortcutComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
-import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
 
 @Composable
 fun EssentialShortcutsBarView(

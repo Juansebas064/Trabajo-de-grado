@@ -1,7 +1,7 @@
-package com.brightbox.hourglass.views.home.pages.tasks_page.components
+package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components
 
+import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
@@ -11,12 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SelectableDates
@@ -24,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,42 +36,49 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.brightbox.hourglass.utils.convertUTCMidnightToLocalMidnight
+import com.brightbox.hourglass.utils.formatMillisecondsToSQLiteDate
+import com.brightbox.hourglass.utils.getStartOfTodayMillisInUTC
+import com.brightbox.hourglass.viewmodel.TimeViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.ZoneId
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-import java.util.Date
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerComponent(
+    modifier: Modifier = Modifier,
+    label: String,
     date: Long? = null,
     setDate: (date: Long) -> Unit,
     enabled: Boolean = true,
+    timeViewModel: TimeViewModel = hiltViewModel()
 ) {
+    val today = timeViewModel.currentTimeMillis.collectAsState()
+
     val minDate: SelectableDates = object : SelectableDates {
         override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-            return utcTimeMillis >= System.currentTimeMillis() - 86400000
+            val startOfTodayMillis = getStartOfTodayMillisInUTC()
+            Log.d("DatePickerComponent", "startOfTodayMillis: $startOfTodayMillis")
+
+            return utcTimeMillis >= startOfTodayMillis
         }
     }
+
     var showDatePicker by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = if (date == 0L) null else date,
         selectableDates = minDate
     )
-    datePickerState.selectableDates
     val selectedDate = datePickerState.selectedDateMillis?.let {
-        formatMillisToDate(it)
+        formatMillisecondsToSQLiteDate(convertUTCMidnightToLocalMidnight(it))
     } ?: ""
 
     val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(selectedDate) {
-        setDate(datePickerState.selectedDateMillis ?: 0)
+    LaunchedEffect(datePickerState.selectedDateMillis) {
+        setDate(datePickerState.selectedDateMillis?.let { convertUTCMidnightToLocalMidnight(it) } ?: 0)
+        Log.d("DatePickerComponent", "selectedDateMillis: ${datePickerState.selectedDateMillis}")
         coroutineScope.launch {
             delay(50)
             showDatePicker = false
@@ -79,7 +86,7 @@ fun DatePickerComponent(
     }
 
     Box(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier
     ) {
         OutlinedTextField(
             value = selectedDate,
@@ -87,7 +94,7 @@ fun DatePickerComponent(
             enabled = enabled,
             label = {
                 Text(
-                    text = "Due date",
+                    text = label,
                 )
             },
             readOnly = true,
@@ -129,26 +136,13 @@ fun DatePickerComponent(
                 ) {
                     DatePicker(
                         state = datePickerState,
-                        showModeToggle = false
+                        showModeToggle = false,
+                        colors = DatePickerDefaults.colors(
+                            containerColor = MaterialTheme.colorScheme.surface
+                        )
                     )
                 }
             }
         }
     }
-}
-
-// Format the date according to SQLite dates best practices
-fun formatMillisToDate(date: Long): String {
-    val localDate = Instant.ofEpochMilli(date)
-        .atZone(ZoneOffset.UTC)
-        .toLocalDate()
-
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    return localDate.format(formatter)
-}
-
-fun formatDateToMillis(date: String): Long {
-    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    val formattedDate = formatter.parse(date)
-    return formattedDate?.time ?: 0L
 }

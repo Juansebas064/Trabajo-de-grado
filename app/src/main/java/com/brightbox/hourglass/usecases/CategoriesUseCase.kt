@@ -13,7 +13,7 @@ class CategoriesUseCase @Inject constructor(
         db.categoriesDao().upsertCategory(category)
     }
 
-    suspend fun deleteCategory(category: CategoriesModel) {
-        db.categoriesDao().deleteCategory(category)
+    suspend fun deleteCategory(id: Int) {
+        db.categoriesDao().deleteCategory(id)
     }
 }

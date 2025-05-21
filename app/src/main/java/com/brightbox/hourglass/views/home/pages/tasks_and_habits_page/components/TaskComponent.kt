@@ -1,10 +1,11 @@
-package com.brightbox.hourglass.views.home.pages.tasks_page.components
+package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components
 
-import android.widget.Toast
+import android.util.Log
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -20,49 +21,61 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.CardColors
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.model.CategoriesModel
 import com.brightbox.hourglass.model.TasksModel
-import com.brightbox.hourglass.viewmodel.TasksViewModel
+import com.brightbox.hourglass.utils.formatMillisecondsToSQLiteDate
+import com.brightbox.hourglass.utils.getDifferenceInDays
+import com.brightbox.hourglass.viewmodel.TimeViewModel
 import com.brightbox.hourglass.views.theme.LocalSpacing
+import kotlin.math.abs
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TaskComponent(
+    modifier: Modifier = Modifier,
     task: TasksModel,
     selectedTasks: List<Int>,
-    isSelectingTasks: Boolean,
+    isSelectingElements: Boolean,
     onTasksEvent: (TasksEvent) -> Unit,
     category: CategoriesModel?,
-    modifier: Modifier = Modifier
+    timeViewModel: TimeViewModel = hiltViewModel()
 ) {
 
     val spacing = LocalSpacing.current
     val isSelected = selectedTasks.contains(task.id)
+    val daysRemaining: Int = timeViewModel.currentTimeMillis.collectAsState().let { milliseconds ->
+        if (!task.dateDue.isNullOrEmpty()) {
+            getDifferenceInDays(milliseconds.value, task.dateDue)
+        } else {
+            0
+        }
+    }
+
     val prioritiesColors = mapOf(
         "High" to listOf(
             MaterialTheme.colorScheme.error,
@@ -70,13 +83,21 @@ fun TaskComponent(
         ),
         "Medium" to listOf(
             MaterialTheme.colorScheme.surfaceVariant,
-            MaterialTheme.colorScheme.onSecondary
+            MaterialTheme.colorScheme.onSurfaceVariant
         ),
         "Low" to listOf(
             MaterialTheme.colorScheme.tertiary,
             MaterialTheme.colorScheme.onTertiary
         ),
     )
+
+    var canExpand by remember {
+        mutableStateOf(false)
+    }
+
+    var expanded by remember {
+        mutableStateOf(false)
+    }
 
     ElevatedCard(
         colors = CardDefaults.cardColors(
@@ -107,7 +128,7 @@ fun TaskComponent(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                 ),
                 onClick = {
-                    when (isSelectingTasks) {
+                    when (isSelectingElements) {
                         true -> {
                             if (isSelected) {
                                 onTasksEvent(TasksEvent.UnmarkTaskSelected(task.id!!))
@@ -138,8 +159,14 @@ fun TaskComponent(
     ) {
         Box(
             modifier = modifier
-                .padding(spacing.spaceMedium)
+                .padding(
+                    top = spacing.spaceMedium,
+                    bottom = if (expanded || task.wasDelayed) spacing.spaceExtraSmall else spacing.spaceMedium,
+                    start = spacing.spaceMedium,
+                    end = spacing.spaceMedium
+                )
         ) {
+
             // Primary container
             Column(
                 horizontalAlignment = Alignment.Start,
@@ -185,25 +212,38 @@ fun TaskComponent(
                             text = task.priority,
                             style = MaterialTheme.typography.bodySmall,
                             color = prioritiesColors[task.priority]!![1],
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
                         )
                     }
                 }
 
                 // Description
                 if (task.description.isNotEmpty()) {
+
                     Box(
                         modifier = Modifier
+                            .animateContentSize()
                     ) {
                         Text(
                             text = task.description,
                             style = MaterialTheme.typography.bodyMedium,
                             lineHeight = MaterialTheme.typography.bodyMedium.fontSize,
                             textAlign = TextAlign.Start,
+                            overflow = TextOverflow.Ellipsis,
                             textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
+                            maxLines = if (expanded) Int.MAX_VALUE else 2,
+                            onTextLayout = { layoutResult ->
+                                // Si no está expandido y hay más de 2 líneas, activamos el botón
+                                if (!expanded && layoutResult.hasVisualOverflow) {
+                                    canExpand = true
+                                } else if (!expanded && !layoutResult.hasVisualOverflow) {
+                                    canExpand = false
+                                }
+                            }
                         )
                     }
                 }
+
 
                 // Date
                 if (task.dateDue?.isNotEmpty() == true) {
@@ -212,14 +252,25 @@ fun TaskComponent(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = spacing.spaceExtraSmall)
+                            .padding(top = spacing.spaceSmall)
                     ) {
+                        Log.d("TaskComponent", "daysRemaining: $daysRemaining")
                         Text(
-                            text = "Due: ",
+                            text = when (daysRemaining) {
+                                0 -> "Today"
+                                1 -> "Tomorrow"
+                                else -> if (daysRemaining > 1) {
+                                    "In $daysRemaining days"
+                                } else {
+                                    "${abs(daysRemaining)} days late"
+                                }
+                            },
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontWeight = FontWeight.Bold
                             ),
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = if (task.wasDelayed && !task.isCompleted)
+                                MaterialTheme.colorScheme.error
+                            else MaterialTheme.colorScheme.onSurface,
                             textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
                         )
 
@@ -233,7 +284,9 @@ fun TaskComponent(
                             Icon(
                                 imageVector = Icons.Default.CalendarToday,
                                 contentDescription = "Date",
-                                tint = MaterialTheme.colorScheme.onSurface,
+                                tint = if (task.wasDelayed && !task.isCompleted)
+                                    MaterialTheme.colorScheme.error
+                                else MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier
                                     .scale(0.7f)
                             )
@@ -241,7 +294,9 @@ fun TaskComponent(
                             Text(
                                 text = task.dateDue,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface,
+                                color = if (task.wasDelayed && !task.isCompleted)
+                                    MaterialTheme.colorScheme.error
+                                else MaterialTheme.colorScheme.onSurface,
                                 textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
                             )
                         }
@@ -304,5 +359,53 @@ fun TaskComponent(
             }
         }
 
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(0.dp)
+        ) {
+            if (task.description.isNotEmpty() && canExpand) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+//                        .padding(bottom = spacing.spaceSmall)
+                        .clickable {
+                            expanded = !expanded
+                        },
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(Modifier.padding(vertical = spacing.spaceExtraSmall)) {
+                        Icon(
+                            imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                            contentDescription = "Expand",
+                            tint = MaterialTheme.colorScheme.onSurface,
+                        )
+                    }
+                }
+            }
+
+            if (task.wasDelayed) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            MaterialTheme.colorScheme.surfaceVariant.copy(
+                                alpha = if (task.isCompleted) 0.8f else 1f
+                            )
+                        )
+                        .padding(vertical = spacing.spaceSmall),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Delayed",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "tasks",
+    tableName = "habits",
     foreignKeys = [
         ForeignKey(
             entity = CategoriesModel::class,
@@ -14,18 +14,13 @@ import androidx.room.PrimaryKey
         )
     ]
 )
-
-data class TasksModel(
+data class HabitsModel (
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     val title: String,
-    val description: String,
-    val priority: String,
-    val dateCreated: String?,
-    val dateDue: String?,
-    val dateCompleted: String?,
-    val isCompleted: Boolean,
-    val wasDelayed: Boolean,
     val categoryId: Int?,
-    val visible: Boolean
+    val daysOfWeek: String,
+    val startDate: String,
+    val endDate: String?,
+    val deleted: Boolean
 )

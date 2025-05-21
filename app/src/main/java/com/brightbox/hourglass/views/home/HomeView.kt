@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import com.brightbox.hourglass.views.home.menu.PinnedAppsAndMenuModalView
-import com.brightbox.hourglass.views.home.pages.tasks_page.TasksPageView
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
@@ -80,7 +79,7 @@ fun HomeView(
                 }
 
                 1 -> {
-                    TasksPageView(
+                    TasksAndHabitsPageView(
                         onNavigateToSettings = onNavigateToPreferences,
                         modifier = Modifier.fillMaxSize()
                     )

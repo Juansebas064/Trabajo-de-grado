@@ -42,8 +42,6 @@ class CategoriesViewModel @Inject constructor(
 
     fun onEvent(event: CategoriesEvent) {
         when (event) {
-            CategoriesEvent.DeleteCategory -> TODO()
-
             CategoriesEvent.HideDialog -> {
                 _state.update {
                     it.copy(
@@ -87,6 +85,12 @@ class CategoriesViewModel @Inject constructor(
 
             CategoriesEvent.ClearDialogFields -> {
                 clearDialogFields()
+            }
+
+            is CategoriesEvent.DeleteCategory -> {
+                viewModelScope.launch {
+                    _categoriesUseCase.deleteCategory(event.categoryId)
+                }
             }
         }
 
