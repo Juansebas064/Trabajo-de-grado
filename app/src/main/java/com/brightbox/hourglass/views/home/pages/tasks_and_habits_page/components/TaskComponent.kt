@@ -268,9 +268,9 @@ fun TaskComponent(
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontWeight = FontWeight.Bold
                             ),
-                            color = if (daysRemaining > 0)
-                                MaterialTheme.colorScheme.onSurface
-                            else MaterialTheme.colorScheme.error,
+                            color = if (task.wasDelayed && !task.isCompleted)
+                                MaterialTheme.colorScheme.error
+                            else MaterialTheme.colorScheme.onSurface,
                             textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
                         )
 
@@ -284,9 +284,9 @@ fun TaskComponent(
                             Icon(
                                 imageVector = Icons.Default.CalendarToday,
                                 contentDescription = "Date",
-                                tint = if (daysRemaining > 0)
-                                    MaterialTheme.colorScheme.onSurface
-                                else MaterialTheme.colorScheme.error,
+                                tint = if (task.wasDelayed && !task.isCompleted)
+                                    MaterialTheme.colorScheme.error
+                                else MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier
                                     .scale(0.7f)
                             )
@@ -294,9 +294,9 @@ fun TaskComponent(
                             Text(
                                 text = task.dateDue,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = if (daysRemaining > 0)
-                                    MaterialTheme.colorScheme.onSurface
-                                else MaterialTheme.colorScheme.error,
+                                color = if (task.wasDelayed && !task.isCompleted)
+                                    MaterialTheme.colorScheme.error
+                                else MaterialTheme.colorScheme.onSurface,
                                 textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
                             )
                         }
