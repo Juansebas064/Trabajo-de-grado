@@ -196,8 +196,11 @@ fun HabitComponent(
                             Text(
                                 text = day[0].uppercase(),
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = if (day in habit.daysOfWeek) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier.align(Alignment.Center)
+                                color = if (day in habit.daysOfWeek)
+                                    MaterialTheme.colorScheme.onSecondary
+                                else MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.align(Alignment.Center),
+                                textDecoration = if (isCompletedForToday && day == today["day"]) TextDecoration.LineThrough else null,
                             )
                         }
                     }
@@ -236,6 +239,7 @@ fun HabitComponent(
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold,
+                            textDecoration = if (isCompletedForToday) TextDecoration.LineThrough else null,
                         )
                     }
                     // Category

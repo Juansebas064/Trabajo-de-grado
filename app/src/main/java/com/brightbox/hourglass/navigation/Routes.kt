@@ -7,6 +7,3 @@ data object HomeRoute
 
 @Serializable
 data object PreferencesRoute
-
-@Serializable
-data object GeneralPreferencesRoute

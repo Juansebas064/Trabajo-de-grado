@@ -10,6 +10,26 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
 
+private val SQLITE_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+// Get difference between two dates in days
+fun getDifferenceInDays(startDate: String, endDate: String): Int {
+    val startDateConverted = LocalDate.parse(startDate, SQLITE_DATE_FORMATTER)
+    val endDateConverted = LocalDate.parse(endDate, SQLITE_DATE_FORMATTER)
+
+    return ChronoUnit.DAYS.between(startDateConverted, endDateConverted).toInt()
+}
+
+fun getDifferenceInDays(startDate: Long, endDate: String): Int {
+    val startDateConverted = Instant.ofEpochMilli(startDate)
+        .atZone(ZoneId.systemDefault()) // Considera la zona horaria del sistema
+        .toLocalDate()
+    val endDateConverted = LocalDate.parse(endDate, SQLITE_DATE_FORMATTER)
+    val daysDifference = ChronoUnit.DAYS.between(startDateConverted, endDateConverted).toInt()
+
+    return daysDifference
+}
+
 // Format the milliseconds date to String according to SQLite date's best practices
 fun formatMillisecondsToSQLiteDate(date: Long): String {
     val localDate = Instant.ofEpochMilli(date)

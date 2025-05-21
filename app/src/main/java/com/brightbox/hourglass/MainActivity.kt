@@ -5,15 +5,21 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.brightbox.hourglass.navigation.NavigationRoot
 import com.brightbox.hourglass.receivers.TasksWorker
+import com.brightbox.hourglass.viewmodel.preferences.PreferencesViewModel
 import com.brightbox.hourglass.views.theme.HourglassProductivityLauncherTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
@@ -33,9 +39,15 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             HourglassProductivityLauncherTheme() {
+                val preferencesViewModel: PreferencesViewModel = hiltViewModel()
+                val state = preferencesViewModel.state.collectAsState()
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
+                        .background(
+                            if (state.value.solidBackground) MaterialTheme.colorScheme.background
+                            else Color.Transparent
+                        )
                 ) {
                     NavigationRoot()
                 }
@@ -69,7 +81,10 @@ class MainActivity : ComponentActivity() {
                 ExistingWorkPolicy.KEEP,
                 updateRequest
             )
-            Log.d("MainActivty", "Programación inicial de la tarea de medianoche en $delayMillis ms.")
+            Log.d(
+                "MainActivty",
+                "Programación inicial de la tarea de medianoche en $delayMillis ms."
+            )
         } else {
             Log.d("MainActivty", "La tarea de medianoche ya está programada.")
         }

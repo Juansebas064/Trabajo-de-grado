@@ -1,5 +1,6 @@
 package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -29,6 +30,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,31 +45,45 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.model.CategoriesModel
 import com.brightbox.hourglass.model.TasksModel
+import com.brightbox.hourglass.utils.formatMillisecondsToSQLiteDate
+import com.brightbox.hourglass.utils.getDifferenceInDays
+import com.brightbox.hourglass.viewmodel.TimeViewModel
 import com.brightbox.hourglass.views.theme.LocalSpacing
+import kotlin.math.abs
 
 @Composable
 fun TaskComponent(
+    modifier: Modifier = Modifier,
     task: TasksModel,
     selectedTasks: List<Int>,
     isSelectingElements: Boolean,
     onTasksEvent: (TasksEvent) -> Unit,
     category: CategoriesModel?,
-    modifier: Modifier = Modifier
+    timeViewModel: TimeViewModel = hiltViewModel()
 ) {
 
     val spacing = LocalSpacing.current
     val isSelected = selectedTasks.contains(task.id)
+    val daysRemaining: Int = timeViewModel.currentTimeMillis.collectAsState().let { milliseconds ->
+        if (!task.dateDue.isNullOrEmpty()) {
+            getDifferenceInDays(milliseconds.value, task.dateDue)
+        } else {
+            0
+        }
+    }
+
     val prioritiesColors = mapOf(
         "High" to listOf(
             MaterialTheme.colorScheme.error,
             MaterialTheme.colorScheme.onError
         ),
         "Medium" to listOf(
-            MaterialTheme.colorScheme.surfaceTint,
-            MaterialTheme.colorScheme.onSecondary
+            MaterialTheme.colorScheme.surfaceVariant,
+            MaterialTheme.colorScheme.onSurfaceVariant
         ),
         "Low" to listOf(
             MaterialTheme.colorScheme.tertiary,
@@ -220,7 +236,7 @@ fun TaskComponent(
                                 // Si no está expandido y hay más de 2 líneas, activamos el botón
                                 if (!expanded && layoutResult.hasVisualOverflow) {
                                     canExpand = true
-                                } else if(!expanded && !layoutResult.hasVisualOverflow) {
+                                } else if (!expanded && !layoutResult.hasVisualOverflow) {
                                     canExpand = false
                                 }
                             }
@@ -238,12 +254,23 @@ fun TaskComponent(
                             .fillMaxWidth()
                             .padding(top = spacing.spaceSmall)
                     ) {
+                        Log.d("TaskComponent", "daysRemaining: $daysRemaining")
                         Text(
-                            text = "In 2 days ",
+                            text = when (daysRemaining) {
+                                0 -> "Today"
+                                1 -> "Tomorrow"
+                                else -> if (daysRemaining > 1) {
+                                    "In $daysRemaining days"
+                                } else {
+                                    "${abs(daysRemaining)} days late"
+                                }
+                            },
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontWeight = FontWeight.Bold
                             ),
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = if (daysRemaining > 0)
+                                MaterialTheme.colorScheme.onSurface
+                            else MaterialTheme.colorScheme.error,
                             textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
                         )
 
@@ -257,7 +284,9 @@ fun TaskComponent(
                             Icon(
                                 imageVector = Icons.Default.CalendarToday,
                                 contentDescription = "Date",
-                                tint = MaterialTheme.colorScheme.onSurface,
+                                tint = if (daysRemaining > 0)
+                                    MaterialTheme.colorScheme.onSurface
+                                else MaterialTheme.colorScheme.error,
                                 modifier = Modifier
                                     .scale(0.7f)
                             )
@@ -265,7 +294,9 @@ fun TaskComponent(
                             Text(
                                 text = task.dateDue,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface,
+                                color = if (daysRemaining > 0)
+                                    MaterialTheme.colorScheme.onSurface
+                                else MaterialTheme.colorScheme.error,
                                 textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
                             )
                         }

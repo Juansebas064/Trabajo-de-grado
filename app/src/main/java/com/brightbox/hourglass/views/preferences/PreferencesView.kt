@@ -12,24 +12,29 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.RoomPreferences
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.brightbox.hourglass.views.common.TextAndIconCardComponent
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.brightbox.hourglass.events.preferences.GeneralPreferencesEvent
+import com.brightbox.hourglass.viewmodel.preferences.PreferencesViewModel
+import com.brightbox.hourglass.views.preferences.components.ToggleComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
 fun PreferencesView(
     modifier: Modifier = Modifier,
+    preferencesViewModel: PreferencesViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit,
-    onNavigateToGeneralPreferences: () -> Unit
 ) {
     val spacing = LocalSpacing.current
+    val state = preferencesViewModel.state.collectAsState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -42,28 +47,47 @@ fun PreferencesView(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(spacing.tasksPadding)
+                .padding(spacing.spaceLarge)
         ) {
-            Text(
-                text = "Settings",
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-
-            Spacer(
+            Box(
                 modifier = Modifier
-                    .height(spacing.spaceLarge)
-            )
+                    .padding(vertical = spacing.spaceExtraLarge)
+            ) {
+                Text(
+                    text = "Settings",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
 
-            TextAndIconCardComponent(
-                icon = Icons.Default.RoomPreferences,
-                text = "General",
-                onClick = {
-                    onNavigateToGeneralPreferences()
-                }
-            )
+            Column(
+                verticalArrangement = Arrangement.Top,
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+                ToggleComponent(
+                    text = "Open keyboard automatically in app menu",
+                    checked = state.value.openKeyboardInAppMenu,
+                    onCheckedChange = {
+                        preferencesViewModel.onEvent(
+                            GeneralPreferencesEvent.SetOpenKeyboardInAppMenu(it)
+                        )
+                    }
+                )
+
+                ToggleComponent(
+                    text = "Show solid background",
+                    checked = state.value.solidBackground,
+                    onCheckedChange = {
+                        preferencesViewModel.onEvent(
+                            GeneralPreferencesEvent.SetSolidBackground(it)
+                        )
+                    }
+                )
+            }
         }
 
+        // Go back
         IconButton(
             onClick = {
                 onNavigateUp()

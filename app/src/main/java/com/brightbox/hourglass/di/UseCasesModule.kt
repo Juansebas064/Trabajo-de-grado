@@ -5,7 +5,7 @@ import com.brightbox.hourglass.config.HourglassDatabase
 import com.brightbox.hourglass.data.preferences.PreferencesImpl
 import com.brightbox.hourglass.usecases.ApplicationsUseCase
 import com.brightbox.hourglass.usecases.CategoriesUseCase
-import com.brightbox.hourglass.usecases.GeneralPreferencesUseCase
+import com.brightbox.hourglass.usecases.PreferencesUseCase
 import com.brightbox.hourglass.usecases.HabitsLogsUseCase
 import com.brightbox.hourglass.usecases.HabitsUseCase
 import com.brightbox.hourglass.usecases.TasksUseCase
@@ -55,7 +55,7 @@ object UseCasesModule {
 
     @Provides
     @Singleton
-    fun providePreferencesUseCase(preferencesImpl: PreferencesImpl): GeneralPreferencesUseCase {
-        return GeneralPreferencesUseCase(preferencesImpl)
+    fun providePreferencesUseCase(preferencesImpl: PreferencesImpl): PreferencesUseCase {
+        return PreferencesUseCase(preferencesImpl)
     }
 }

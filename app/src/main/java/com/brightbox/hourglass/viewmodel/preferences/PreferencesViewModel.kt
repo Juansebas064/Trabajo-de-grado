@@ -4,13 +4,12 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brightbox.hourglass.events.preferences.GeneralPreferencesEvent
-import com.brightbox.hourglass.states.preferences.GeneralPreferencesState
-import com.brightbox.hourglass.usecases.GeneralPreferencesUseCase
+import com.brightbox.hourglass.states.preferences.PreferencesState
+import com.brightbox.hourglass.usecases.PreferencesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -21,24 +20,24 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
-class GeneralPreferencesViewModel @Inject constructor(
-    private val generalPreferencesUseCase: GeneralPreferencesUseCase
+class PreferencesViewModel @Inject constructor(
+    private val preferencesUseCase: PreferencesUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(GeneralPreferencesState())
+    private val _state = MutableStateFlow(PreferencesState())
 
     val state = _state.asStateFlow().onStart {
-        Log.d("GeneralPreferencesViewModel", "Loading preferences")
+        Log.d("PreferencesViewModel", "Loading preferences")
         loadPreferences()
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
-        GeneralPreferencesState()
+        PreferencesState()
     )
 
     private fun loadPreferences() {
         runBlocking {
-            generalPreferencesUseCase.getGeneralPreferences()
+            preferencesUseCase.getPreferences()
                 .onEach { preferencesState ->
                     _state.value = preferencesState
                 }
@@ -48,20 +47,34 @@ class GeneralPreferencesViewModel @Inject constructor(
 
     private fun setOpenKeyboardInAppMenu(value: Boolean) {
         viewModelScope.launch {
-            generalPreferencesUseCase.setOpenKeyboardInAppMenu(value)
+            preferencesUseCase.setOpenKeyboardInAppMenu(value)
+        }
+    }
+
+    private fun setSolidBackground(value: Boolean) {
+        viewModelScope.launch {
+            preferencesUseCase.setSolidBackground(value)
         }
     }
 
     fun onEvent(event: GeneralPreferencesEvent) {
         when (event) {
             is GeneralPreferencesEvent.SetOpenKeyboardInAppMenu -> {
-                Log.d("GeneralPreferencesViewModel", "Setting openKeyboardInAppMenu to ${event.value}")
                 _state.update {
                     it.copy(
                         openKeyboardInAppMenu = event.value
                     )
                 }
                 setOpenKeyboardInAppMenu(event.value)
+            }
+
+            is GeneralPreferencesEvent.SetSolidBackground -> {
+                _state.update {
+                    it.copy(
+                        solidBackground = event.value
+                    )
+                }
+                setSolidBackground(event.value)
             }
         }
     }

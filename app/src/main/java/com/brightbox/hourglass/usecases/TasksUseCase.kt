@@ -4,15 +4,16 @@ import android.util.Log
 import com.brightbox.hourglass.config.HourglassDatabase
 import com.brightbox.hourglass.model.TasksModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class TasksUseCase @Inject constructor(
     private val db: HourglassDatabase
 ) {
-    fun getTodayTasks(date: String): Flow<List<TasksModel>> =
+    fun getTasks(): Flow<List<TasksModel>> =
         db.tasksDao().getTasks()
+
+//    suspend fun getTodayTasksAtMidnight(date: String): List<TasksModel> {
+//        var todayTaskList: List<TasksModel> = emptyList()
 //        db.tasksDao().getTasks().map { tasks ->
 //            tasks.filter { task ->
 //                if (task.isCompleted) {
@@ -21,24 +22,11 @@ class TasksUseCase @Inject constructor(
 //                    true
 //                }
 //            }
-//        }
-
-    suspend fun getTodayTasksAtMidnight(date: String): List<TasksModel> {
-        var todayTaskList: List<TasksModel> = emptyList()
-        db.tasksDao().getTasks().map { tasks ->
-            tasks.filter { task ->
-                if (task.isCompleted) {
-                    task.dateCompleted == date
-                } else {
-                    true
-                }
-            }
-        }.collectLatest { taskList ->
-            todayTaskList = taskList
-        } // Use toList() to collect the flow into a list
-        return todayTaskList
-    }
-
+//        }.collectLatest { taskList ->
+//            todayTaskList = taskList
+//        } // Use toList() to collect the flow into a list
+//        return todayTaskList
+//    }
 
     suspend fun validateCurrentTasksOnMidnight(
         previousDate: String,
@@ -47,7 +35,6 @@ class TasksUseCase @Inject constructor(
     ) {
         Log.d("TasksUseCase", "Yesterday: $previousDate, Today: $currentDate")
         tasks.forEach { task ->
-            Log.d("TasksUseCase", "${task.title}, Date: ${task.dateDue}")
             if (task.dateDue == previousDate) {
                 setTaskDelayed(task.id!!)
             }
@@ -77,7 +64,7 @@ class TasksUseCase @Inject constructor(
         db.tasksDao().setTaskUncompleted(id)
     }
 
-    suspend fun setTaskDelayed(id: Int) {
+    private suspend fun setTaskDelayed(id: Int) {
         db.tasksDao().setTaskDelayed(id)
     }
 }

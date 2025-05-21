@@ -13,12 +13,10 @@ import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.model.TasksModel
 import com.brightbox.hourglass.states.TasksState
 import com.brightbox.hourglass.usecases.TasksUseCase
-import com.brightbox.hourglass.utils.formatMillisecondsToHours
 import com.brightbox.hourglass.utils.formatMillisecondsToSQLiteDate
 import com.brightbox.hourglass.utils.formatSQLiteDateToMilliseconds
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -68,15 +66,15 @@ class TasksViewModel @Inject constructor(
             tasks = tasks
         )
     }.onStart {
-        loadTodayTaskList()
+        loadTasksList()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TasksState())
 
     private val _selectedTasks = MutableStateFlow(emptyList<Int>()) // Will store id's
 
     val selectedTasks = _selectedTasks.asStateFlow()
 
-    private fun loadTodayTaskList() {
-        _tasksUseCase.getTodayTasks(formatMillisecondsToSQLiteDate(System.currentTimeMillis()))
+    private fun loadTasksList() {
+        _tasksUseCase.getTasks()
             .onEach { tasks ->
                 _tasksList.value = tasks
             }.launchIn(viewModelScope)

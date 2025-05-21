@@ -1,11 +1,10 @@
 package com.brightbox.hourglass.data.preferences
 
-import com.brightbox.hourglass.states.preferences.GeneralPreferencesState
+import com.brightbox.hourglass.states.preferences.PreferencesState
 import kotlinx.coroutines.flow.Flow
 
 interface Preferences {
-    suspend fun getGeneralPreferences(): Flow<GeneralPreferencesState>
+    suspend fun getGeneralPreferences(): Flow<PreferencesState>
 
-    suspend fun setOpenKeyboardInAppMenu(key: String, value: Boolean)
-    suspend fun getOpenKeyboardInAppMenu(key: String): Flow<Boolean>
+    suspend fun setBooleanPreference(key: String, value: Boolean)
 }
