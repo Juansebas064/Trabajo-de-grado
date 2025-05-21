@@ -2,15 +2,22 @@ package com.brightbox.hourglass.usecases
 
 import android.util.Log
 import com.brightbox.hourglass.config.HourglassDatabase
+import com.brightbox.hourglass.constants.PrioritiesEnum
 import com.brightbox.hourglass.model.TasksModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class TasksUseCase @Inject constructor(
     private val db: HourglassDatabase
 ) {
     fun getTasks(): Flow<List<TasksModel>> =
-        db.tasksDao().getTasks()
+        db.tasksDao().getTasks().map { taskList ->
+            taskList.sortedBy {
+                PrioritiesEnum.valueOf(it.priority).value
+            }.sortedBy { it.dateDue }
+        }
 
 //    suspend fun getTodayTasksAtMidnight(date: String): List<TasksModel> {
 //        var todayTaskList: List<TasksModel> = emptyList()

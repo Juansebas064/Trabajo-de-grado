@@ -101,7 +101,7 @@ class TasksViewModel @Inject constructor(
                 taskDueDate = 0,
                 wasTaskDelayed = false,
                 taskCategory = null,
-                taskPriority = PrioritiesEnum.HIGH.priority
+                taskPriority = PrioritiesEnum.High.priority
             )
         }
     }

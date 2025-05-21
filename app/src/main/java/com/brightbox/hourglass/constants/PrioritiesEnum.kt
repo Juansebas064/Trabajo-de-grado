@@ -1,18 +1,20 @@
 package com.brightbox.hourglass.constants
 
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.graphics.Color
-
 enum class PrioritiesEnum(
-    val priority: String
+    val priority: String,
+    val value: Int
 ) {
-    HIGH(
-        priority = "High"
+    High(
+        priority = "High",
+        value = 1
     ),
-    MEDIUM(
-        priority = "Medium"
+    Medium(
+        priority = "Medium",
+        value = 2
     ),
-    LOW(
-        priority = "Low"
+    Low(
+        priority = "Low",
+        value = 3
     )
 }
+
