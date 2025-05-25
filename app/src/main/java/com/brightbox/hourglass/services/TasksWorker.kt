@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.receivers
+package com.brightbox.hourglass.services
 
 import android.content.Context
 import android.content.Intent

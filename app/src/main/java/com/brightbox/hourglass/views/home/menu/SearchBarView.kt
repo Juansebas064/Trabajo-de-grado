@@ -1,10 +1,10 @@
 package com.brightbox.hourglass.views.home.menu
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
+import com.brightbox.hourglass.views.theme.LocalSpacing
 import kotlinx.coroutines.launch
 
 @Composable
@@ -45,11 +47,29 @@ fun SearchBarView(
 ) {
     val searchText by applicationsViewModel.searchText.collectAsState()
     val coroutineScope = rememberCoroutineScope()
+    val spacing = LocalSpacing.current
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(
+            spacing.spaceSmall,
+            Alignment.Start
+        ),
+        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.onBackground,
+                shape = RoundedCornerShape(spacing.spaceSmall)
+            )
+            .padding(spacing.spaceMedium - spacing.spaceExtraSmall)
     ) {
+        Icon(
+            imageVector = Icons.Default.Search,
+            contentDescription = "",
+            tint = MaterialTheme.colorScheme.onBackground,
+        )
+
         BasicTextField(
             value = searchText,
             onValueChange = {
@@ -74,25 +94,22 @@ fun SearchBarView(
             textStyle = TextStyle.Default.copy(
                 color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 18.sp,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Start,
             ),
             cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
             decorationBox = { innerTextField ->
+                // Box para el text field
                 Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.padding(vertical = 10.dp, horizontal = 10.dp)
+                    contentAlignment = AbsoluteAlignment.CenterLeft,
+                    modifier = Modifier
+                        .fillMaxWidth()
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.align(Alignment.CenterStart)
-                    )
                     if (searchText.isEmpty()) {
                         Text(
                             text = "Search",
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-                            modifier = Modifier.align(Alignment.Center)
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
                         )
                     }
                     innerTextField()
@@ -100,14 +117,10 @@ fun SearchBarView(
             },
             singleLine = true,
             modifier = Modifier
-                .fillMaxWidth()
-                .border(
-                    width = 2.dp,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    shape = RoundedCornerShape(15.dp)
-                )
-                .height(50.dp)
                 .focusRequester(focusRequester)
+//                .wrapContentWidth()
+
+//                .width(IntrinsicSize.Min)
 //                .onKeyEvent { event ->
 //                    if (event.key.nativeKeyCode == KeyEvent.KEYCODE_BACK) {
 //                        focusManager.clearFocus()

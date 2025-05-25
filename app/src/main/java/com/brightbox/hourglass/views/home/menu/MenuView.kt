@@ -97,9 +97,7 @@ fun MenuView(
             focusRequester = focusRequester,
             focusManager = focusManager,
             modifier = Modifier
-                .fillMaxWidth()
-                .imePadding()
-                .padding(vertical = 16.dp)
+//                .fillMaxWidth()
         )
     }
 }

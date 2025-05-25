@@ -1,13 +1,19 @@
 package com.brightbox.hourglass.viewmodel
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.Intent.ACTION_PACKAGE_ADDED
+import android.content.IntentFilter
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brightbox.hourglass.model.ApplicationsModel
 import com.brightbox.hourglass.states.ApplicationsState
 import com.brightbox.hourglass.usecases.ApplicationsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,8 +26,32 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ApplicationsViewModel @Inject constructor(
-    private val _applicationsUseCase: ApplicationsUseCase
+    private val _applicationsUseCase: ApplicationsUseCase,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
+
+    private val appChangeReceiver = object: BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            Log.d("ApplicationsViewModel", "onReceive called")
+            viewModelScope.launch {
+                _applicationsUseCase.queryInstalledApplicationsToDatabase()
+            }
+        }
+    }
+
+    init {
+        val appChangeIntentFilter = IntentFilter().apply {
+            addAction(Intent.ACTION_PACKAGE_ADDED)
+            addAction(Intent.ACTION_PACKAGE_REMOVED)
+            addDataScheme("package") // Necesario para ACTION_PACKAGE_REMOVED, _ADDED, _REPLACED
+        }
+        ContextCompat.registerReceiver(
+            context,
+            appChangeReceiver,
+            appChangeIntentFilter,
+            ContextCompat.RECEIVER_EXPORTED
+        )
+    }
 
     // States
     private val _searchText = MutableStateFlow("")

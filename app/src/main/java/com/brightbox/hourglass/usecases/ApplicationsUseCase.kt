@@ -25,30 +25,6 @@ class ApplicationsUseCase @Inject constructor(
     @ApplicationContext private val application: Context
 ) {
 
-    companion object {
-        val eventBus = MutableSharedFlow<ApplicationsEvent>()
-    }
-
-    init {
-        CoroutineScope(Dispatchers.IO).launch {
-            queryInstalledApplicationsToDatabase()
-            eventBus.collectLatest { event ->
-                when (event) {
-                    is ApplicationsEvent.AppUninstalled -> {
-                        Log.d("ApplicationsUseCase", "App uninstalled: ${event.packageName}")
-
-                        deleteAppFromDatabase(event.packageName)
-                    }
-
-                    is ApplicationsEvent.AppInstalled -> {
-                        Log.d("ApplicationsUseCase", "App installed: ${event.packageName}")
-                        upsertAppToDatabase(event.packageName)
-                    }
-                }
-            }
-        }
-    }
-
     // Get all apps from the database
     fun getApplicationsFromDatabase(appNameFilter: String? = null): Flow<List<ApplicationsModel>> {
         Log.d("ApplicationsUseCase", "getApplicationsFromDatabase: map called, filter = $appNameFilter")

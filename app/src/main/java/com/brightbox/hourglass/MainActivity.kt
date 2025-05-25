@@ -19,7 +19,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.brightbox.hourglass.navigation.NavigationRoot
-import com.brightbox.hourglass.receivers.TasksWorker
+import com.brightbox.hourglass.services.TasksWorker
 import com.brightbox.hourglass.viewmodel.preferences.PreferencesViewModel
 import com.brightbox.hourglass.views.theme.HourglassProductivityLauncherTheme
 import dagger.hilt.android.AndroidEntryPoint

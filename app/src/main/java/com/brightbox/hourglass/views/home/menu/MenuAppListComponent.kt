@@ -69,7 +69,7 @@ fun MenuAppListComponent(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(spacing.spaceSmall))
                     .combinedClickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = ripple(
@@ -98,6 +98,7 @@ fun MenuAppListComponent(
                             Color.Transparent
                     )
                     .fillMaxWidth()
+                    .padding(spacing.spaceSmall)
                     .animateItem()
                     .animateContentSize()
                     .height(IntrinsicSize.Min)
@@ -125,7 +126,7 @@ fun MenuAppListComponent(
                     color = if (appShowingOptions != app.packageName)
                         MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
-                        .padding(vertical = 16.dp, horizontal = 8.dp)
+                        .padding(vertical = 16.dp)
                         .weight(3f)
                 )
 
