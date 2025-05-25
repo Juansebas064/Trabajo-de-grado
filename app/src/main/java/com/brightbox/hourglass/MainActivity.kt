@@ -1,6 +1,9 @@
 package com.brightbox.hourglass
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -15,11 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.brightbox.hourglass.navigation.NavigationRoot
 import com.brightbox.hourglass.services.TasksWorker
+import com.brightbox.hourglass.services.TimeLimitWorker
 import com.brightbox.hourglass.viewmodel.preferences.PreferencesViewModel
 import com.brightbox.hourglass.views.theme.HourglassProductivityLauncherTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,6 +43,25 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         scheduleMidnightTask()
+
+        scheduleAppUsageMonitoring()
+
+//        val intent = IntentFilter("SCHEDULE_TIME_LIMIT_WORKER")
+//
+//        val limitsWorkerReceiver = object : BroadcastReceiver() {
+//            override fun onReceive(
+//                context: Context?,
+//                intent: Intent?
+//            ) {
+//
+//            }
+//        }
+//
+//        registerReceiver(
+//            limitsWorkerReceiver,
+//            intent,
+//            RECEIVER_NOT_EXPORTED
+//        )
 
         setContent {
             HourglassProductivityLauncherTheme {
@@ -98,4 +123,31 @@ class MainActivity : ComponentActivity() {
             Log.d("MainActivty", "La tarea de medianoche ya está programada.")
         }
     }
+
+    fun scheduleAppUsageMonitoring() {
+        val immediateWorkRequest = OneTimeWorkRequestBuilder<TimeLimitWorker>()
+            .build()
+
+        WorkManager.getInstance(this).enqueue(immediateWorkRequest)
+
+        val repeatingRequest = PeriodicWorkRequestBuilder<TimeLimitWorker>(
+
+            repeatInterval = 15,
+            repeatIntervalTimeUnit = TimeUnit.MINUTES
+        )
+            // Puedes añadir restricciones aquí, ej. .setConstraints(...)
+            .build()
+
+        // Enqueue el trabajo. ExistingPeriodicWorkPolicy.KEEP significa que si ya existe un trabajo
+        // con este nombre, el nuevo no lo reemplazará. REPLACE lo reemplazaría.
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+            "TimeLimitWorker",
+            ExistingPeriodicWorkPolicy.KEEP,
+            repeatingRequest
+        )
+        Log.d("MainActivity", "TimeLimitWorker scheduled.")
+    }
+
+
 }

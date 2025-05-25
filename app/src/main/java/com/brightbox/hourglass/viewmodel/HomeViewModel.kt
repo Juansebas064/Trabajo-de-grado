@@ -20,28 +20,27 @@ class HomeViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-    private val closeMenuReceiver = object : BroadcastReceiver() {
+    private val timeLimitWorkerReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             // El Worker envió el evento, actualizar la lista de tareas
-            closeMenu()
-            Log.d("HomeViewModel", "Home press received")
+            notifyTimeLimitWork()
         }
     }
 
-    private val _closeMenu = MutableSharedFlow<Unit>()
-    val closeMenu = _closeMenu.asSharedFlow()
+    private val _timeLimitWorkDone = MutableSharedFlow<Unit>()
+    val timeLimitWorkDone = _timeLimitWorkDone.asSharedFlow()
 
-    fun closeMenu() {
+    fun notifyTimeLimitWork() {
         viewModelScope.launch {
-            _closeMenu.emit(Unit)
+            _timeLimitWorkDone.emit(Unit)
         }
     }
 
     init {
         ContextCompat.registerReceiver(
             context,
-            closeMenuReceiver,
-            IntentFilter("HOME_BUTTON_PRESSED"),
+            timeLimitWorkerReceiver,
+            IntentFilter("TIME_LIMIT_WORKER"),
             ContextCompat.RECEIVER_NOT_EXPORTED
         )
     }

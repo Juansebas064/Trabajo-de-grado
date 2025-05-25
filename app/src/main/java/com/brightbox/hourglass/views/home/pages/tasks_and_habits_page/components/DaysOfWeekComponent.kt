@@ -33,6 +33,7 @@ fun DaysOfWeekComponent(
                     text = today.replaceFirstChar { char ->
                         char.uppercase()
                     },
+                    padding = spacing.spaceSmall + spacing.spaceExtraSmall,
                     contentColor = MaterialTheme.colorScheme.onSurface,
                     textStyle = MaterialTheme.typography.bodyLarge,
                     containerColor = MaterialTheme.colorScheme.surface,

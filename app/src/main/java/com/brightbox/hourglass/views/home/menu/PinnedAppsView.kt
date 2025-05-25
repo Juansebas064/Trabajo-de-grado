@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
 import com.brightbox.hourglass.views.common.RoundedSquareButtonComponent
+import com.brightbox.hourglass.views.theme.LocalSpacing
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,12 +40,13 @@ fun PinnedAppsView(
     val apps by applicationsViewModel.appsList.collectAsState()
     val pinnedApps = apps.filter { app -> app.isPinned }
     val coroutineScope = rememberCoroutineScope()
+    val spacing = LocalSpacing.current
 
     Log.d("PinnedApps", "apps: $apps")
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .height(100.dp)
+            .padding(spacing.spaceSmall)
             .pointerInput(Unit) {
                 detectVerticalDragGestures { _, dragAmount ->
                     if (dragAmount < -10) { // Detect upward swipe
@@ -56,28 +58,22 @@ fun PinnedAppsView(
                 }
             }
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
+        Icon(
+            imageVector = Icons.Default.KeyboardArrowUp,
+            contentDescription = "",
+            tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowUp,
-                contentDescription = "",
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-        }
+        )
+
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(5.dp),
-            modifier = Modifier
-                .padding(0.dp)
         ) {
             items(items = pinnedApps) { app ->
                 RoundedSquareButtonComponent(
                     text = app.name,
                     contentColor = MaterialTheme.colorScheme.onSurface,
+                    padding = spacing.spaceSmall + spacing.spaceExtraSmall,
                     textStyle = MaterialTheme.typography.bodyLarge,
                     containerColor = MaterialTheme.colorScheme.surface,
                     onClick = {

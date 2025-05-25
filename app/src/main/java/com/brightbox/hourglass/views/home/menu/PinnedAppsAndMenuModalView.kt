@@ -1,8 +1,6 @@
 package com.brightbox.hourglass.views.home.menu
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,28 +28,15 @@ fun PinnedAppsAndMenuModalView(
     )
     val coroutineScope = rememberCoroutineScope()
     val spacing = LocalSpacing.current
-    val closeMenu = homeViewModel.closeMenu.collectAsState(
-        initial = null
-    )
-
-    LaunchedEffect(closeMenu.value) {
-        if (closeMenu.value != null) {
-            sheetState.hide()
-        }
-    }
 
     Box(
         modifier = modifier
     ) {
-        Column(
-            verticalArrangement = Arrangement.Bottom,
-        ) {
-            PinnedAppsView(
-                modifier = Modifier
-                    .padding(horizontal = spacing.spaceSmall),
-                sheetState = sheetState
-            )
-        }
+        PinnedAppsView(
+            modifier = Modifier
+                .padding(horizontal = spacing.spaceSmall),
+            sheetState = sheetState
+        )
 
         if (sheetState.isVisible) {
             ModalBottomSheet(
@@ -72,6 +57,7 @@ fun PinnedAppsAndMenuModalView(
                     sheetState = sheetState
                 )
             }
+
         }
     }
 }

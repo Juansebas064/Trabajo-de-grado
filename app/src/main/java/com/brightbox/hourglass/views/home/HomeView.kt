@@ -14,25 +14,34 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.brightbox.hourglass.viewmodel.HomeViewModel
 import com.brightbox.hourglass.views.home.menu.PinnedAppsAndMenuModalView
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 @Composable
 fun HomeView(
+    homeViewModel: HomeViewModel = hiltViewModel(),
     onNavigateToPreferences: () -> Unit,
 ) {
     val pagerState = rememberPagerState(
         initialPage = 1,
         pageCount = { 3 }
     )
-    val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    val timeLimitWorkDone = homeViewModel.timeLimitWorkDone.collectAsState(initial = null)
+
+    LaunchedEffect(timeLimitWorkDone.value) {
+        Toast.makeText(context, "Time limit work done", Toast.LENGTH_SHORT).show()
+    }
 
     rememberSystemUiController().apply {
         setNavigationBarColor(
