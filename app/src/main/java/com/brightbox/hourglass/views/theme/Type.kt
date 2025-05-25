@@ -45,7 +45,7 @@ val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = sofiaSansFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 18.sp,
+        fontSize = 20.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),

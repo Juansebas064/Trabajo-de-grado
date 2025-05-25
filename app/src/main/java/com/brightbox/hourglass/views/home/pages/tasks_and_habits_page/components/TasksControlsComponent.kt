@@ -3,13 +3,18 @@ package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.brightbox.hourglass.events.HabitsEvent
 import com.brightbox.hourglass.events.TasksEvent
+import com.brightbox.hourglass.views.common.IconButtonComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
@@ -38,17 +44,7 @@ fun TasksControlsComponent(
             .fillMaxWidth()
             .padding(top = spacing.spaceMedium)
     ) {
-//        Text(
-//            text = "Today",
-//            color = MaterialTheme.colorScheme.onBackground,
-//            style = MaterialTheme.typography.bodyLarge.plus(
-//                TextStyle(textDecoration = TextDecoration.Underline)
-//            ),
-//            modifier = Modifier
-//
-//        )
-//
-        // Add task
+
         Row(
             horizontalArrangement = Arrangement.spacedBy(spacing.spaceSmall),
             modifier = Modifier
@@ -60,7 +56,7 @@ fun TasksControlsComponent(
             } else {
                 // Show edit button only if one task is selected
                 if (selectedTasks.size + selectedHabits.size == 1) {
-                    IconButton(
+                    IconButtonComponent(
                         onClick = {
                             if (selectedTasks.isNotEmpty()) {
                                 onTasksEvent(TasksEvent.EditTask(selectedTasks.first()))
@@ -68,35 +64,23 @@ fun TasksControlsComponent(
                                 onHabitsEvent(HabitsEvent.EditHabit(selectedHabits.first()))
                             }
                         },
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(MaterialTheme.colorScheme.secondary)
-//                            .align(Alignment.Center)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = "Add task",
-                            tint = MaterialTheme.colorScheme.onSecondary
-                        )
-                    }
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSecondary,
+                        icon = Icons.Default.Edit,
+                        contentDescription = "Edit task"
+                    )
                 }
 
                 // Delete tasks
-                IconButton(
+                IconButtonComponent(
                     onClick = {
                         onTasksEvent(TasksEvent.ShowDeleteTasksDialog)
                     },
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(MaterialTheme.colorScheme.error)
-//                        .align(Alignment.Center)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = "Add task",
-                        tint = MaterialTheme.colorScheme.onError
-                    )
-                }
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError,
+                    icon = Icons.Default.Delete,
+                    contentDescription = "Delete tasks"
+                )
             }
         }
     }

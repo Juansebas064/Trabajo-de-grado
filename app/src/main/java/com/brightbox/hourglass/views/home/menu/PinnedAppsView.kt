@@ -25,8 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.brightbox.hourglass.views.common.PilledTextButtonComponent
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
+import com.brightbox.hourglass.views.common.RoundedSquareButtonComponent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,11 +75,11 @@ fun PinnedAppsView(
                 .padding(0.dp)
         ) {
             items(items = pinnedApps) { app ->
-                PilledTextButtonComponent(
+                RoundedSquareButtonComponent(
                     text = app.name,
-                    textColor = MaterialTheme.colorScheme.onSurface,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                     textStyle = MaterialTheme.typography.bodyLarge,
-                    backgroundColor = MaterialTheme.colorScheme.surface,
+                    containerColor = MaterialTheme.colorScheme.surface,
                     onClick = {
                         applicationsViewModel.openApp(app.packageName)
                     },

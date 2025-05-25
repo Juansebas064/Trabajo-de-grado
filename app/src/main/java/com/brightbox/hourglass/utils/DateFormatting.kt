@@ -5,10 +5,10 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset
-import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
+import kotlin.math.round
 
 private val SQLITE_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
@@ -48,13 +48,8 @@ fun formatSQLiteDateToMilliseconds(date: String): Long {
 }
 
 // Format the milliseconds date to String according to SQLite date's best practices
-fun formatMillisecondsToHours(date: Long): String {
-    val localDate = Instant.ofEpochMilli(date)
-        .atZone(ZoneId.systemDefault())
-        .toLocalDate()
-
-    val formatter = DateTimeFormatter.ofPattern("HH:mm")
-    return localDate.format(formatter)
+fun formatMillisecondsToMinutes(time: Long): String {
+    return "${round(((time/1000)/60).toDouble()).toInt()}"
 }
 
 fun formatMillisecondsToDay(date: Long): String {

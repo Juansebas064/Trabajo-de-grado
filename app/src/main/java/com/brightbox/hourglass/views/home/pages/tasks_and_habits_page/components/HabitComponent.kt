@@ -16,8 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -147,7 +145,7 @@ fun HabitComponent(
     ) {
         Box(
             modifier = modifier
-                .padding(spacing.spaceMedium)
+                .padding(vertical = spacing.spaceSmall, horizontal = spacing.spaceMedium)
         ) {
             // Primary container
             Column(
@@ -190,7 +188,7 @@ fun HabitComponent(
                         Box(
                             modifier = Modifier
                                 .size(22.dp)
-                                .clip(CircleShape)
+                                .clip(RoundedCornerShape(spacing.spaceSmall))
                                 .background(if (day in habit.daysOfWeek) (if (day == today["day"]) MaterialTheme.colorScheme.inversePrimary else MaterialTheme.colorScheme.secondary) else Color.Transparent)
                         ) {
                             Text(
@@ -228,7 +226,7 @@ fun HabitComponent(
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(3.dp))
-                                .background(MaterialTheme.colorScheme.secondary)
+                                .background(MaterialTheme.colorScheme.inversePrimary)
                                 .fillMaxHeight()
                                 .padding(
                                     horizontal = spacing.spaceExtraSmall
@@ -247,7 +245,7 @@ fun HabitComponent(
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(spacing.spaceSmall))
-                                .background(MaterialTheme.colorScheme.secondary)
+                                .background(MaterialTheme.colorScheme.inversePrimary)
                                 .padding(
                                     horizontal = spacing.spaceSmall,
                                     vertical = spacing.spaceExtraSmall

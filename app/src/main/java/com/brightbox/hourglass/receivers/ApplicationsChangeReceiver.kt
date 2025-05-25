@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.brightbox.hourglass.events.AppChangeEvent
+import com.brightbox.hourglass.events.ApplicationsEvent
 import com.brightbox.hourglass.usecases.ApplicationsUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +29,7 @@ class ApplicationsChangeReceiver : BroadcastReceiver() {
             val packageName = intent.data?.encodedSchemeSpecificPart
             Log.d("ApplicationsChangeReceiver", "Package deleted name: $packageName")
             if (packageName != null) {
-                ApplicationsUseCase.eventBus.emit(AppChangeEvent.AppUninstalled(packageName))
+                ApplicationsUseCase.eventBus.emit(ApplicationsEvent.AppUninstalled(packageName))
             }
         }
     }
@@ -39,7 +39,7 @@ class ApplicationsChangeReceiver : BroadcastReceiver() {
             val packageName = intent.data?.encodedSchemeSpecificPart
             Log.d("ApplicationsChangeReceiver", "Package added name: $packageName")
             if (packageName != null) {
-                ApplicationsUseCase.eventBus.emit(AppChangeEvent.AppInstalled(packageName))
+                ApplicationsUseCase.eventBus.emit(ApplicationsEvent.AppInstalled(packageName))
             }
         }
     }

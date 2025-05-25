@@ -3,7 +3,6 @@ package com.brightbox.hourglass.usecases
 import com.brightbox.hourglass.config.HourglassDatabase
 import com.brightbox.hourglass.model.HabitsModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class HabitsUseCase @Inject constructor(

@@ -43,6 +43,7 @@ import com.brightbox.hourglass.events.HabitsEvent
 import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.viewmodel.HabitsViewModel
 import com.brightbox.hourglass.viewmodel.TasksViewModel
+import com.brightbox.hourglass.views.common.IconButtonComponent
 import kotlin.math.roundToInt
 
 @Composable
@@ -57,6 +58,22 @@ fun AddElementsButton(
 
     var refPosition by remember { mutableStateOf(Offset.Zero) }
     val density = LocalDensity.current
+
+//    IconButtonComponent(
+//        modifier = Modifier
+//            .onGloballyPositioned { coordinates ->
+//                // posición relativa al root de este Box
+//                refPosition = coordinates.positionOnScreen()
+//            }
+//            .zIndex(10f),
+//        onClick = {
+//            expanded = !expanded
+//        },
+//        containerColor = MaterialTheme.colorScheme.surface,
+//        contentColor = MaterialTheme.colorScheme.onSurface,
+//        icon = if (expanded) Icons.Default.Clear else Icons.Default.Add,
+//        contentDescription = "Add elements"
+//    )
 
     IconButton(
         onClick = {

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Hourglass</string>
+    <string name="settings_name">Hourglass Settings</string>
 </resources>

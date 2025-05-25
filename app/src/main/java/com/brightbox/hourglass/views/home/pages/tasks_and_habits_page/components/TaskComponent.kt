@@ -1,6 +1,5 @@
 package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components
 
-import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -49,7 +48,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.model.CategoriesModel
 import com.brightbox.hourglass.model.TasksModel
-import com.brightbox.hourglass.utils.formatMillisecondsToSQLiteDate
 import com.brightbox.hourglass.utils.getDifferenceInDays
 import com.brightbox.hourglass.viewmodel.TimeViewModel
 import com.brightbox.hourglass.views.theme.LocalSpacing
@@ -254,9 +252,9 @@ fun TaskComponent(
                             .fillMaxWidth()
                             .padding(top = spacing.spaceSmall)
                     ) {
-                        Log.d("TaskComponent", "daysRemaining: $daysRemaining")
                         Text(
                             text = when (daysRemaining) {
+                                -1 -> "1 day late"
                                 0 -> "Today"
                                 1 -> "Tomorrow"
                                 else -> if (daysRemaining > 1) {
@@ -394,7 +392,7 @@ fun TaskComponent(
                                 alpha = if (task.isCompleted) 0.8f else 1f
                             )
                         )
-                        .padding(vertical = spacing.spaceSmall),
+                        .padding(vertical = spacing.spaceExtraSmall),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {

@@ -3,10 +3,11 @@ package com.brightbox.hourglass.usecases
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import com.brightbox.hourglass.config.HourglassDatabase
-import com.brightbox.hourglass.events.AppChangeEvent
+import com.brightbox.hourglass.events.ApplicationsEvent
 import com.brightbox.hourglass.model.ApplicationsModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -14,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -24,7 +26,7 @@ class ApplicationsUseCase @Inject constructor(
 ) {
 
     companion object {
-        val eventBus = MutableSharedFlow<AppChangeEvent>()
+        val eventBus = MutableSharedFlow<ApplicationsEvent>()
     }
 
     init {
@@ -32,13 +34,13 @@ class ApplicationsUseCase @Inject constructor(
             queryInstalledApplicationsToDatabase()
             eventBus.collectLatest { event ->
                 when (event) {
-                    is AppChangeEvent.AppUninstalled -> {
+                    is ApplicationsEvent.AppUninstalled -> {
                         Log.d("ApplicationsUseCase", "App uninstalled: ${event.packageName}")
 
                         deleteAppFromDatabase(event.packageName)
                     }
 
-                    is AppChangeEvent.AppInstalled -> {
+                    is ApplicationsEvent.AppInstalled -> {
                         Log.d("ApplicationsUseCase", "App installed: ${event.packageName}")
                         upsertAppToDatabase(event.packageName)
                     }
@@ -50,8 +52,21 @@ class ApplicationsUseCase @Inject constructor(
     // Get all apps from the database
     fun getApplicationsFromDatabase(appNameFilter: String? = null): Flow<List<ApplicationsModel>> {
         Log.d("ApplicationsUseCase", "getApplicationsFromDatabase: map called, filter = $appNameFilter")
-        val appList = db.applicationsDao().getApplications()
+        val appList = db.applicationsDao().getApplications().map { apps ->
+            apps.sortedBy { it.name.lowercase() }
+        }
         return appList
+    }
+
+    // Get Icons from the applications
+    suspend fun getApplicationsIcons(appList: List<ApplicationsModel>): Map<String, Drawable> {
+        val appIcons = mutableMapOf<String, Drawable>()
+        withContext(Dispatchers.IO) {
+            appList.forEach { app ->
+                appIcons[app.packageName] = application.packageManager.getApplicationIcon(app.packageName)
+            }
+        }
+        return appIcons
     }
 
 

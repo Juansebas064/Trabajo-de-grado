@@ -38,17 +38,16 @@ class ApplicationsViewModel @Inject constructor(
             appsList
         } else {
             // Normalizamos a minúsculas para no repetir lowercase() en cada comparación
-            val lowerSearch = searchText.lowercase()
 
             appsList
                 // 1) Filtramos solo las que contienen el texto
-                .filter { it.name.contains(lowerSearch) }
+                .filter { it.name.lowercase().contains(searchText.lowercase()) }
                 // 2) Las ordenamos con dos claves:
                 //    a) Las que NO empiezan con lowerSearch van después (true> false)
                 //    b) Dentro de cada grupo, por índice de la subcadena (más bajo = más parecido)
                 .sortedWith(compareBy(
-                    { !it.name.lowercase().startsWith(lowerSearch) },
-                    { it.name.lowercase().indexOf(lowerSearch) }
+                    { !it.name.lowercase().startsWith(searchText, ignoreCase = true) },
+                    { it.name.lowercase().indexOf(searchText, ignoreCase = true) }
                 ))
         }
         ApplicationsState(

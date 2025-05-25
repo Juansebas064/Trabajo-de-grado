@@ -1,17 +1,16 @@
 package com.brightbox.hourglass.views.preferences
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -30,76 +29,79 @@ import com.brightbox.hourglass.views.theme.LocalSpacing
 fun PreferencesView(
     modifier: Modifier = Modifier,
     preferencesViewModel: PreferencesViewModel = hiltViewModel(),
-    onNavigateUp: () -> Unit,
 ) {
     val spacing = LocalSpacing.current
     val state = preferencesViewModel.state.collectAsState()
+    val activity = LocalActivity.current
 
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .navigationBarsPadding()
             .statusBarsPadding()
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(spacing.spaceLarge)
-        ) {
-            Box(
-                modifier = Modifier
-                    .padding(vertical = spacing.spaceExtraLarge)
-            ) {
-                Text(
-                    text = "Settings",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
-
+        if (!state.value.isLoading) {
             Column(
-                verticalArrangement = Arrangement.Top,
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .weight(1f)
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(spacing.spaceLarge)
             ) {
-                ToggleComponent(
-                    text = "Open keyboard automatically in app menu",
-                    checked = state.value.openKeyboardInAppMenu,
-                    onCheckedChange = {
-                        preferencesViewModel.onEvent(
-                            GeneralPreferencesEvent.SetOpenKeyboardInAppMenu(it)
-                        )
-                    }
-                )
+                Box(
+                    modifier = Modifier
+                        .padding(vertical = spacing.spaceExtraLarge)
+                ) {
+                    Text(
+                        text = "Settings",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
 
-                ToggleComponent(
-                    text = "Show solid background",
-                    checked = state.value.solidBackground,
-                    onCheckedChange = {
-                        preferencesViewModel.onEvent(
-                            GeneralPreferencesEvent.SetSolidBackground(it)
-                        )
-                    }
+                Column(
+                    verticalArrangement = Arrangement.Top,
+                    modifier = Modifier
+                        .weight(1f)
+                ) {
+                    ToggleComponent(
+                        text = "Open keyboard automatically in app menu",
+                        checked = state.value.openKeyboardInAppMenu,
+                        onCheckedChange = {
+                            preferencesViewModel.onEvent(
+                                GeneralPreferencesEvent.SetOpenKeyboardInAppMenu(it)
+                            )
+                        }
+                    )
+
+                    ToggleComponent(
+                        text = "Show solid background",
+                        checked = state.value.solidBackground,
+                        onCheckedChange = {
+                            preferencesViewModel.onEvent(
+                                GeneralPreferencesEvent.SetSolidBackground(it)
+                            )
+                        }
+                    )
+                }
+            }
+
+            // Close settings
+            IconButton(
+                onClick = {
+                    activity!!.finish()
+                },
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Settings",
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
-        }
-
-        // Go back
-        IconButton(
-            onClick = {
-                onNavigateUp()
-            },
-            modifier = Modifier
-                .align(Alignment.TopStart)
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Settings",
-                tint = MaterialTheme.colorScheme.onBackground
-            )
         }
     }
 }

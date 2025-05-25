@@ -1,5 +1,6 @@
 package com.brightbox.hourglass
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -38,9 +39,10 @@ class MainActivity : ComponentActivity() {
         scheduleMidnightTask()
 
         setContent {
-            HourglassProductivityLauncherTheme() {
+            HourglassProductivityLauncherTheme {
                 val preferencesViewModel: PreferencesViewModel = hiltViewModel()
                 val state = preferencesViewModel.state.collectAsState()
+
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -53,6 +55,13 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        Log.d("onUserLeaveHint", "onUserLeaveHint")
+        val intent = Intent("HOME_BUTTON_PRESSED")
+        sendBroadcast(intent)
     }
 
     private fun scheduleMidnightTask() {
@@ -90,4 +99,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-

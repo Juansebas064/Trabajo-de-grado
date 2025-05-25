@@ -1,6 +1,7 @@
 package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -77,13 +78,21 @@ fun DatePickerComponent(
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(datePickerState.selectedDateMillis) {
-        setDate(datePickerState.selectedDateMillis?.let { convertUTCMidnightToLocalMidnight(it) } ?: 0)
+        setDate(datePickerState.selectedDateMillis?.let { convertUTCMidnightToLocalMidnight(it) }
+            ?: 0)
         Log.d("DatePickerComponent", "selectedDateMillis: ${datePickerState.selectedDateMillis}")
         coroutineScope.launch {
             delay(50)
             showDatePicker = false
         }
     }
+
+    BackHandler(
+        enabled = showDatePicker,
+        onBack = {
+            showDatePicker = false
+        }
+    )
 
     Box(
         modifier = modifier

@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
-    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES"/>
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application
         android:name=".Application"
         android:allowBackup="true"
@@ -17,38 +24,27 @@
         android:theme="@style/Theme.HourglassProductivityLauncher"
         tools:targetApi="35">
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:excludeFromRecents="false"
+            android:taskAffinity="com.brightbox.hourglass.SettingsActivity"
+            android:theme="@style/Theme.HourglassProductivityLauncher"/>
+
+        <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"
+            android:label="@string/settings_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.HourglassProductivityLauncher">
+            android:theme="@style/Theme.HourglassProductivityLauncher"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </activity>
-<!--        <service-->
-<!--            android:name=".services.AccessibilityService"-->
-<!--            android:exported="true"-->
-<!--            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.accessibilityservice.AccessibilityService" />-->
-<!--            </intent-filter>-->
-
-<!--            <meta-data-->
-<!--                android:name="android.accessibilityservice"/>-->
-<!--&lt;!&ndash;                android:resource="@xml/shade_accessibility_config" &ndash;&gt;-->
-
-<!--        </service>-->
-<!--        <receiver-->
-<!--            android:name=".receivers.ApplicationsChangeReceiver"-->
-<!--            android:exported="false">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.PACKAGE_ADDED" />-->
-<!--                <action android:name="android.intent.action.PACKAGE_REMOVED" />-->
-<!--                <data android:scheme="package" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
     </application>
+
 </manifest>

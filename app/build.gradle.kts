@@ -56,6 +56,9 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.room.runtime.android)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.junit.jupiter)
@@ -77,5 +80,5 @@ dependencies {
     implementation(libs.material.icons.extended)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.androidx.work.runtime)
-    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.coil.compose)
 }

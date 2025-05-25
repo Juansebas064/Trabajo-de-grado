@@ -6,4 +6,7 @@ import kotlinx.serialization.Serializable
 data object HomeRoute
 
 @Serializable
-data object PreferencesRoute
+data object ApplicationsLimitRoute
+
+@Serializable
+data object SelectApplicationsToLimitRoute

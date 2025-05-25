@@ -59,6 +59,7 @@ class HabitsViewModel @Inject constructor(
     private val _habitsList = MutableStateFlow(emptyList<HabitsModel>())
 
     private val _state = MutableStateFlow(HabitsState())
+
     val state = combine(_state, _habitsList) { state, habits ->
         state.copy(
             todayHabits = habits,

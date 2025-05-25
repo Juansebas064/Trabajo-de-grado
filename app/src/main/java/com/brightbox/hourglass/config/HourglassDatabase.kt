@@ -6,11 +6,13 @@ import com.brightbox.hourglass.data.ApplicationsDao
 import com.brightbox.hourglass.data.CategoriesDao
 import com.brightbox.hourglass.data.HabitsDao
 import com.brightbox.hourglass.data.HabitsLogsDao
+import com.brightbox.hourglass.data.LimitsDao
 import com.brightbox.hourglass.data.TasksDao
 import com.brightbox.hourglass.model.ApplicationsModel
 import com.brightbox.hourglass.model.CategoriesModel
 import com.brightbox.hourglass.model.HabitsLogsModel
 import com.brightbox.hourglass.model.HabitsModel
+import com.brightbox.hourglass.model.LimitsModel
 import com.brightbox.hourglass.model.TasksModel
 
 @Database(
@@ -19,7 +21,8 @@ import com.brightbox.hourglass.model.TasksModel
         TasksModel::class,
         CategoriesModel::class,
         HabitsModel::class,
-        HabitsLogsModel::class
+        HabitsLogsModel::class,
+        LimitsModel::class
     ],
     version = 1
 )
@@ -29,4 +32,5 @@ abstract class HourglassDatabase : RoomDatabase() {
     abstract fun categoriesDao(): CategoriesDao
     abstract fun habitsDao(): HabitsDao
     abstract fun habitsLogsDao(): HabitsLogsDao
+    abstract fun limitsDao(): LimitsDao
 }
