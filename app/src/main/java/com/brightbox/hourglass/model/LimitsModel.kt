@@ -21,5 +21,6 @@ data class LimitsModel(
     val applicationPackageName: String,
     val dateCreated: String,
     val timeLimit: Int,  // Time in minutes
-    val usedTime: Int  // Time in minutes
+    val usedTime: Int,  // Time in minutes
+    val previousUsedTime: Int = 0,
 )

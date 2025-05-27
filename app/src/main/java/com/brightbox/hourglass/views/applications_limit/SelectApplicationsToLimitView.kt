@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -24,8 +26,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.events.LimitsEvent
 import com.brightbox.hourglass.viewmodel.LimitsViewModel
@@ -59,6 +63,7 @@ fun SelectApplicationsToLimitView(
             .background(MaterialTheme.colorScheme.background)
             .navigationBarsPadding()
             .statusBarsPadding()
+            .padding(horizontal = spacing.spaceMedium)
     ) {
         Column {
             Row(
@@ -70,7 +75,7 @@ fun SelectApplicationsToLimitView(
             ) {
                 Text(
                     text = "Tap to mark or unmark an application",
-                    style = MaterialTheme.typography.titleSmall.copy(
+                    style = MaterialTheme.typography.displaySmall.copy(
                         fontWeight = FontWeight.Normal
                     ),
                     color = MaterialTheme.colorScheme.onBackground,
@@ -86,25 +91,26 @@ fun SelectApplicationsToLimitView(
         }
 
         // Done Button
-        AnimatedVisibility(
-            visible = state.value.selectedApplicationsToLimit.isNotEmpty(),
-            enter = slideInVertically(
-                // Anima desde la parte inferior de la pantalla (o del contenedor)
-                // initialOffsetY = { fullHeight -> fullHeight } // Para deslizar desde completamente fuera de la pantalla
-                initialOffsetY = { it } // Para deslizar desde justo debajo de su posición final
-            ),
-            exit = slideOutVertically(
-                // Anima hacia la parte inferior de la pantalla (o del contenedor)
-                // targetOffsetY = { fullHeight -> fullHeight } // Para deslizar hacia completamente fuera de la pantalla
-                targetOffsetY = { it } // Para deslizar hacia justo debajo de su posición inicial
-            ),
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-        ) {
+//        AnimatedVisibility(
+//            visible = true,
+//            enter = slideInVertically(
+//                // Anima desde la parte inferior de la pantalla (o del contenedor)
+//                // initialOffsetY = { fullHeight -> fullHeight } // Para deslizar desde completamente fuera de la pantalla
+//                initialOffsetY = { it } // Para deslizar desde justo debajo de su posición final
+//            ),
+//            exit = slideOutVertically(
+//                // Anima hacia la parte inferior de la pantalla (o del contenedor)
+//                // targetOffsetY = { fullHeight -> fullHeight } // Para deslizar hacia completamente fuera de la pantalla
+//                targetOffsetY = { it } // Para deslizar hacia justo debajo de su posición inicial
+//            ),
+//            modifier = Modifier
+//                .align(Alignment.BottomEnd)
+//        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(spacing.spaceSmall),
+                    .align(Alignment.BottomEnd)
+                ,
                 horizontalArrangement = Arrangement.Center
             ) {
                 RoundedSquareButtonComponent(
@@ -120,7 +126,7 @@ fun SelectApplicationsToLimitView(
                         .fillMaxWidth()
                 )
             }
-        }
+//        }
 
         // Go back
         NavigationButton(

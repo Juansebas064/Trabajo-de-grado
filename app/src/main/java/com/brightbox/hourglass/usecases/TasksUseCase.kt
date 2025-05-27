@@ -39,10 +39,8 @@ class TasksUseCase @Inject constructor(
 
     suspend fun validateCurrentTasksOnMidnight(
         previousDate: String,
-        currentDate: String,
         tasks: List<TasksModel>
     ) {
-        Log.d("TasksUseCase", "Yesterday: $previousDate, Today: $currentDate")
         tasks.forEach { task ->
             if (task.dateDue == previousDate) {
                 setTaskDelayed(task.id!!)

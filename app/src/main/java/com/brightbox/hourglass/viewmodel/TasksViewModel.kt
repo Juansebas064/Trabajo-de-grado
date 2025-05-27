@@ -84,7 +84,6 @@ class TasksViewModel @Inject constructor(
         viewModelScope.launch {
             _tasksUseCase.validateCurrentTasksOnMidnight(
                 formatMillisecondsToSQLiteDate(System.currentTimeMillis() - 86400000),
-                formatMillisecondsToSQLiteDate(System.currentTimeMillis()),
                 state.value.tasks
             )
 //            _tasksList.value = _tasksUseCase.getTodayTasksAtMidnight(formatMillisecondsToSQLiteDate(System.currentTimeMillis()))

@@ -194,19 +194,18 @@ fun ApplicationsLimitView(
                                     horizontalArrangement = Arrangement.spacedBy(spacing.spaceSmall),
                                     modifier = Modifier
                                 ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Timelapse,
-                                        tint = MaterialTheme.colorScheme.onBackground,
-                                        contentDescription = "Time used"
-                                    )
                                     Text(
                                         text = "${limit.usedTime} / ${limit.timeLimit} min",
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onBackground
                                     )
+                                    Icon(
+                                        imageVector = Icons.Default.Timelapse,
+                                        tint = MaterialTheme.colorScheme.onBackground,
+                                        contentDescription = "Time used"
+                                    )
                                 }
                             }
-
                         }
                     }
                 }

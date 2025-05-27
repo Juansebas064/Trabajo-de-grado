@@ -71,8 +71,10 @@ class TasksWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         try {
             Log.d("TasksWorker", "Iniciando actualización de tareas a medianoche.")
-            val intent = Intent("UPDATE_TASKS")
-            applicationContext.sendBroadcast(intent)
+            val tasksIntent = Intent("UPDATE_TASKS")
+            val limitsIntent = Intent("RESET_LIMITS")
+            applicationContext.sendBroadcast(tasksIntent)
+            applicationContext.sendBroadcast(limitsIntent)
             scheduleNextRun(applicationContext)
             return Result.success()
         } catch (e: Exception) {

@@ -25,7 +25,7 @@ class HabitsLogsUseCase @Inject constructor(
     suspend fun deleteHabitLog(id: Int) =
         db.habitsLogsDao().deleteHabitLog(id)
 
-    suspend fun validateTodayHabitsOnMidnight(yesterdayDate: String, yesterdayDayOfWeek: String) {
+    suspend fun validateTodayHabitsLogsOnMidnight(yesterdayDate: String, yesterdayDayOfWeek: String) {
         var habits: List<HabitsModel> = emptyList()
         var habitsLogs: List<HabitsLogsModel> = emptyList()
 

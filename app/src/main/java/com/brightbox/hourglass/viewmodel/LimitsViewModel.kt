@@ -1,7 +1,11 @@
 package com.brightbox.hourglass.viewmodel
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.IntentFilter
 import android.graphics.drawable.Drawable
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brightbox.hourglass.events.LimitsEvent
@@ -12,6 +16,7 @@ import com.brightbox.hourglass.usecases.LimitsUseCase
 import com.brightbox.hourglass.usecases.ApplicationsUseCase
 import com.brightbox.hourglass.utils.formatMillisecondsToSQLiteDate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,9 +31,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LimitsViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val _limitsUseCase: LimitsUseCase,
     private val _applicationsUseCase: ApplicationsUseCase
 ) : ViewModel() {
+
+    val resetLimitsReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context?, intent: android.content.Intent?) {
+            Log.d("LimitsViewModel", "Resetting limits")
+            viewModelScope.launch {
+                _limitsUseCase.resetLimitsAtMidnight(_state.value.limitsList)
+            }
+        }
+    }
+
     private val _isSystemAlertWindowPermissionGranted = MutableStateFlow(false)
     val isSystemAlertWindowPermissionGranted = _isSystemAlertWindowPermissionGranted.asStateFlow()
 
@@ -92,6 +108,10 @@ class LimitsViewModel @Inject constructor(
         checkUsageAccessPermission()
         checkSystemAlertWindowPermission()
 
+        if (_isUsageAccessPermissionGranted.value && _isSystemAlertWindowPermissionGranted.value) {
+            _limitsUseCase.registerTimeLimitService()
+        }
+
         _applicationsUseCase.getApplicationsFromDatabase().onEach { appsList ->
             _appsList.update {
                 appsList
@@ -100,6 +120,14 @@ class LimitsViewModel @Inject constructor(
                 _applicationsUseCase.getApplicationsIcons(appsList)
             }
         }.launchIn(viewModelScope)
+
+        val resetLimitsIntent = IntentFilter("RESET_LIMITS")
+        ContextCompat.registerReceiver(
+            context,
+            resetLimitsReceiver,
+            resetLimitsIntent,
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
     }
 
     fun onEvent(event: LimitsEvent) {
@@ -110,6 +138,10 @@ class LimitsViewModel @Inject constructor(
 
             LimitsEvent.CheckSystemAlertWindowPermission -> {
                 checkSystemAlertWindowPermission()
+            }
+
+            LimitsEvent.RegisterTimeLimitService -> {
+                _limitsUseCase.registerTimeLimitService()
             }
 
             LimitsEvent.ShowApplicationsList -> {
@@ -124,7 +156,7 @@ class LimitsViewModel @Inject constructor(
             is LimitsEvent.AddApplicationToLimit -> {
                 val timeIfLimitExist = state.value.limitsList.find {
                     it.applicationPackageName == event.packageName
-                } ?.timeLimit ?: 0
+                }?.timeLimit ?: 0
 
                 val newSelectedApplicationsToLimit =
                     _state.value.selectedApplicationsToLimit.toMutableMap()
@@ -177,7 +209,8 @@ class LimitsViewModel @Inject constructor(
 
                     _state.value.selectedApplicationsToLimit.forEach { appLimit ->
                         if (appLimit.value != 0) {
-                            val id = state.value.limitsList.find { it.applicationPackageName == appLimit.key }?.id
+                            val id =
+                                state.value.limitsList.find { it.applicationPackageName == appLimit.key }?.id
                             val limit = LimitsModel(
                                 id = id,
                                 applicationPackageName = appLimit.key,

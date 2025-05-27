@@ -1,23 +1,20 @@
 package com.brightbox.hourglass.services
 
 import android.app.Service
-import android.app.usage.UsageStats
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.IBinder
 import android.util.Log
-import androidx.compose.ui.util.fastFilteredMap
 import androidx.core.app.NotificationCompat
+import com.brightbox.hourglass.TimeLimitOverlayActivity
 import com.brightbox.hourglass.model.LimitsModel
 import com.brightbox.hourglass.usecases.LimitsUseCase
-import com.brightbox.hourglass.utils.formatMillisecondsToMinutes
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,6 +24,8 @@ class TimeLimitService : Service() {
     @Inject
     lateinit var limitsUseCase: LimitsUseCase
     private var limitsList: List<LimitsModel> = listOf()
+    var usageAccessPermission: Boolean = false
+    var systemWindowAlertPermission: Boolean = false
 
     private var serviceJob: Job = Job()
     private var serviceScope: CoroutineScope = CoroutineScope(Dispatchers.IO + serviceJob)
@@ -89,11 +88,11 @@ class TimeLimitService : Service() {
     }
 
     fun startMonitoring() {
-        var usageAccessPermission: Boolean
-        var systemWindowAlertPermission: Boolean
 
-        var usageStats = limitsUseCase.getUsageStats()
-        var filteredAndUpdatedLimits: List<LimitsModel> = listOf()
+
+        val timeLimitOverlayIntent = Intent(
+            applicationContext, TimeLimitOverlayActivity::class.java
+        ).addFlags(FLAG_ACTIVITY_NEW_TASK)
 
         serviceScope.launch {
             Log.d(TAG, "Coroutine started.")
@@ -104,34 +103,43 @@ class TimeLimitService : Service() {
                 Log.d(TAG, "Permissions: $usageAccessPermission and $systemWindowAlertPermission")
 
                 if (usageAccessPermission && systemWindowAlertPermission) {
-                    usageStats = limitsUseCase.getUsageStats()
 
-                    filteredAndUpdatedLimits = filterAndUpdateLimits(usageStats)
-
-                    Log.d(TAG, "Usage stats: $filteredAndUpdatedLimits")
-
-                    filteredAndUpdatedLimits.forEach { limit ->
+                    limitsList.forEach { limit ->
                         limitsUseCase.upsertLimit(limit)
                     }
+
+                    Log.d(TAG, "Limits: $limitsList")
+                    val limitWithTimeReached = limitsList.find {
+                        it.usedTime >= it.timeLimit
+                                && it.previousUsedTime != it.usedTime
+                    }
+
+                    if (limitWithTimeReached != null) {
+                        Log.d(TAG, "App with time limit reached: $limitWithTimeReached")
+                        timeLimitOverlayIntent.putExtra(
+                            "PACKAGE_NAME",
+                            limitWithTimeReached.applicationPackageName
+                        )
+                        limitsUseCase.updateLimit(
+                            limitWithTimeReached.copy(
+                                previousUsedTime = limitWithTimeReached.usedTime
+                            )
+                        )
+                        startActivity(timeLimitOverlayIntent)
+                        Log.d(TAG, "App updated in bd: ${limitsList.find { it.applicationPackageName == limitWithTimeReached.applicationPackageName }}")
+                    }
+                } else {
+                    NotificationSender.sendNotification(
+                        applicationContext,
+                        "Hourglass time monitoring stopped",
+                        "One or more permissions are not granted, please go to application limits to re-enable them",
+                        NotificationSender.ALERT_CHANNEL_ID,
+                        NotificationSender.ALERT_NOTIFICATION_ID
+                    )
+                    onDestroy()
                 }
-                delay(15000)
+                delay(30000)
             }
         }
-    }
-
-    private fun filterAndUpdateLimits(stats: Map<String, Int>): List<LimitsModel> {
-
-        val limitsFilteredAndUpdated = limitsList.filter { limit ->
-            stats.any { stat ->
-                stat.key == limit.applicationPackageName
-            } == true
-        }.map { limit ->
-            val timeInForeground = stats[limit.applicationPackageName]!!
-            limit.copy(
-                usedTime = timeInForeground
-            )
-        }
-
-        return limitsFilteredAndUpdated
     }
 }

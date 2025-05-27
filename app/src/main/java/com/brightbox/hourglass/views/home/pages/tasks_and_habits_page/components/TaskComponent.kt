@@ -150,16 +150,14 @@ fun TaskComponent(
                     } else {
                         onTasksEvent(TasksEvent.MarkTaskSelected(task.id!!))
                     }
-//                    val toast = Toast.makeText(context, "Long click detected", Toast.LENGTH_SHORT)
-//                    toast.show()
                 }
             )
     ) {
         Box(
             modifier = modifier
                 .padding(
-                    top = spacing.spaceMedium,
-                    bottom = if (expanded || task.wasDelayed) spacing.spaceExtraSmall else spacing.spaceMedium,
+                    top = spacing.spaceSmall + spacing.spaceExtraSmall,
+                    bottom = if (expanded || task.wasDelayed) spacing.spaceExtraSmall else spacing.spaceSmall,
                     start = spacing.spaceMedium,
                     end = spacing.spaceMedium
                 )

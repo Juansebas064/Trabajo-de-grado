@@ -1,21 +1,21 @@
 package com.brightbox.hourglass.usecases
 
 import android.app.AppOpsManager
-import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
+import android.content.Intent
 import android.os.Process
 import android.util.Log
 import com.brightbox.hourglass.config.HourglassDatabase
-import com.brightbox.hourglass.model.HabitsModel
 import com.brightbox.hourglass.model.LimitsModel
+import com.brightbox.hourglass.services.TimeLimitService
 import com.brightbox.hourglass.utils.formatMillisecondsToMinutes
 import com.brightbox.hourglass.utils.formatMillisecondsToSQLiteDate
-import com.brightbox.hourglass.utils.formatSQLiteDateToMilliseconds
 import com.brightbox.hourglass.utils.getStartOfTodayMillisInUTC
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -45,7 +45,12 @@ class LimitsUseCase @Inject constructor(
         return mode == AppOpsManager.MODE_ALLOWED
     }
 
-    fun getUsageStats(): Map<String, Int> {
+    fun registerTimeLimitService() {
+        val serviceIntent = Intent(context, TimeLimitService::class.java)
+        context.startService(serviceIntent)
+    }
+
+    fun getTodayUsageStats(): Map<String, Int> {
         val usageStatsManager =
             context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val usageStats = usageStatsManager.queryUsageStats(
@@ -54,27 +59,68 @@ class LimitsUseCase @Inject constructor(
             System.currentTimeMillis()
         )
 
+        Log.d("LimitsUseCase", "Usage stats: $usageStats")
+
         val flatUsageStats = mutableMapOf<String, Int>()
 
         usageStats.forEach { stat ->
-            flatUsageStats[stat.packageName] = formatMillisecondsToMinutes(stat.totalTimeInForeground).toInt()
-            if (stat.totalTimeInForeground > 0) {
-                Log.d(
-                    "LimitsUseCase",
-                    "date: ${formatMillisecondsToSQLiteDate(stat.lastTimeStamp)}: ${stat.packageName}, ${
-                        formatMillisecondsToMinutes(stat.totalTimeInForeground)
-                    }\n"
-                )
-            }
+            flatUsageStats[stat.packageName] =
+                formatMillisecondsToMinutes(stat.totalTimeInForeground).toInt()
+//            if (stat.totalTimeInForeground > 0) {
+//                Log.d(
+//                    "LimitsUseCase",
+//                    "date: ${formatMillisecondsToSQLiteDate(stat.lastTimeStamp)}: ${stat.packageName}, ${
+//                        formatMillisecondsToMinutes(stat.totalTimeInForeground)
+//                    }\n"
+//                )
+//            }
         }
+
         return flatUsageStats
     }
 
-    fun getLimits(): Flow<List<LimitsModel>> = db.limitsDao().getLimits()
+    fun getLimits(): Flow<List<LimitsModel>> = db.limitsDao().getLimits().map { limitsList ->
+        limitsList.sortedByDescending { it.usedTime }
+    }
 
     suspend fun upsertLimit(limit: LimitsModel) {
         withContext(Dispatchers.IO) {
+            val updatedLimit = syncLimit(limit)
+            db.limitsDao().upsertLimit(updatedLimit)
+        }
+    }
+
+    suspend fun updateLimit(limit: LimitsModel) {
+        withContext(Dispatchers.IO) {
             db.limitsDao().upsertLimit(limit)
+        }
+    }
+
+    fun syncLimit(limit: LimitsModel): LimitsModel {
+        val stats = getTodayUsageStats()
+        Log.d("LimitsUseCase", "Updating limit: ${limit},\nstats: ${stats[limit.applicationPackageName]}")
+        val currentTimeInForeground = stats[limit.applicationPackageName]!!
+        val previousTimeInForeground = when (limit.usedTime) {
+            0 -> currentTimeInForeground
+            else -> limit.usedTime
+        }
+
+        return limit.copy(
+            usedTime = currentTimeInForeground,
+            previousUsedTime = previousTimeInForeground
+        )
+
+    }
+
+    suspend fun resetLimitsAtMidnight(limitList: List<LimitsModel>) {
+        withContext(Dispatchers.IO) {
+            limitList.forEach { limit ->
+                val limitReset = limit.copy(
+                    usedTime = 0,
+                    previousUsedTime = 0
+                )
+                upsertLimit(limitReset)
+            }
         }
     }
 
