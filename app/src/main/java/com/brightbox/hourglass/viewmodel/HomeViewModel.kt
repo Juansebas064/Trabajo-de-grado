@@ -6,8 +6,10 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.registerReceiver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.brightbox.hourglass.services.NotificationSender
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -37,7 +39,7 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
-        ContextCompat.registerReceiver(
+        registerReceiver(
             context,
             timeLimitWorkerReceiver,
             IntentFilter("TIME_LIMIT_WORKER"),

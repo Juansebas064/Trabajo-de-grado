@@ -47,16 +47,6 @@ fun PinnedAppsView(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .padding(spacing.spaceSmall)
-            .pointerInput(Unit) {
-                detectVerticalDragGestures { _, dragAmount ->
-                    if (dragAmount < -10) { // Detect upward swipe
-                        coroutineScope.launch {
-                            sheetState.expand()
-                        }
-                        Log.d("PinnedApps", "Upward swipe detected")
-                    }
-                }
-            }
     ) {
         Icon(
             imageVector = Icons.Default.KeyboardArrowUp,

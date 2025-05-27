@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_PACKAGE_ADDED
+import android.content.Intent.ACTION_PACKAGE_REMOVED
 import android.content.IntentFilter
 import android.util.Log
 import androidx.core.content.ContextCompat
@@ -40,9 +41,14 @@ class ApplicationsViewModel @Inject constructor(
     }
 
     init {
+        viewModelScope.launch {
+            _applicationsUseCase.queryInstalledApplicationsToDatabase()
+        }
+
         val appChangeIntentFilter = IntentFilter().apply {
-            addAction(Intent.ACTION_PACKAGE_ADDED)
-            addAction(Intent.ACTION_PACKAGE_REMOVED)
+            addAction(ACTION_PACKAGE_ADDED)
+            addAction(ACTION_PACKAGE_REMOVED)
+            addAction("QUERY_APPLICATIONS_TO_DATABASE")
             addDataScheme("package") // Necesario para ACTION_PACKAGE_REMOVED, _ADDED, _REPLACED
         }
         ContextCompat.registerReceiver(

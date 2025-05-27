@@ -177,7 +177,7 @@ fun TaskComponent(
                     verticalAlignment = Alignment.Top,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = spacing.spaceExtraSmall)
+                        .padding(bottom = spacing.spaceExtraSmall)
                 ) {
                     Box(
                         modifier = Modifier
@@ -189,7 +189,7 @@ fun TaskComponent(
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.ExtraBold,
                             textAlign = TextAlign.Start,
-                            lineHeight = MaterialTheme.typography.titleSmall.fontSize,
+                            lineHeight = MaterialTheme.typography.bodyMedium.fontSize,
                             textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
@@ -252,23 +252,31 @@ fun TaskComponent(
                             .fillMaxWidth()
                             .padding(top = spacing.spaceSmall)
                     ) {
+                        val textToShow = when (daysRemaining) {
+                            -1 -> "1 day late"
+                            0 -> "Today"
+                            1 -> "Tomorrow"
+                            else -> if (daysRemaining > 1) {
+                                "In $daysRemaining days"
+                            } else {
+                                "${abs(daysRemaining)} days late"
+                            }
+                        }
+
+                        val colorToShow = if (task.wasDelayed && !task.isCompleted) {
+                            MaterialTheme.colorScheme.error
+                        } else if (textToShow == "Today") {
+                            MaterialTheme.colorScheme.inversePrimary
+                        } else {
+                            MaterialTheme.colorScheme.onSurface
+                        }
+
                         Text(
-                            text = when (daysRemaining) {
-                                -1 -> "1 day late"
-                                0 -> "Today"
-                                1 -> "Tomorrow"
-                                else -> if (daysRemaining > 1) {
-                                    "In $daysRemaining days"
-                                } else {
-                                    "${abs(daysRemaining)} days late"
-                                }
-                            },
+                            text = textToShow,
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontWeight = FontWeight.Bold
                             ),
-                            color = if (task.wasDelayed && !task.isCompleted)
-                                MaterialTheme.colorScheme.error
-                            else MaterialTheme.colorScheme.onSurface,
+                            color = colorToShow,
                             textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
                         )
 
@@ -282,9 +290,7 @@ fun TaskComponent(
                             Icon(
                                 imageVector = Icons.Default.CalendarToday,
                                 contentDescription = "Date",
-                                tint = if (task.wasDelayed && !task.isCompleted)
-                                    MaterialTheme.colorScheme.error
-                                else MaterialTheme.colorScheme.onSurface,
+                                tint = colorToShow,
                                 modifier = Modifier
                                     .scale(0.7f)
                             )
@@ -292,10 +298,9 @@ fun TaskComponent(
                             Text(
                                 text = task.dateDue,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = if (task.wasDelayed && !task.isCompleted)
-                                    MaterialTheme.colorScheme.error
-                                else MaterialTheme.colorScheme.onSurface,
+                                color = colorToShow,
                                 textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
+                                fontWeight = if (textToShow == "Today") FontWeight.Bold else FontWeight.Normal
                             )
                         }
                     }
@@ -306,10 +311,6 @@ fun TaskComponent(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .padding(
-                            top = spacing.spaceSmall,
-//                            horizontal = spacing.spaceMedium
-                        )
                         .fillMaxWidth()
                         .height(IntrinsicSize.Max)
                 ) {
@@ -333,6 +334,7 @@ fun TaskComponent(
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold,
+                            textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
                         )
                     }
                     // Category

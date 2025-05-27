@@ -40,7 +40,7 @@ fun HomeView(
     val timeLimitWorkDone = homeViewModel.timeLimitWorkDone.collectAsState(initial = null)
 
     LaunchedEffect(timeLimitWorkDone.value) {
-        Toast.makeText(context, "Time limit work done", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "Alarm triggered", Toast.LENGTH_SHORT).show()
     }
 
     rememberSystemUiController().apply {

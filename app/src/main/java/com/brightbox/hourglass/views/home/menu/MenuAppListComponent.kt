@@ -98,7 +98,10 @@ fun MenuAppListComponent(
                             Color.Transparent
                     )
                     .fillMaxWidth()
-                    .padding(spacing.spaceSmall)
+                    .padding(
+                        vertical = spacing.spaceExtraSmall,
+                        horizontal = spacing.spaceSmall
+                    )
                     .animateItem()
                     .animateContentSize()
                     .height(IntrinsicSize.Min)

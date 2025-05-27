@@ -56,8 +56,6 @@ class LimitsViewModel @Inject constructor(
             LimitsState()
         )
 
-    private val usageStats = _limitsUseCase.getUsageStats()
-
     private fun checkUsageAccessPermission() {
         viewModelScope.launch {
             _limitsUseCase.isUsageAccessPermissionGranted().let {
@@ -171,7 +169,6 @@ class LimitsViewModel @Inject constructor(
 
             LimitsEvent.SaveApplicationLimits -> {
                 viewModelScope.launch {
-
                     _state.update {
                         it.copy(
                             showApplicationsList = false

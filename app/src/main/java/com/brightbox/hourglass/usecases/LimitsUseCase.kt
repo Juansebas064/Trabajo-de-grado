@@ -12,6 +12,7 @@ import com.brightbox.hourglass.model.LimitsModel
 import com.brightbox.hourglass.utils.formatMillisecondsToMinutes
 import com.brightbox.hourglass.utils.formatMillisecondsToSQLiteDate
 import com.brightbox.hourglass.utils.formatSQLiteDateToMilliseconds
+import com.brightbox.hourglass.utils.getStartOfTodayMillisInUTC
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -44,28 +45,29 @@ class LimitsUseCase @Inject constructor(
         return mode == AppOpsManager.MODE_ALLOWED
     }
 
-    fun getUsageStats(): MutableList<UsageStats>? {
+    fun getUsageStats(): Map<String, Int> {
         val usageStatsManager =
             context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val usageStats = usageStatsManager.queryUsageStats(
             UsageStatsManager.INTERVAL_DAILY,
-            formatSQLiteDateToMilliseconds("2025-05-20"),
-            formatSQLiteDateToMilliseconds("2025-05-23")
-        )
-        usageStats.forEach { stat ->
+            getStartOfTodayMillisInUTC(),
             System.currentTimeMillis()
+        )
+
+        val flatUsageStats = mutableMapOf<String, Int>()
+
+        usageStats.forEach { stat ->
+            flatUsageStats[stat.packageName] = formatMillisecondsToMinutes(stat.totalTimeInForeground).toInt()
             if (stat.totalTimeInForeground > 0) {
-//                Log.d(
-//                    "LimitsUseCase",
-//                    "date: ${formatMillisecondsToSQLiteDate(stat.lastTimeStamp)}: ${stat.packageName}, ${
-//                        formatMillisecondsToMinutes(
-//                            stat.totalTimeInForeground
-//                        )
-//                    }\n"
-//                )
+                Log.d(
+                    "LimitsUseCase",
+                    "date: ${formatMillisecondsToSQLiteDate(stat.lastTimeStamp)}: ${stat.packageName}, ${
+                        formatMillisecondsToMinutes(stat.totalTimeInForeground)
+                    }\n"
+                )
             }
         }
-        return usageStats
+        return flatUsageStats
     }
 
     fun getLimits(): Flow<List<LimitsModel>> = db.limitsDao().getLimits()

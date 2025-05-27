@@ -49,75 +49,79 @@ fun SearchBarView(
     val coroutineScope = rememberCoroutineScope()
     val spacing = LocalSpacing.current
 
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(
-            spacing.spaceSmall,
-            Alignment.Start
-        ),
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .fillMaxWidth()
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.onBackground,
-                shape = RoundedCornerShape(spacing.spaceSmall)
-            )
-            .padding(spacing.spaceMedium - spacing.spaceExtraSmall)
+    Box(
+        modifier = Modifier
+            .padding(vertical = spacing.spaceMedium)
     ) {
-        Icon(
-            imageVector = Icons.Default.Search,
-            contentDescription = "",
-            tint = MaterialTheme.colorScheme.onBackground,
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(
+                spacing.spaceSmall,
+                Alignment.Start
+            ),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    shape = RoundedCornerShape(spacing.spaceSmall)
+                )
+                .padding(spacing.spaceMedium - spacing.spaceExtraSmall)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.onBackground,
+            )
 
-        BasicTextField(
-            value = searchText,
-            onValueChange = {
-                coroutineScope.launch {
-                    applicationsViewModel.onSearchTextChange(it)
-                    applicationsViewModel.setAppShowingOptions("none")
-                }
-            },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Go,
-                keyboardType = KeyboardType.Text,
-                capitalization = KeyboardCapitalization.Sentences
-            ),
-            keyboardActions = KeyboardActions(
-                onGo = {
-                    if (searchText.isNotEmpty()) {
-                        applicationsViewModel.openFirstApp()
-                        focusManager.clearFocus()
+            BasicTextField(
+                value = searchText,
+                onValueChange = {
+                    coroutineScope.launch {
+                        applicationsViewModel.onSearchTextChange(it)
+                        applicationsViewModel.setAppShowingOptions("none")
                     }
-                }
-            ),
-            textStyle = TextStyle.Default.copy(
-                color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Start,
-            ),
-            cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
-            decorationBox = { innerTextField ->
-                // Box para el text field
-                Box(
-                    contentAlignment = AbsoluteAlignment.CenterLeft,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    if (searchText.isEmpty()) {
-                        Text(
-                            text = "Search",
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                        )
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Go,
+                    keyboardType = KeyboardType.Text,
+                    capitalization = KeyboardCapitalization.Sentences
+                ),
+                keyboardActions = KeyboardActions(
+                    onGo = {
+                        if (searchText.isNotEmpty()) {
+                            applicationsViewModel.openFirstApp()
+                            focusManager.clearFocus()
+                        }
                     }
-                    innerTextField()
-                }
-            },
-            singleLine = true,
-            modifier = Modifier
-                .focusRequester(focusRequester)
+                ),
+                textStyle = TextStyle.Default.copy(
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Start,
+                ),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
+                decorationBox = { innerTextField ->
+                    // Box para el text field
+                    Box(
+                        contentAlignment = AbsoluteAlignment.CenterLeft,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        if (searchText.isEmpty()) {
+                            Text(
+                                text = "Search",
+                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                            )
+                        }
+                        innerTextField()
+                    }
+                },
+                singleLine = true,
+                modifier = Modifier
+                    .focusRequester(focusRequester)
 //                .wrapContentWidth()
 
 //                .width(IntrinsicSize.Min)
@@ -130,6 +134,7 @@ fun SearchBarView(
 //
 //                    }
 //                }
-        )
+            )
+        }
     }
 }

@@ -166,12 +166,12 @@ fun TasksAndHabitsListView(
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onBackground
                             )
-                            Box(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .background(MaterialTheme.colorScheme.onBackground)
-                                    .height(2.dp)
-                            )
+//                            Box(
+//                                Modifier
+//                                    .fillMaxWidth()
+//                                    .background(MaterialTheme.colorScheme.onBackground)
+//                                    .height(2.dp)
+//                            )
                         }
                     }
                 }
@@ -204,12 +204,12 @@ fun TasksAndHabitsListView(
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onBackground
                             )
-                            Box(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .background(MaterialTheme.colorScheme.onBackground)
-                                    .height(2.dp)
-                            )
+//                            Box(
+//                                Modifier
+//                                    .fillMaxWidth()
+//                                    .background(MaterialTheme.colorScheme.onBackground)
+//                                    .height(2.dp)
+//                            )
                         }
                     }
                 }

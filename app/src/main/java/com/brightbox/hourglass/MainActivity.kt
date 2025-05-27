@@ -1,31 +1,39 @@
 package com.brightbox.hourglass
 
-import android.content.BroadcastReceiver
-import android.content.Context
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
-import android.content.IntentFilter
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.hilt.work.HiltWorkerFactory
-import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.brightbox.hourglass.navigation.NavigationRoot
+import com.brightbox.hourglass.services.NotificationSender
 import com.brightbox.hourglass.services.TasksWorker
-import com.brightbox.hourglass.services.TimeLimitWorker
+import com.brightbox.hourglass.services.TimeLimitService
+import com.brightbox.hourglass.viewmodel.LimitsViewModel
 import com.brightbox.hourglass.viewmodel.preferences.PreferencesViewModel
 import com.brightbox.hourglass.views.theme.HourglassProductivityLauncherTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,31 +50,41 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        scheduleMidnightTask()
+        sendBroadcast(Intent("QUERY_APPLICATIONS_TO_DATABASE"))
+        createNotificationChannels()
 
+        scheduleMidnightTaskValidation()
         scheduleAppUsageMonitoring()
-
-//        val intent = IntentFilter("SCHEDULE_TIME_LIMIT_WORKER")
-//
-//        val limitsWorkerReceiver = object : BroadcastReceiver() {
-//            override fun onReceive(
-//                context: Context?,
-//                intent: Intent?
-//            ) {
-//
-//            }
-//        }
-//
-//        registerReceiver(
-//            limitsWorkerReceiver,
-//            intent,
-//            RECEIVER_NOT_EXPORTED
-//        )
 
         setContent {
             HourglassProductivityLauncherTheme {
                 val preferencesViewModel: PreferencesViewModel = hiltViewModel()
                 val state = preferencesViewModel.state.collectAsState()
+                val context = LocalContext.current
+
+                val requestPermissionLauncher = rememberLauncherForActivityResult(
+                    ActivityResultContracts.RequestPermission()
+                ) { isGranted: Boolean ->
+                    if (isGranted) {
+                        Toast.makeText(this, "Notifications permission granted", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        Toast.makeText(this, "Notifications permission denied", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+
+                LaunchedEffect(Unit) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Android 13+
+                        if (ContextCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.POST_NOTIFICATIONS
+                            ) != PackageManager.PERMISSION_GRANTED
+                        ) {
+                            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }
+                    }
+                }
 
                 Box(
                     modifier = Modifier
@@ -82,14 +100,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onUserLeaveHint() {
-        super.onUserLeaveHint()
-        Log.d("onUserLeaveHint", "onUserLeaveHint")
-        val intent = Intent("HOME_BUTTON_PRESSED")
-        sendBroadcast(intent)
+    override fun onDestroy() {
+        super.onDestroy()
+        val serviceIntent = Intent(this, TimeLimitService::class.java)
+        stopService(serviceIntent)
     }
 
-    private fun scheduleMidnightTask() {
+    private fun scheduleMidnightTaskValidation() {
         // Verifica si la tarea ya está programada para evitar duplicados
         val existingWork = WorkManager.getInstance(this)
             .getWorkInfosForUniqueWork(TasksWorker.WORK_NAME)
@@ -112,42 +129,44 @@ class MainActivity : ComponentActivity() {
             // la mantiene (útil para programar en cada inicio de app sin duplicar)
             WorkManager.getInstance(this).enqueueUniqueWork(
                 TasksWorker.WORK_NAME,
-                ExistingWorkPolicy.KEEP,
+                ExistingWorkPolicy.REPLACE,
                 updateRequest
             )
             Log.d(
-                "MainActivty",
+                "MainActivity",
                 "Programación inicial de la tarea de medianoche en $delayMillis ms."
             )
         } else {
-            Log.d("MainActivty", "La tarea de medianoche ya está programada.")
+            Log.d("MainActivity", "La tarea de medianoche ya está programada.")
         }
     }
 
     fun scheduleAppUsageMonitoring() {
-        val immediateWorkRequest = OneTimeWorkRequestBuilder<TimeLimitWorker>()
-            .build()
-
-        WorkManager.getInstance(this).enqueue(immediateWorkRequest)
-
-        val repeatingRequest = PeriodicWorkRequestBuilder<TimeLimitWorker>(
-
-            repeatInterval = 15,
-            repeatIntervalTimeUnit = TimeUnit.MINUTES
-        )
-            // Puedes añadir restricciones aquí, ej. .setConstraints(...)
-            .build()
-
-        // Enqueue el trabajo. ExistingPeriodicWorkPolicy.KEEP significa que si ya existe un trabajo
-        // con este nombre, el nuevo no lo reemplazará. REPLACE lo reemplazaría.
-        WorkManager.getInstance(this)
-            .enqueueUniquePeriodicWork(
-            "TimeLimitWorker",
-            ExistingPeriodicWorkPolicy.KEEP,
-            repeatingRequest
-        )
-        Log.d("MainActivity", "TimeLimitWorker scheduled.")
+        val serviceIntent = Intent(this, TimeLimitService::class.java)
+        startService(serviceIntent)
     }
 
+    fun createNotificationChannels() {
 
+        val monitoringChannel = NotificationChannel(
+            NotificationSender.MONITORING_CHANNEL_ID,
+            NotificationSender.MONITORING_CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_LOW
+        ).apply {
+            description = "Hourglass app monitoring channel"
+        }
+
+        val alertChannel = NotificationChannel(
+            NotificationSender.ALERT_CHANNEL_ID,
+            NotificationSender.ALERT_CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = "Hourglass notification channel"
+        }
+
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannels(
+            listOf(monitoringChannel, alertChannel)
+        )
+    }
 }

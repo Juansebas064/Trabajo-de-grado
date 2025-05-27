@@ -159,14 +159,13 @@ fun HabitComponent(
                     verticalAlignment = Alignment.Top,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = spacing.spaceExtraSmall)
                 ) {
                     Text(
                         text = habit.title,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.ExtraBold,
-                        textAlign = TextAlign.Start,
-                        lineHeight = MaterialTheme.typography.titleSmall.fontSize,
+                        textAlign = TextAlign.Center,
+                        lineHeight = MaterialTheme.typography.bodyMedium.fontSize,
                         textDecoration = if (isCompletedForToday) TextDecoration.LineThrough else null,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
@@ -187,13 +186,13 @@ fun HabitComponent(
                     daysOfWeek.forEach { day ->
                         Box(
                             modifier = Modifier
-                                .size(22.dp)
+                                .size(28.dp)
                                 .clip(RoundedCornerShape(spacing.spaceSmall))
                                 .background(if (day in habit.daysOfWeek) (if (day == today["day"]) MaterialTheme.colorScheme.inversePrimary else MaterialTheme.colorScheme.secondary) else Color.Transparent)
                         ) {
                             Text(
                                 text = day[0].uppercase(),
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = MaterialTheme.typography.bodySmall,
                                 color = if (day in habit.daysOfWeek)
                                     MaterialTheme.colorScheme.onSecondary
                                 else MaterialTheme.colorScheme.onSurface,
