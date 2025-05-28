@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,7 +23,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -35,6 +38,8 @@ import com.brightbox.hourglass.viewmodel.CategoriesViewModel
 import com.brightbox.hourglass.viewmodel.HabitsViewModel
 import com.brightbox.hourglass.viewmodel.TasksViewModel
 import com.brightbox.hourglass.viewmodel.TimeViewModel
+import com.brightbox.hourglass.views.common.BottomModalDialog
+import com.brightbox.hourglass.views.common.RoundedSquareButtonComponent
 import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.HabitComponent
 import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.TaskComponent
 import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.TasksControlsComponent
@@ -97,6 +102,7 @@ fun TasksAndHabitsListView(
             verticalArrangement = Arrangement.Top,
             modifier = modifier
         ) {
+            // Show task dialog
             if (tasksState.value.isAddingTask) {
                 AddTaskDialog(
                     onTasksEvent = tasksViewModel::onEvent,
@@ -105,6 +111,7 @@ fun TasksAndHabitsListView(
                 )
             }
 
+            // Show habit dialog
             if (habitsState.value.isAddingHabit) {
                 AddHabitDialog(
                     habitsState = habitsState.value,
@@ -114,39 +121,65 @@ fun TasksAndHabitsListView(
                 )
             }
 
+            // Show delete dialog
             if (tasksState.value.isDeletingTasks || habitsState.value.isDeletingHabits) {
-                AlertDialog(
-                    containerColor = MaterialTheme.colorScheme.surface,
+                BottomModalDialog(
                     onDismissRequest = {
                         tasksViewModel.onEvent(TasksEvent.HideDeleteTasksDialog)
                     },
-                    title = {
-                        Text(text = "Delete elements")
-                    },
-                    text = {
-                        Text(text = "Are you sure you want to delete these elements?")
-                    },
-                    confirmButton = {
-                        TextButton(
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(spacing.spaceLarge)
+
+                    ) {
+                        Box {
+                            Text(
+                                text = "Delete elements",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+
+                        Spacer(Modifier.height(spacing.spaceMedium))
+
+                        Box {
+                            Text(
+                                text = "Are you sure you want to delete these elements?",
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
+
+                        Spacer(Modifier.height(spacing.spaceLarge))
+
+                        RoundedSquareButtonComponent(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Delete",
+                            textStyle = MaterialTheme.typography.bodyMedium,
+                            contentColor = MaterialTheme.colorScheme.onError,
+                            containerColor = MaterialTheme.colorScheme.error,
                             onClick = {
                                 tasksViewModel.onEvent(TasksEvent.DeleteTasks)
                                 habitsViewModel.onEvent(HabitsEvent.DeleteHabits)
                                 tasksViewModel.onEvent(TasksEvent.HideDeleteTasksDialog)
                             },
-                        ) {
-                            Text(text = "Delete")
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(
+                        )
+
+                        Spacer(Modifier.height(spacing.spaceSmall))
+
+                        RoundedSquareButtonComponent(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Cancel",
+                            textStyle = MaterialTheme.typography.bodyMedium,
+                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                            containerColor = MaterialTheme.colorScheme.primary,
                             onClick = {
                                 tasksViewModel.onEvent(TasksEvent.HideDeleteTasksDialog)
                             },
-                        ) {
-                            Text(text = "Cancel")
-                        }
-                    },
-                )
+                        )
+                    }
+                }
             }
 
             LazyColumn(
@@ -164,15 +197,9 @@ fun TasksAndHabitsListView(
                         ) {
                             Text(
                                 text = "Habits",
-                                style = MaterialTheme.typography.bodyLarge,
+                                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
                                 color = MaterialTheme.colorScheme.onBackground
                             )
-//                            Box(
-//                                Modifier
-//                                    .fillMaxWidth()
-//                                    .background(MaterialTheme.colorScheme.onBackground)
-//                                    .height(2.dp)
-//                            )
                         }
                     }
                 }
@@ -202,15 +229,9 @@ fun TasksAndHabitsListView(
                         ) {
                             Text(
                                 text = "Tasks",
-                                style = MaterialTheme.typography.bodyLarge,
+                                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
                                 color = MaterialTheme.colorScheme.onBackground
                             )
-//                            Box(
-//                                Modifier
-//                                    .fillMaxWidth()
-//                                    .background(MaterialTheme.colorScheme.onBackground)
-//                                    .height(2.dp)
-//                            )
                         }
                     }
                 }

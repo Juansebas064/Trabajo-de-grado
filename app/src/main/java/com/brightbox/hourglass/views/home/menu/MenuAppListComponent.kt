@@ -10,9 +10,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -47,11 +49,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
+import com.brightbox.hourglass.viewmodel.preferences.PreferencesViewModel
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
 fun MenuAppListComponent(
     applicationsViewModel: ApplicationsViewModel = hiltViewModel(),
+    preferencesViewModel: PreferencesViewModel = hiltViewModel(),
     focusManager: FocusManager,
     modifier: Modifier,
 ) {
@@ -59,6 +63,8 @@ fun MenuAppListComponent(
     val searchText = applicationsViewModel.searchText.collectAsState()
     val apps by applicationsViewModel.filteredAppList.collectAsState()
     val appShowingOptions by applicationsViewModel.appShowingOptions.collectAsState()
+
+    val preferencesState = preferencesViewModel.state.collectAsState()
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Bottom),
@@ -149,7 +155,17 @@ fun MenuAppListComponent(
                             .width(150.dp)
                             .weight(1.5f)
                             .padding(3.dp)
+                            .fillMaxHeight()
                     ) {
+                        // Separator
+//                        Box(
+//                            modifier = Modifier
+//                                .width(spacing.default)
+//                                .fillMaxHeight(0.6f)
+//                                .clip(RoundedCornerShape(spacing.spaceLarge))
+//                                .background(MaterialTheme.colorScheme.onSurface.copy(0.5f))
+//
+//                        )
                         // Pin
                         IconButton(
                             onClick = {
@@ -219,7 +235,8 @@ fun MenuAppListComponent(
                 }
             }
         }
-        if (searchText.value.isNotEmpty()) {
+
+        if (searchText.value.isNotEmpty() && preferencesState.value.showSearchOnInternet) {
             item {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,

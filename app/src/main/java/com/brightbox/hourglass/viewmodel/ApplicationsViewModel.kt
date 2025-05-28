@@ -10,15 +10,18 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.brightbox.hourglass.constants.SearchEnginesEnum
 import com.brightbox.hourglass.model.ApplicationsModel
 import com.brightbox.hourglass.states.ApplicationsState
 import com.brightbox.hourglass.usecases.ApplicationsUseCase
+import com.brightbox.hourglass.usecases.PreferencesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -28,10 +31,11 @@ import javax.inject.Inject
 @HiltViewModel
 class ApplicationsViewModel @Inject constructor(
     private val _applicationsUseCase: ApplicationsUseCase,
+    private val _preferencesUseCase: PreferencesUseCase,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-    private val appChangeReceiver = object: BroadcastReceiver() {
+    private val appChangeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             Log.d("ApplicationsViewModel", "onReceive called")
             viewModelScope.launch {
@@ -81,10 +85,11 @@ class ApplicationsViewModel @Inject constructor(
                 // 2) Las ordenamos con dos claves:
                 //    a) Las que NO empiezan con lowerSearch van después (true> false)
                 //    b) Dentro de cada grupo, por índice de la subcadena (más bajo = más parecido)
-                .sortedWith(compareBy(
-                    { !it.name.lowercase().startsWith(searchText, ignoreCase = true) },
-                    { it.name.lowercase().indexOf(searchText, ignoreCase = true) }
-                ))
+                .sortedWith(
+                    compareBy(
+                        { !it.name.lowercase().startsWith(searchText, ignoreCase = true) },
+                        { it.name.lowercase().indexOf(searchText, ignoreCase = true) }
+                    ))
         }
         ApplicationsState(
             applications = filteredApplications,
@@ -97,12 +102,8 @@ class ApplicationsViewModel @Inject constructor(
 
     val appShowingOptions = _appShowingOptions.asStateFlow()
 
-    suspend fun onSearchTextChange(searchText: String = "") {   // searchText will be "" if no argument is passed
-        Log.d("AppsViewModel", "onSearchTextChange: searchText = $searchText")
+    fun onSearchTextChange(searchText: String = "") {
         _searchText.value = searchText
-        withContext(Dispatchers.IO) {
-            _applicationsUseCase.queryInstalledApplicationsToDatabase()
-        }
     }
 
     fun openApp(packageName: String) {
@@ -146,6 +147,13 @@ class ApplicationsViewModel @Inject constructor(
     }
 
     fun searchOnInternet() {
-        _applicationsUseCase.searchOnInternet(_searchText.value)
+        viewModelScope.launch {
+            _preferencesUseCase.getPreferences().collectLatest { preferences ->
+                if(preferences.showSearchOnInternet) {
+                    val searchEngineEnum = SearchEnginesEnum.entries.find { it.engineName == preferences.searchEngine }
+                    _applicationsUseCase.searchOnInternet(_searchText.value, searchEngineEnum!!)
+                }
+            }
+        }
     }
 }

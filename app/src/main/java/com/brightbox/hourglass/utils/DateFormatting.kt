@@ -48,8 +48,14 @@ fun formatSQLiteDateToMilliseconds(date: String): Long {
 }
 
 // Format the milliseconds date to String according to SQLite date's best practices
-fun formatMillisecondsToMinutes(time: Long): String {
-    return "${round(((time/1000)/60).toDouble()).toInt()}"
+fun formatMillisecondsToMinutes(time: Long, showSeconds: Boolean = false): String {
+    if (!showSeconds) {
+        return "${round(((time/1000)/60).toDouble()).toInt()}"
+    } else {
+        val formatter = SimpleDateFormat("mm:ss", Locale.getDefault())
+        val formattedDate = formatter.format(time)
+        return formattedDate
+    }
 }
 
 fun formatMillisecondsToDay(date: Long): String {

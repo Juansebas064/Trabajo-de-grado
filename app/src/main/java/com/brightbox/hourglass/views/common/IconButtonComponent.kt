@@ -38,7 +38,9 @@ fun IconButtonComponent(
         ),
         contentPadding = PaddingValues(0.dp),
         shape = RoundedCornerShape(spacing.spaceSmall),
-        modifier = Modifier.size(size)
+        modifier = Modifier
+            .size(size)
+            .then(modifier)
     ) {
         Icon(
             imageVector = icon,

@@ -1,5 +1,6 @@
 package com.brightbox.hourglass.viewmodel.preferences
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,6 +8,8 @@ import com.brightbox.hourglass.events.preferences.GeneralPreferencesEvent
 import com.brightbox.hourglass.states.preferences.PreferencesState
 import com.brightbox.hourglass.usecases.PreferencesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PreferencesViewModel @Inject constructor(
-    private val preferencesUseCase: PreferencesUseCase
+    private val preferencesUseCase: PreferencesUseCase,
+    @ApplicationContext val context: Context
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(PreferencesState())
@@ -57,6 +61,30 @@ class PreferencesViewModel @Inject constructor(
         }
     }
 
+    private fun setAppLanguage(value: String) {
+        viewModelScope.launch {
+            preferencesUseCase.setAppLanguage(value)
+        }
+    }
+
+    private fun setShowSearchOnInternet(value: Boolean) {
+        viewModelScope.launch {
+            preferencesUseCase.setShowSearchOnInternet(value)
+        }
+    }
+
+    private fun setSearchEngine(value: String) {
+        viewModelScope.launch {
+            preferencesUseCase.setSearchEngine(value)
+        }
+    }
+
+    private fun setTheme(value: String = "") {
+        viewModelScope.launch {
+            preferencesUseCase.setTheme(value)
+        }
+    }
+
     fun onEvent(event: GeneralPreferencesEvent) {
         when (event) {
             is GeneralPreferencesEvent.SetOpenKeyboardInAppMenu -> {
@@ -75,6 +103,49 @@ class PreferencesViewModel @Inject constructor(
                     )
                 }
                 setSolidBackground(event.value)
+            }
+
+            is GeneralPreferencesEvent.SetAppLanguage -> {
+                _state.update {
+                    it.copy(
+                        appLanguage = event.value
+                    )
+                }
+                setAppLanguage(event.value)
+            }
+
+            is GeneralPreferencesEvent.SetShowSearchOnInternet -> {
+                _state.update {
+                    it.copy(
+                        showSearchOnInternet = event.value
+                    )
+                }
+                setShowSearchOnInternet(event.value)
+            }
+
+            is GeneralPreferencesEvent.SetSearchEngine -> {
+                _state.update {
+                    it.copy(
+                        searchEngine = event.value
+                    )
+                }
+                setSearchEngine(event.value)
+            }
+
+            GeneralPreferencesEvent.ChangeTheme -> {
+                val currentTheme = when (_state.value.theme) {
+                    "system" -> "light"
+                    "light" -> "dark"
+                    "dark" -> "system"
+                    else -> "system"
+                }
+                _state.update {
+                    it.copy(
+                        theme = currentTheme
+                    )
+                }
+                Log.d("HourglassProductivityLauncherTheme", "Enter onEvent")
+                setTheme()
             }
         }
     }

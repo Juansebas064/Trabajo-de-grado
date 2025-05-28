@@ -2,7 +2,9 @@ package com.brightbox.hourglass.views.preferences.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -10,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
 fun ToggleComponent(
@@ -19,6 +22,9 @@ fun ToggleComponent(
     onCheckedChange: (Boolean) -> Unit,
     enabled: Boolean = true
 ) {
+
+    val spacing = LocalSpacing.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,6 +41,7 @@ fun ToggleComponent(
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
+        Spacer(Modifier.width(spacing.spaceSmall))
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,

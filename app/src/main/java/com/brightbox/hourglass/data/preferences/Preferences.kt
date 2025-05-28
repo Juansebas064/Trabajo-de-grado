@@ -7,4 +7,6 @@ interface Preferences {
     suspend fun getGeneralPreferences(): Flow<PreferencesState>
 
     suspend fun setBooleanPreference(key: String, value: Boolean)
+
+    suspend fun setStringPreference(key: String, value: String)
 }
