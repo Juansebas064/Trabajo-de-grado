@@ -69,10 +69,7 @@ fun HomeView(
         ) { page ->
             when (page) {
                 0 -> {
-                    Text(
-                        text = "Page 1",
-                        color = Color.Red
-                    )
+                    PomodoroPageView()
                 }
 
                 1 -> {

@@ -27,7 +27,10 @@ class ApplicationsUseCase @Inject constructor(
 
     // Get all apps from the database
     fun getApplicationsFromDatabase(appNameFilter: String? = null): Flow<List<ApplicationsModel>> {
-        Log.d("ApplicationsUseCase", "getApplicationsFromDatabase: map called, filter = $appNameFilter")
+        Log.d(
+            "ApplicationsUseCase",
+            "getApplicationsFromDatabase: map called, filter = $appNameFilter"
+        )
         val appList = db.applicationsDao().getApplications().map { apps ->
             apps.sortedBy { it.name.lowercase() }
         }
@@ -39,7 +42,8 @@ class ApplicationsUseCase @Inject constructor(
         val appIcons = mutableMapOf<String, Drawable>()
         withContext(Dispatchers.IO) {
             appList.forEach { app ->
-                appIcons[app.packageName] = application.packageManager.getApplicationIcon(app.packageName)
+                appIcons[app.packageName] =
+                    application.packageManager.getApplicationIcon(app.packageName)
             }
         }
         return appIcons
@@ -120,7 +124,8 @@ class ApplicationsUseCase @Inject constructor(
                 packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
 
             val installedPackageNames =
-                installedAppsIntents.map { it.activityInfo.packageName }.toSet()
+                installedAppsIntents.filter { it.activityInfo.packageName != application.packageName }
+                    .map { it.activityInfo.packageName }.toSet()
             Log.d("getApps", "App List: $installedPackageNames")
 
             val dbApps = db.applicationsDao().getApplicationsForQueryInstalledApps()

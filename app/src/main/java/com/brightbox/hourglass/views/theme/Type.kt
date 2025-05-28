@@ -16,14 +16,21 @@ val sofiaSansFontFamily = FontFamily(
 val Typography = Typography(
     displayLarge = TextStyle(
         fontFamily = sofiaSansFontFamily,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Bold,
         fontSize = 60.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
+    ),
+    displayMedium = TextStyle(
+        fontFamily = sofiaSansFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 45.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
     displaySmall = TextStyle(
         fontFamily = sofiaSansFontFamily,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
         lineHeight = 22.sp,
     ),
