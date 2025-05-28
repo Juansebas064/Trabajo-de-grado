@@ -23,9 +23,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionOnScreen
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -46,6 +49,8 @@ import com.brightbox.hourglass.viewmodel.TasksViewModel
 import com.brightbox.hourglass.views.common.IconButtonComponent
 import com.brightbox.hourglass.views.common.RoundedSquareButtonComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
@@ -58,7 +63,20 @@ fun AddElementsButton(
         mutableStateOf(false)
     }
 
+    var buttonEnabled by remember { mutableStateOf(true) }
+
     val spacing = LocalSpacing.current
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(expanded) {
+        if (!expanded) {
+            scope.launch {
+                buttonEnabled = false
+                delay(200)
+                buttonEnabled = true
+            }
+        }
+    }
 
     Box(
         modifier = modifier
@@ -66,7 +84,9 @@ fun AddElementsButton(
         IconButtonComponent(
             modifier = Modifier.zIndex(1f),
             onClick = {
-                expanded = !expanded
+                if (buttonEnabled) {
+                    expanded = !expanded
+                }
             },
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface,

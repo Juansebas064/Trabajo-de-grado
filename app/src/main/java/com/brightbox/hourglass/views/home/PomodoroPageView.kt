@@ -16,8 +16,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CloudSync
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,18 +35,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.brightbox.hourglass.events.preferences.GeneralPreferencesEvent
 import com.brightbox.hourglass.utils.formatMillisecondsToMinutes
 import com.brightbox.hourglass.viewmodel.PomodoroViewModel
+import com.brightbox.hourglass.viewmodel.preferences.PreferencesViewModel
 import com.brightbox.hourglass.views.common.IconButtonComponent
+import com.brightbox.hourglass.views.common.NavigationButton
 import com.brightbox.hourglass.views.common.TextFieldComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
 fun PomodoroPageView(
     modifier: Modifier = Modifier,
+    onNavigateToPreferences: () -> Unit
 ) {
     val pomodoroViewModel: PomodoroViewModel = viewModel()
+
+    val preferencesViewModel: PreferencesViewModel = hiltViewModel()
+    val preferencesState = preferencesViewModel.state.collectAsState()
 
     val sessionTime = pomodoroViewModel.sessionTime.collectAsState()
     val breakTime = pomodoroViewModel.breakTime.collectAsState()
@@ -246,7 +258,33 @@ fun PomodoroPageView(
                     contentDescription = "Pomodoro timer control",
                 )
             }
-
         }
+
+        NavigationButton(
+            modifier = Modifier.align(Alignment.TopStart),
+            icon = Icons.Default.Settings,
+            color = MaterialTheme.colorScheme.onBackground,
+            description = "Settings",
+            onNavigate = {
+                onNavigateToPreferences()
+            }
+        )
+
+//        NavigationButton(
+//            modifier = Modifier.align(Alignment.TopEnd),
+//            icon = when (preferencesState.value.theme) {
+//                "system" -> Icons.Default.CloudSync
+//                "light" -> Icons.Default.LightMode
+//                "dark" -> Icons.Default.DarkMode
+//                else -> Icons.Default.CloudSync
+//            },
+//            color = MaterialTheme.colorScheme.onBackground,
+//            description = "Change theme",
+//            onNavigate = {
+//                preferencesViewModel.onEvent(
+//                    GeneralPreferencesEvent.ChangeTheme
+//                )
+//            }
+//        )
     }
 }

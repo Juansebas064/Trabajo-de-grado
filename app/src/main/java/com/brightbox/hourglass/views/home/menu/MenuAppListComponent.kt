@@ -49,11 +49,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
+import com.brightbox.hourglass.viewmodel.preferences.PreferencesViewModel
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
 fun MenuAppListComponent(
     applicationsViewModel: ApplicationsViewModel = hiltViewModel(),
+    preferencesViewModel: PreferencesViewModel = hiltViewModel(),
     focusManager: FocusManager,
     modifier: Modifier,
 ) {
@@ -61,6 +63,8 @@ fun MenuAppListComponent(
     val searchText = applicationsViewModel.searchText.collectAsState()
     val apps by applicationsViewModel.filteredAppList.collectAsState()
     val appShowingOptions by applicationsViewModel.appShowingOptions.collectAsState()
+
+    val preferencesState = preferencesViewModel.state.collectAsState()
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Bottom),
@@ -231,7 +235,8 @@ fun MenuAppListComponent(
                 }
             }
         }
-        if (searchText.value.isNotEmpty()) {
+
+        if (searchText.value.isNotEmpty() && preferencesState.value.showSearchOnInternet) {
             item {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
