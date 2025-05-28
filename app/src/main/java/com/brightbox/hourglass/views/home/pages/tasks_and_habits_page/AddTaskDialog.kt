@@ -63,7 +63,6 @@ fun AddTaskDialog(
     val isTitleValid = remember {
         mutableStateOf(true)
     }
-    Log.d("AddTaskDialog", "tasksState: ${tasksState.taskDueDate}")
 
     BottomModalDialog (
         onDismissRequest = {
@@ -86,7 +85,7 @@ fun AddTaskDialog(
                     .padding(top = spacing.spaceMedium)
             ) {
                 Text(
-                    text = "Add a task",
+                    text = if (tasksState.isEditingTask) "Edit task" else "Add task",
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -215,6 +214,7 @@ fun AddTaskDialog(
                                 }
                             }
                         }
+                        .fillMaxWidth()
                 )
 
                 DropdownMenu(

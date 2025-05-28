@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.events.HabitsEvent
 import com.brightbox.hourglass.events.TasksEvent
@@ -73,7 +74,7 @@ fun TasksAndHabitsListView(
     Box(
         modifier = Modifier
             .fillMaxHeight()
-            .width(LocalConfiguration.current.screenWidthDp.dp * 0.65f)
+            .fillMaxWidth(0.65f)
     ) {
 
         if (tasksState.value.tasks.isEmpty() && habitsState.value.todayHabits.isEmpty()) {

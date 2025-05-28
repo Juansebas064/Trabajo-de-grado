@@ -20,7 +20,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -84,6 +83,14 @@ class LimitsViewModel @Inject constructor(
         viewModelScope.launch {
             _limitsUseCase.isSystemAlertPermissionGranted().let {
                 _isSystemAlertWindowPermissionGranted.value = it
+            }
+        }
+    }
+
+    private fun syncLimits() {
+        viewModelScope.launch {
+            _state.value.limitsList.forEach { limit ->
+                _limitsUseCase.upsertLimit(limit)
             }
         }
     }
@@ -230,7 +237,9 @@ class LimitsViewModel @Inject constructor(
                 }
             }
 
-            LimitsEvent.DeleteApplicationLimit -> TODO()
+            LimitsEvent.SyncLimits -> {
+                syncLimits()
+            }
         }
     }
 }

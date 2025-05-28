@@ -130,7 +130,9 @@ class HabitsViewModel @Inject constructor(
             habitCategory = null,
             habitDaysOfWeek = emptyList(),
             startDate = 0L,
-            endDate = 0L
+            endDate = 0L,
+            isAddingHabit = false,
+            isEditingHabit = false
         )
     }
 
@@ -242,6 +244,7 @@ class HabitsViewModel @Inject constructor(
                             habit.endDate
                         ),
                         isAddingHabit = true,
+                        isEditingHabit = true
                     )
                 }
                 Log.d("HabitsViewModel", "Start date in state: ${state.value.startDate}")

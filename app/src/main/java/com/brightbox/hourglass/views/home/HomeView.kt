@@ -37,11 +37,6 @@ fun HomeView(
         pageCount = { 3 }
     )
     val context = LocalContext.current
-    val timeLimitWorkDone = homeViewModel.timeLimitWorkDone.collectAsState(initial = null)
-
-    LaunchedEffect(timeLimitWorkDone.value) {
-//        Toast.makeText(context, "Alarm triggered", Toast.LENGTH_SHORT).show()
-    }
 
     rememberSystemUiController().apply {
         setNavigationBarColor(
@@ -61,15 +56,8 @@ fun HomeView(
             .statusBarsPadding()
             .pointerInput(Unit) {
                 detectVerticalDragGestures { _, dragAmount ->
-                    if (dragAmount < 10) { // Detect upward swipe
-                        val toast = Toast.makeText(context, "Downward swipe detected", Toast.LENGTH_SHORT)
-                        toast.show()
-//                        AccessibilityService.instance?.openShade()
-//                            ?: run { /* servicio no habilitado → pide al usuario */ }
-//                        coroutineScope.launch {
-//
-//                        }
-                        Log.d("HomeView", "Downward swipe detected")
+                    if (dragAmount < 10) { // Detect down swipe
+                        homeViewModel.expandNotificationsPanel()
                     }
                 }
             }

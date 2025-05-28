@@ -12,6 +12,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowRightAlt
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -112,13 +114,15 @@ fun MenuAppListComponent(
                     exit = slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Star,
+                        imageVector = Icons.Default.PushPin,
                         contentDescription = "Pinned",
                         tint = if (appShowingOptions != app.packageName)
-                            MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.padding(horizontal = 2.dp)
+                            MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurface,
                     )
                 }
+
+                Spacer(Modifier.width(spacing.spaceSmall))
+
                 Text(
                     text = app.name,
                     style = MaterialTheme.typography.bodyLarge,
@@ -160,9 +164,10 @@ fun MenuAppListComponent(
                                 .padding(0.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Star,
+                                imageVector = Icons.Default.PushPin,
                                 contentDescription = "Pin",
-                                tint = MaterialTheme.colorScheme.surface,
+                                tint = if (app.isPinned) MaterialTheme.colorScheme.onSurface
+                                else MaterialTheme.colorScheme.surface,
                             )
                         }
                         // App info

@@ -81,7 +81,7 @@ fun AddHabitDialog(
                     .padding(top = spacing.spaceMedium)
             ) {
                 Text(
-                    text = "Add an habit",
+                    text = if (habitsState.isEditingHabit) "Edit habit" else "Add habit",
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -154,7 +154,6 @@ fun AddHabitDialog(
             )
 
             // Select which days to do the habit
-
             Spacer(modifier = Modifier.height(spacing.spaceMedium))
             Text(
                 text = "Select which days to do the habit",

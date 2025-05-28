@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.events.preferences.GeneralPreferencesEvent
 import com.brightbox.hourglass.viewmodel.preferences.PreferencesViewModel
+import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.AddElementsButton
 import com.brightbox.hourglass.views.preferences.components.ToggleComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
 

@@ -30,6 +30,7 @@ import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
 fun TasksControlsComponent(
+    modifier: Modifier = Modifier,
     selectedTasks: List<Int>,
     selectedHabits: List<Int>,
     isSelectingTasks: Boolean,
@@ -40,7 +41,7 @@ fun TasksControlsComponent(
 
     Box(
 //        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = spacing.spaceMedium)
     ) {

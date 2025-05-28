@@ -175,7 +175,6 @@ fun TaskComponent(
                     verticalAlignment = Alignment.Top,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = spacing.spaceExtraSmall)
                 ) {
                     Box(
                         modifier = Modifier
@@ -218,6 +217,7 @@ fun TaskComponent(
 
                     Box(
                         modifier = Modifier
+                            .padding(top = spacing.spaceSmall)
                             .animateContentSize()
                     ) {
                         Text(

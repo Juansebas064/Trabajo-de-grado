@@ -11,5 +11,5 @@ sealed interface LimitsEvent {
 
     data object ShowApplicationsList: LimitsEvent
     data object SaveApplicationLimits: LimitsEvent
-    data object DeleteApplicationLimit: LimitsEvent
+    data object SyncLimits: LimitsEvent
 }

@@ -79,8 +79,6 @@ fun ApplicationsLimitView(
 
     val lifecycle = LocalLifecycleOwner.current
 
-    val context = LocalContext.current
-
     val spacing = LocalSpacing.current
 
     LaunchedEffect(
@@ -91,9 +89,10 @@ fun ApplicationsLimitView(
         limitsViewModel.onEvent(LimitsEvent.CheckUsageAccessPermission)
         limitsViewModel.onEvent(LimitsEvent.CheckSystemAlertWindowPermission)
 
+        limitsViewModel.onEvent(LimitsEvent.SyncLimits)
+
         if (isUsageAccessPermissionGranted.value && isSystemAlertWindowPermissionGranted.value) {
             requestingPermissions = false
-//            context.sendBroadcast(Intent("SCHEDULE_TIME_LIMIT_WORKER"))
         } else if (!exit) {
             requestingPermissions = true
         }

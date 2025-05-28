@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -89,6 +90,7 @@ fun CategorySelectorComponent(
         Box(
             modifier = Modifier
                 .weight(1f)
+                .width(IntrinsicSize.Min)
         ) {
             OutlinedTextField(
                 value = if (categoriesDropdownPosition.intValue == -1 || categoriesState.value.categories.isEmpty()) categoryInitialValue else categoriesState.value.categories[categoriesDropdownPosition.intValue].name,
@@ -133,7 +135,9 @@ fun CategorySelectorComponent(
                 onDismissRequest = {
                     areCategoriesExpanded.value = false
                 },
-                containerColor = MaterialTheme.colorScheme.surface
+                containerColor = MaterialTheme.colorScheme.surface,
+                modifier = Modifier
+                    .fillMaxWidth(0.55f)
             ) {
                 categoriesState.value.categories.forEachIndexed { index, category ->
                     DropdownMenuItem(
@@ -171,16 +175,14 @@ fun CategorySelectorComponent(
                 else categoriesViewModel.onEvent(CategoriesEvent.HideDialog)
             },
             modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    shape = RoundedCornerShape(8.dp)
-                )
+                .offset(y = 5.dp)
+                .clip(shape = RoundedCornerShape(spacing.spaceSmall))
+                .background(MaterialTheme.colorScheme.secondary)
         ) {
             Icon(
-                imageVector = Icons.Default.Add,
+                imageVector = if (!categoriesState.value.isAddingCategory) Icons.Default.Add else Icons.Default.Close,
                 contentDescription = "Add category",
-                tint = MaterialTheme.colorScheme.onSurface
+                tint = MaterialTheme.colorScheme.onSecondary
             )
         }
     }
@@ -196,7 +198,6 @@ fun CategorySelectorComponent(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Max)
-//                .padding(spacing.spaceMedium)
         ) {
             Box(
                 modifier = Modifier
@@ -238,16 +239,14 @@ fun CategorySelectorComponent(
                     categoriesViewModel.onEvent(CategoriesEvent.SetCategoryName(""))
                 },
                 modifier = Modifier
-                    .border(
-                        width = 1.dp,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        shape = RoundedCornerShape(8.dp)
-                    )
+                    .offset(y = 5.dp)
+                    .clip(shape = RoundedCornerShape(spacing.spaceSmall))
+                    .background(MaterialTheme.colorScheme.tertiary)
             ) {
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = "Confirm add category",
-                    tint = MaterialTheme.colorScheme.onSurface
+                    tint = MaterialTheme.colorScheme.onTertiary
                 )
             }
         }

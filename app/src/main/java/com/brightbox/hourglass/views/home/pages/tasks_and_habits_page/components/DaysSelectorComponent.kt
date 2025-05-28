@@ -29,10 +29,8 @@ fun DaysSelectorComponent(
 
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(
-            spacing.spaceExtraSmall,
-            Alignment.CenterHorizontally
-        )
+        horizontalArrangement = Arrangement.SpaceBetween,
+
     ) {
         daysOfWeek.forEach { day ->
             Button(

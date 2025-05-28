@@ -44,6 +44,8 @@ import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.viewmodel.HabitsViewModel
 import com.brightbox.hourglass.viewmodel.TasksViewModel
 import com.brightbox.hourglass.views.common.IconButtonComponent
+import com.brightbox.hourglass.views.common.RoundedSquareButtonComponent
+import com.brightbox.hourglass.views.theme.LocalSpacing
 import kotlin.math.roundToInt
 
 @Composable
@@ -56,106 +58,64 @@ fun AddElementsButton(
         mutableStateOf(false)
     }
 
-    var refPosition by remember { mutableStateOf(Offset.Zero) }
-    val density = LocalDensity.current
+    val spacing = LocalSpacing.current
 
-//    IconButtonComponent(
-//        modifier = Modifier
-//            .onGloballyPositioned { coordinates ->
-//                // posición relativa al root de este Box
-//                refPosition = coordinates.positionOnScreen()
-//            }
-//            .zIndex(10f),
-//        onClick = {
-//            expanded = !expanded
-//        },
-//        containerColor = MaterialTheme.colorScheme.surface,
-//        contentColor = MaterialTheme.colorScheme.onSurface,
-//        icon = if (expanded) Icons.Default.Clear else Icons.Default.Add,
-//        contentDescription = "Add elements"
-//    )
-
-    IconButton(
-        onClick = {
-            expanded = !expanded
-        },
-        modifier = Modifier
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
-            .onGloballyPositioned { coordinates ->
-                // posición relativa al root de este Box
-                refPosition = coordinates.positionOnScreen()
-            }
-            .zIndex(10f)
+    Box(
+        modifier = modifier
     ) {
-        Icon(if (expanded) Icons.Default.Clear else Icons.Default.Add, null)
-    }
-
-    AnimatedVisibility(
-        visible = expanded,
-        enter = fadeIn(),
-        exit = fadeOut(animationSpec = tween(100)) + scaleOut()
-    ) {
+        IconButtonComponent(
+            modifier = Modifier.zIndex(1f),
+            onClick = {
+                expanded = !expanded
+            },
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            icon = if (expanded) Icons.Default.Clear else Icons.Default.Add,
+            contentDescription = "Add elements"
+        )
 
         Popup(
-//            alignment = Alignment.BottomEnd,
-            onDismissRequest = { expanded = false }
+            alignment = Alignment.Center,
+            onDismissRequest = { expanded = false },
+            offset = IntOffset(x = 0, y = -220)
         ) {
-            // Aquí pones tu scrim y tu menú:
-            Box(
-                Modifier
-                    .fillMaxSize()
-//                    .background(Color.Black.copy(alpha = 0.4f))
-                    .combinedClickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = { expanded = false },
-                    )
-                    .zIndex(1f)
+
+            AnimatedVisibility(
+                visible = expanded,
+                enter = fadeIn(animationSpec = tween(300)) + scaleIn(),
+                exit = fadeOut(animationSpec = tween(300)) + scaleOut()
             ) {
 
                 Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .offset {
-                            IntOffset(
-                                x = 0,
-                                y = (refPosition.y - with(density) { 115.dp.toPx() }).roundToInt()
-                            )
-                        }
-                        ,
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth(0.2f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    AnimatedVisibility(
-                        visible = expanded,
-                        enter = fadeIn(animationSpec = tween(200)) + scaleIn(),
-                        exit = fadeOut(animationSpec = tween(100)) + scaleOut()
-                    ) {
 
-                        FabMenuItemComponent(
-                            label = "Habit",
-                            onClick = {
-                                expanded = false
-                                habitsViewModel.onEvent(HabitsEvent.ShowAddHabitDialog)
-                            },
-                        )
+                    RoundedSquareButtonComponent(
+                        modifier = Modifier.fillMaxWidth(),
+                        padding = spacing.spaceSmall,
+                        text = "Habit",
+                        textStyle = MaterialTheme.typography.bodyMedium,
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSecondary,
+                        onClick = {
+                            expanded = false
+                            habitsViewModel.onEvent(HabitsEvent.ShowAddHabitDialog)
+                        }
+                    )
 
-                    }
-
-                    AnimatedVisibility(
-                        visible = expanded,
-                        enter = fadeIn() + scaleIn(),
-                        exit = fadeOut(animationSpec = tween(100)) + scaleOut()
-                    ) {
-                        FabMenuItemComponent(
-                            label = "Task",
-                            onClick = {
-                                expanded = false
-                                tasksViewModel.onEvent(TasksEvent.ShowAddTaskDialog)
-                            },
-                        )
-                    }
+                    RoundedSquareButtonComponent(
+                        modifier = Modifier.fillMaxWidth(),
+                        padding = spacing.spaceSmall,
+                        text = "Task",
+                        textStyle = MaterialTheme.typography.bodyMedium,
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSecondary,
+                        onClick = {
+                            expanded = false
+                            tasksViewModel.onEvent(TasksEvent.ShowAddTaskDialog)
+                        },
+                    )
                 }
             }
         }

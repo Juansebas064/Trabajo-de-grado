@@ -59,7 +59,7 @@ class LimitsUseCase @Inject constructor(
             System.currentTimeMillis()
         )
 
-        Log.d("LimitsUseCase", "Usage stats: $usageStats")
+//        Log.d("LimitsUseCase", "Usage stats: $usageStats")
 
         val flatUsageStats = mutableMapOf<String, Int>()
 
@@ -92,6 +92,7 @@ class LimitsUseCase @Inject constructor(
 
     suspend fun updateLimit(limit: LimitsModel) {
         withContext(Dispatchers.IO) {
+            Log.d("LimitsUseCase", "Updating limit: ${limit}")
             db.limitsDao().upsertLimit(limit)
         }
     }
