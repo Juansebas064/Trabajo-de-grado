@@ -59,6 +59,7 @@ class HabitsViewModel @Inject constructor(
     private val _habitsList = MutableStateFlow(emptyList<HabitsModel>())
 
     private val _state = MutableStateFlow(HabitsState())
+
     val state = combine(_state, _habitsList) { state, habits ->
         state.copy(
             todayHabits = habits,
@@ -74,19 +75,16 @@ class HabitsViewModel @Inject constructor(
     fun validateTodayHabitsOnMidnight() {
         viewModelScope.launch {
             val yesterdayTime = System.currentTimeMillis() - 86400000
-            _habitsLogsUseCase.validateTodayHabitsOnMidnight(
+            _habitsLogsUseCase.validateTodayHabitsLogsOnMidnight(
                 formatMillisecondsToSQLiteDate(yesterdayTime),
                 formatMillisecondsToDay(yesterdayTime)
             )
+            _habitsUseCase.validateHabitsOnMidnight(_habitsList.value)
         }
     }
 
     private fun loadTodayHabitsList() {
-        val currentTime = System.currentTimeMillis()
-        _habitsUseCase.getTodayHabits(
-            formatMillisecondsToSQLiteDate(currentTime),
-            formatMillisecondsToDay(currentTime)
-        )
+        _habitsUseCase.getTodayHabits()
             .onEach { habits ->
                 _habitsList.value = habits
             }.launchIn(viewModelScope)
@@ -114,12 +112,14 @@ class HabitsViewModel @Inject constructor(
     fun setHabitLogCompleted(id: Int) {
         viewModelScope.launch {
             _habitsLogsUseCase.setHabitLogCompleted(id)
+            _habitsUseCase.setHabitCompleted(id)
         }
     }
 
     fun setHabitLogUncompleted(id: Int) {
         viewModelScope.launch {
             _habitsLogsUseCase.setHabitLogUncompleted(id)
+            _habitsUseCase.setHabitUncompleted(id)
         }
     }
 
@@ -130,7 +130,9 @@ class HabitsViewModel @Inject constructor(
             habitCategory = null,
             habitDaysOfWeek = emptyList(),
             startDate = 0L,
-            endDate = 0L
+            endDate = 0L,
+            isAddingHabit = false,
+            isEditingHabit = false
         )
     }
 
@@ -242,6 +244,7 @@ class HabitsViewModel @Inject constructor(
                             habit.endDate
                         ),
                         isAddingHabit = true,
+                        isEditingHabit = true
                     )
                 }
                 Log.d("HabitsViewModel", "Start date in state: ${state.value.startDate}")

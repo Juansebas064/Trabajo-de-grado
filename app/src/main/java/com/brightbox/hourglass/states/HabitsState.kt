@@ -12,5 +12,6 @@ data class HabitsState (
     val endDate: Long = 0L,
 
     val isAddingHabit: Boolean = false,
-    val isDeletingHabits: Boolean = false
+    val isDeletingHabits: Boolean = false,
+    val isEditingHabit: Boolean = false
 )

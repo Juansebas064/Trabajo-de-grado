@@ -22,5 +22,6 @@ data class HabitsModel (
     val daysOfWeek: String,
     val startDate: String,
     val endDate: String?,
-    val deleted: Boolean
+    val deleted: Boolean,
+    val completedForToday: Boolean = false
 )

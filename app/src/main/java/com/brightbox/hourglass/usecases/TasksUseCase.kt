@@ -5,7 +5,6 @@ import com.brightbox.hourglass.config.HourglassDatabase
 import com.brightbox.hourglass.constants.PrioritiesEnum
 import com.brightbox.hourglass.model.TasksModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -14,9 +13,12 @@ class TasksUseCase @Inject constructor(
 ) {
     fun getTasks(): Flow<List<TasksModel>> =
         db.tasksDao().getTasks().map { taskList ->
-            taskList.sortedBy {
-                PrioritiesEnum.valueOf(it.priority).value
-            }.sortedBy { it.dateDue }
+            taskList.sortedWith(
+                compareBy(
+                    { it.isCompleted },
+                    { it.dateDue },
+                    { PrioritiesEnum.valueOf(it.priority).value }
+                ))
         }
 
 //    suspend fun getTodayTasksAtMidnight(date: String): List<TasksModel> {
@@ -37,10 +39,8 @@ class TasksUseCase @Inject constructor(
 
     suspend fun validateCurrentTasksOnMidnight(
         previousDate: String,
-        currentDate: String,
         tasks: List<TasksModel>
     ) {
-        Log.d("TasksUseCase", "Yesterday: $previousDate, Today: $currentDate")
         tasks.forEach { task ->
             if (task.dateDue == previousDate) {
                 setTaskDelayed(task.id!!)

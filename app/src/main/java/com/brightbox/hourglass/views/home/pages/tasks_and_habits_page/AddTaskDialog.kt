@@ -2,7 +2,6 @@ package com.brightbox.hourglass.views.home.pages.tasks_and_habits_page
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
@@ -10,26 +9,24 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -38,17 +35,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import com.brightbox.hourglass.constants.PrioritiesEnum
-import com.brightbox.hourglass.events.CategoriesEvent
 import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.states.CategoriesState
 import com.brightbox.hourglass.states.TasksState
-import com.brightbox.hourglass.views.common.PilledTextButtonComponent
+import com.brightbox.hourglass.views.common.BottomModalDialog
+import com.brightbox.hourglass.views.common.RoundedSquareButtonComponent
 import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.CategorySelectorComponent
 import com.brightbox.hourglass.views.home.pages.tasks_and_habits_page.components.DatePickerComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
@@ -62,22 +57,18 @@ fun AddTaskDialog(
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
-    val halfScreenDp = (LocalConfiguration.current.screenHeightDp / 5).dp
     val arePrioritiesExpanded = remember {
         mutableStateOf(false)
     }
     val isTitleValid = remember {
         mutableStateOf(true)
     }
-    Log.d("AddTaskDialog", "tasksState: ${tasksState.taskDueDate}")
 
-    BasicAlertDialog(
+    BottomModalDialog (
         onDismissRequest = {
             isTitleValid.value = true
             onTasksEvent(TasksEvent.HideAddTaskDialog)
         },
-        modifier = modifier
-            .padding(top = halfScreenDp)
     ) {
         val focusManager = LocalFocusManager.current
 
@@ -87,14 +78,14 @@ fun AddTaskDialog(
             modifier = Modifier
                 .clip(RoundedCornerShape(spacing.spaceLarge))
                 .background(MaterialTheme.colorScheme.surface)
-                .padding(spacing.spaceMedium)
+                .padding(spacing.spaceLarge)
         ) {
             Box(
                 modifier = Modifier
                     .padding(top = spacing.spaceMedium)
             ) {
                 Text(
-                    text = "Add a task",
+                    text = if (tasksState.isEditingTask) "Edit task" else "Add task",
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -223,6 +214,7 @@ fun AddTaskDialog(
                                 }
                             }
                         }
+                        .fillMaxWidth()
                 )
 
                 DropdownMenu(
@@ -246,49 +238,58 @@ fun AddTaskDialog(
                 }
             }
 
-            // Cancel
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(spacing.spaceMedium),
-                modifier = Modifier
-                    .padding(vertical = spacing.spaceExtraSmall)
-                    .fillMaxWidth()
-            ) {
-                PilledTextButtonComponent(
-                    text = "Cancel",
-                    textColor = MaterialTheme.colorScheme.onError,
-                    textStyle = MaterialTheme.typography.bodyMedium,
-                    backgroundColor = MaterialTheme.colorScheme.error,
-                    onClick = {
-                        isTitleValid.value = true
-                        onTasksEvent(TasksEvent.ClearDialogFields)
-                        onTasksEvent(TasksEvent.HideAddTaskDialog)
-                    },
-                    modifier = Modifier
-//                        .padding(spacing.spaceExtraSmall)
-                        .weight(1f)
-                )
+            Spacer(
+                Modifier.height(spacing.spaceSmall)
+            )
 
-                // Save task
-                PilledTextButtonComponent(
-                    text = "Save",
-                    textColor = MaterialTheme.colorScheme.onPrimary,
-                    textStyle = MaterialTheme.typography.bodyMedium,
-                    backgroundColor = MaterialTheme.colorScheme.primary,
-                    onClick = {
-                        if (tasksState.taskTitle.isNotEmpty()) {
-                            isTitleValid.value = true
-                            onTasksEvent(TasksEvent.SaveTask)
-                            onTasksEvent(TasksEvent.HideAddTaskDialog)
-                        }
-                        else {
-                            isTitleValid.value = false
-                        }
-                    },
-                    modifier = Modifier
+            // Save task
+            RoundedSquareButtonComponent(
+                text = "Save",
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                textStyle = MaterialTheme.typography.bodyMedium,
+                containerColor = MaterialTheme.colorScheme.primary,
+                onClick = {
+                    if (tasksState.taskTitle.isNotEmpty()) {
+                        isTitleValid.value = true
+                        onTasksEvent(TasksEvent.SaveTask)
+                        onTasksEvent(TasksEvent.HideAddTaskDialog)
+                    }
+                    else {
+                        isTitleValid.value = false
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
 //                        .padding(vertical = spacing.spaceLarge)
-                        .weight(1f)
-                )
-            }
+//                    .weight(1f)
+            )
+
+            // Cancel
+            RoundedSquareButtonComponent(
+                text = "Cancel",
+                contentColor = MaterialTheme.colorScheme.onError,
+                textStyle = MaterialTheme.typography.bodyMedium,
+                containerColor = MaterialTheme.colorScheme.error,
+                onClick = {
+                    isTitleValid.value = true
+                    onTasksEvent(TasksEvent.ClearDialogFields)
+                    onTasksEvent(TasksEvent.HideAddTaskDialog)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+//                        .padding(spacing.spaceExtraSmall)
+//                    .weight(1f)
+            )
+
+
+//            Row(
+//                horizontalArrangement = Arrangement.spacedBy(spacing.spaceMedium),
+//                modifier = Modifier
+//                    .padding(vertical = spacing.spaceExtraSmall)
+//                    .fillMaxWidth()
+//            ) {
+//
+//            }
         }
     }
 }

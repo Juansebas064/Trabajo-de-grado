@@ -34,6 +34,7 @@ class PreferencesImpl @Inject constructor(
 
                 // Construye y devuelve el objeto de estado completo
                 PreferencesState(
+                    isLoading = false,
                     openKeyboardInAppMenu = openKeyboard,
                     solidBackground = solidBackground
                 )

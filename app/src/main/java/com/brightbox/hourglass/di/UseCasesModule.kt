@@ -3,11 +3,12 @@ package com.brightbox.hourglass.di
 import android.content.Context
 import com.brightbox.hourglass.config.HourglassDatabase
 import com.brightbox.hourglass.data.preferences.PreferencesImpl
+import com.brightbox.hourglass.usecases.LimitsUseCase
 import com.brightbox.hourglass.usecases.ApplicationsUseCase
 import com.brightbox.hourglass.usecases.CategoriesUseCase
-import com.brightbox.hourglass.usecases.PreferencesUseCase
 import com.brightbox.hourglass.usecases.HabitsLogsUseCase
 import com.brightbox.hourglass.usecases.HabitsUseCase
+import com.brightbox.hourglass.usecases.PreferencesUseCase
 import com.brightbox.hourglass.usecases.TasksUseCase
 import dagger.Module
 import dagger.Provides
@@ -57,5 +58,14 @@ object UseCasesModule {
     @Singleton
     fun providePreferencesUseCase(preferencesImpl: PreferencesImpl): PreferencesUseCase {
         return PreferencesUseCase(preferencesImpl)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApplicationLimitsUseCase(
+        @ApplicationContext applicationContext: Context,
+        db: HourglassDatabase
+    ): LimitsUseCase {
+        return LimitsUseCase(applicationContext, db)
     }
 }

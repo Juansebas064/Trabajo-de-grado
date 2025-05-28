@@ -84,10 +84,8 @@ class TasksViewModel @Inject constructor(
         viewModelScope.launch {
             _tasksUseCase.validateCurrentTasksOnMidnight(
                 formatMillisecondsToSQLiteDate(System.currentTimeMillis() - 86400000),
-                formatMillisecondsToSQLiteDate(System.currentTimeMillis()),
                 state.value.tasks
             )
-//            _tasksList.value = _tasksUseCase.getTodayTasksAtMidnight(formatMillisecondsToSQLiteDate(System.currentTimeMillis()))
         }
     }
 
@@ -95,6 +93,7 @@ class TasksViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isAddingTask = false,
+                isEditingTask = false,
                 taskId = null,
                 taskTitle = "",
                 taskDescription = "",
@@ -204,6 +203,7 @@ class TasksViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         isAddingTask = true,
+                        isEditingTask = true,
                         taskId = task!!.id,
                         taskTitle = task.title,
                         taskDescription = task.description,

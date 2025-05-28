@@ -14,24 +14,28 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.brightbox.hourglass.viewmodel.HomeViewModel
 import com.brightbox.hourglass.views.home.menu.PinnedAppsAndMenuModalView
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 @Composable
 fun HomeView(
+    homeViewModel: HomeViewModel = hiltViewModel(),
     onNavigateToPreferences: () -> Unit,
 ) {
     val pagerState = rememberPagerState(
         initialPage = 1,
         pageCount = { 3 }
     )
-    val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
     rememberSystemUiController().apply {
@@ -52,15 +56,8 @@ fun HomeView(
             .statusBarsPadding()
             .pointerInput(Unit) {
                 detectVerticalDragGestures { _, dragAmount ->
-                    if (dragAmount < 10) { // Detect upward swipe
-                        val toast = Toast.makeText(context, "Downward swipe detected", Toast.LENGTH_SHORT)
-                        toast.show()
-//                        AccessibilityService.instance?.openShade()
-//                            ?: run { /* servicio no habilitado → pide al usuario */ }
-//                        coroutineScope.launch {
-//
-//                        }
-                        Log.d("HomeView", "Downward swipe detected")
+                    if (dragAmount < 10) { // Detect down swipe
+                        homeViewModel.expandNotificationsPanel()
                     }
                 }
             }

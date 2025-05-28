@@ -21,6 +21,12 @@ val Typography = Typography(
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
+    displaySmall = TextStyle(
+        fontFamily = sofiaSansFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 20.sp,
+        lineHeight = 22.sp,
+    ),
     titleLarge = TextStyle(
         fontFamily = sofiaSansFontFamily,
         fontWeight = FontWeight.Bold,

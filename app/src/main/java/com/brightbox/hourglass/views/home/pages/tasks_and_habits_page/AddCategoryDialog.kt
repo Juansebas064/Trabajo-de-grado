@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.brightbox.hourglass.events.CategoriesEvent
 import com.brightbox.hourglass.events.TasksEvent
 import com.brightbox.hourglass.states.CategoriesState
-import com.brightbox.hourglass.views.common.PilledTextButtonComponent
+import com.brightbox.hourglass.views.common.RoundedSquareButtonComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -97,11 +97,11 @@ fun AddCategoryDialog(
                     .padding(vertical = spacing.spaceExtraSmall)
                     .fillMaxWidth()
             ) {
-                PilledTextButtonComponent(
+                RoundedSquareButtonComponent(
                     text = "Cancel",
-                    textColor = MaterialTheme.colorScheme.onError,
+                    contentColor = MaterialTheme.colorScheme.onError,
                     textStyle = MaterialTheme.typography.bodyMedium,
-                    backgroundColor = MaterialTheme.colorScheme.error,
+                    containerColor = MaterialTheme.colorScheme.error,
                     onClick = {
                         onCategoriesEvent(CategoriesEvent.ClearDialogFields)
                         onCategoriesEvent(CategoriesEvent.HideDialog)
@@ -112,11 +112,11 @@ fun AddCategoryDialog(
                         .weight(1f)
                 )
 
-                PilledTextButtonComponent(
+                RoundedSquareButtonComponent(
                     text = "Save",
-                    textColor = MaterialTheme.colorScheme.onPrimary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
                     textStyle = MaterialTheme.typography.bodyMedium,
-                    backgroundColor = MaterialTheme.colorScheme.primary,
+                    containerColor = MaterialTheme.colorScheme.primary,
                     onClick = {
                         onCategoriesEvent(CategoriesEvent.SaveCategory)
                         onTasksEvent(TasksEvent.ShowAddTaskDialog)

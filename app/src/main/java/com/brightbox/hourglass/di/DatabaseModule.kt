@@ -22,6 +22,8 @@ object DatabaseModule {
             applicationContext,
             HourglassDatabase::class.java,
             "hourglass_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration(true)
+            .build()
     }
 }

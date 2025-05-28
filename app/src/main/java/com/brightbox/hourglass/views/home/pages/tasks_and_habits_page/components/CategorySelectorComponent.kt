@@ -6,7 +6,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -17,12 +16,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -32,8 +29,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -42,7 +39,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -58,7 +54,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.hourglass.events.CategoriesEvent
-import com.brightbox.hourglass.events.HabitsEvent
 import com.brightbox.hourglass.viewmodel.CategoriesViewModel
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
@@ -95,6 +90,7 @@ fun CategorySelectorComponent(
         Box(
             modifier = Modifier
                 .weight(1f)
+                .width(IntrinsicSize.Min)
         ) {
             OutlinedTextField(
                 value = if (categoriesDropdownPosition.intValue == -1 || categoriesState.value.categories.isEmpty()) categoryInitialValue else categoriesState.value.categories[categoriesDropdownPosition.intValue].name,
@@ -139,7 +135,9 @@ fun CategorySelectorComponent(
                 onDismissRequest = {
                     areCategoriesExpanded.value = false
                 },
-                containerColor = MaterialTheme.colorScheme.surface
+                containerColor = MaterialTheme.colorScheme.surface,
+                modifier = Modifier
+                    .fillMaxWidth(0.55f)
             ) {
                 categoriesState.value.categories.forEachIndexed { index, category ->
                     DropdownMenuItem(
@@ -177,16 +175,14 @@ fun CategorySelectorComponent(
                 else categoriesViewModel.onEvent(CategoriesEvent.HideDialog)
             },
             modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    shape = RoundedCornerShape(8.dp)
-                )
+                .offset(y = 5.dp)
+                .clip(shape = RoundedCornerShape(spacing.spaceSmall))
+                .background(MaterialTheme.colorScheme.secondary)
         ) {
             Icon(
-                imageVector = Icons.Default.Add,
+                imageVector = if (!categoriesState.value.isAddingCategory) Icons.Default.Add else Icons.Default.Close,
                 contentDescription = "Add category",
-                tint = MaterialTheme.colorScheme.onSurface
+                tint = MaterialTheme.colorScheme.onSecondary
             )
         }
     }
@@ -202,7 +198,6 @@ fun CategorySelectorComponent(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Max)
-//                .padding(spacing.spaceMedium)
         ) {
             Box(
                 modifier = Modifier
@@ -244,16 +239,14 @@ fun CategorySelectorComponent(
                     categoriesViewModel.onEvent(CategoriesEvent.SetCategoryName(""))
                 },
                 modifier = Modifier
-                    .border(
-                        width = 1.dp,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        shape = RoundedCornerShape(8.dp)
-                    )
+                    .offset(y = 5.dp)
+                    .clip(shape = RoundedCornerShape(spacing.spaceSmall))
+                    .background(MaterialTheme.colorScheme.tertiary)
             ) {
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = "Confirm add category",
-                    tint = MaterialTheme.colorScheme.onSurface
+                    tint = MaterialTheme.colorScheme.onTertiary
                 )
             }
         }

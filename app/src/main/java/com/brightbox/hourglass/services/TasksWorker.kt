@@ -1,4 +1,4 @@
-package com.brightbox.hourglass.receivers
+package com.brightbox.hourglass.services
 
 import android.content.Context
 import android.content.Intent
@@ -17,7 +17,6 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 @HiltWorker
 class TasksWorker @AssistedInject constructor(
@@ -72,8 +71,10 @@ class TasksWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         try {
             Log.d("TasksWorker", "Iniciando actualización de tareas a medianoche.")
-            val intent = Intent("UPDATE_TASKS")
-            applicationContext.sendBroadcast(intent)
+            val tasksIntent = Intent("UPDATE_TASKS")
+            val limitsIntent = Intent("RESET_LIMITS")
+            applicationContext.sendBroadcast(tasksIntent)
+            applicationContext.sendBroadcast(limitsIntent)
             scheduleNextRun(applicationContext)
             return Result.success()
         } catch (e: Exception) {

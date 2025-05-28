@@ -16,8 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -147,7 +145,7 @@ fun HabitComponent(
     ) {
         Box(
             modifier = modifier
-                .padding(spacing.spaceMedium)
+                .padding(vertical = spacing.spaceSmall, horizontal = spacing.spaceMedium)
         ) {
             // Primary container
             Column(
@@ -161,14 +159,13 @@ fun HabitComponent(
                     verticalAlignment = Alignment.Top,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = spacing.spaceExtraSmall)
                 ) {
                     Text(
                         text = habit.title,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.ExtraBold,
-                        textAlign = TextAlign.Start,
-                        lineHeight = MaterialTheme.typography.titleSmall.fontSize,
+                        textAlign = TextAlign.Center,
+                        lineHeight = MaterialTheme.typography.bodyMedium.fontSize,
                         textDecoration = if (isCompletedForToday) TextDecoration.LineThrough else null,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
@@ -189,13 +186,13 @@ fun HabitComponent(
                     daysOfWeek.forEach { day ->
                         Box(
                             modifier = Modifier
-                                .size(22.dp)
-                                .clip(CircleShape)
+                                .size(28.dp)
+                                .clip(RoundedCornerShape(spacing.spaceSmall))
                                 .background(if (day in habit.daysOfWeek) (if (day == today["day"]) MaterialTheme.colorScheme.inversePrimary else MaterialTheme.colorScheme.secondary) else Color.Transparent)
                         ) {
                             Text(
                                 text = day[0].uppercase(),
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = MaterialTheme.typography.bodySmall,
                                 color = if (day in habit.daysOfWeek)
                                     MaterialTheme.colorScheme.onSecondary
                                 else MaterialTheme.colorScheme.onSurface,
@@ -228,7 +225,7 @@ fun HabitComponent(
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(3.dp))
-                                .background(MaterialTheme.colorScheme.secondary)
+                                .background(MaterialTheme.colorScheme.inversePrimary)
                                 .fillMaxHeight()
                                 .padding(
                                     horizontal = spacing.spaceExtraSmall
@@ -247,7 +244,7 @@ fun HabitComponent(
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(spacing.spaceSmall))
-                                .background(MaterialTheme.colorScheme.secondary)
+                                .background(MaterialTheme.colorScheme.inversePrimary)
                                 .padding(
                                     horizontal = spacing.spaceSmall,
                                     vertical = spacing.spaceExtraSmall

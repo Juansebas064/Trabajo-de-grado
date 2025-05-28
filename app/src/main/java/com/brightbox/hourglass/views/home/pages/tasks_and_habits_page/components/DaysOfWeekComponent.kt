@@ -8,9 +8,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.capitalize
 import com.brightbox.hourglass.constants.daysOfWeek
-import com.brightbox.hourglass.views.common.PilledTextButtonComponent
+import com.brightbox.hourglass.views.common.RoundedSquareButtonComponent
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
 @Composable
@@ -30,13 +29,14 @@ fun DaysOfWeekComponent(
     ) {
         daysOfWeek.forEach { day ->
             if (today == day) {
-                PilledTextButtonComponent(
+                RoundedSquareButtonComponent(
                     text = today.replaceFirstChar { char ->
                         char.uppercase()
                     },
-                    textColor = MaterialTheme.colorScheme.onSurface,
+                    padding = spacing.spaceSmall + spacing.spaceExtraSmall,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                     textStyle = MaterialTheme.typography.bodyLarge,
-                    backgroundColor = MaterialTheme.colorScheme.surface,
+                    containerColor = MaterialTheme.colorScheme.surface,
                     onClick = { onClick() },
                     modifier = Modifier
                 )

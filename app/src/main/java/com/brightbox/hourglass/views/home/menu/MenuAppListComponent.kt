@@ -6,33 +6,27 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowRightAlt
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.automirrored.filled.KeyboardReturn
-import androidx.compose.material.icons.filled.ArrowRightAlt
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.KeyboardReturn
 import androidx.compose.material.icons.filled.Language
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -52,7 +46,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.brightbox.hourglass.model.ApplicationsModel
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
 import com.brightbox.hourglass.views.theme.LocalSpacing
 
@@ -78,12 +71,11 @@ fun MenuAppListComponent(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(spacing.spaceSmall))
                     .combinedClickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = ripple(
                             color = MaterialTheme.colorScheme.onBackground
-                                .copy(alpha = 0f)
                         ),
                         onClick = {
                             if (appShowingOptions == app.packageName) {
@@ -108,6 +100,10 @@ fun MenuAppListComponent(
                             Color.Transparent
                     )
                     .fillMaxWidth()
+                    .padding(
+                        vertical = spacing.spaceExtraSmall,
+                        horizontal = spacing.spaceSmall
+                    )
                     .animateItem()
                     .animateContentSize()
                     .height(IntrinsicSize.Min)
@@ -118,13 +114,15 @@ fun MenuAppListComponent(
                     exit = slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Star,
+                        imageVector = Icons.Default.PushPin,
                         contentDescription = "Pinned",
                         tint = if (appShowingOptions != app.packageName)
-                            MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.padding(horizontal = 2.dp)
+                            MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurface,
                     )
                 }
+
+                Spacer(Modifier.width(spacing.spaceSmall))
+
                 Text(
                     text = app.name,
                     style = MaterialTheme.typography.bodyLarge,
@@ -135,7 +133,7 @@ fun MenuAppListComponent(
                     color = if (appShowingOptions != app.packageName)
                         MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
-                        .padding(vertical = 16.dp, horizontal = 8.dp)
+                        .padding(vertical = 16.dp)
                         .weight(3f)
                 )
 
@@ -166,9 +164,10 @@ fun MenuAppListComponent(
                                 .padding(0.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Star,
+                                imageVector = Icons.Default.PushPin,
                                 contentDescription = "Pin",
-                                tint = MaterialTheme.colorScheme.surface,
+                                tint = if (app.isPinned) MaterialTheme.colorScheme.onSurface
+                                else MaterialTheme.colorScheme.surface,
                             )
                         }
                         // App info

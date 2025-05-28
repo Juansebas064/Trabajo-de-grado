@@ -3,8 +3,10 @@ package com.brightbox.hourglass.views.home.menu
 import android.util.Log
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,6 +18,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,10 +26,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.brightbox.hourglass.views.common.PilledTextButtonComponent
 import com.brightbox.hourglass.viewmodel.ApplicationsViewModel
+import com.brightbox.hourglass.views.common.RoundedSquareButtonComponent
+import com.brightbox.hourglass.views.theme.LocalSpacing
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,51 +44,52 @@ fun PinnedAppsView(
     val apps by applicationsViewModel.appsList.collectAsState()
     val pinnedApps = apps.filter { app -> app.isPinned }
     val coroutineScope = rememberCoroutineScope()
+    val spacing = LocalSpacing.current
 
     Log.d("PinnedApps", "apps: $apps")
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = modifier
-            .height(100.dp)
-            .pointerInput(Unit) {
-                detectVerticalDragGestures { _, dragAmount ->
-                    if (dragAmount < -10) { // Detect upward swipe
-                        coroutineScope.launch {
-                            sheetState.expand()
-                        }
-                        Log.d("PinnedApps", "Upward swipe detected")
-                    }
-                }
-            }
+            .padding(spacing.spaceSmall)
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
+        Icon(
+            imageVector = Icons.Default.KeyboardArrowUp,
+            contentDescription = "",
+            tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowUp,
-                contentDescription = "",
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-        }
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(5.dp),
-            modifier = Modifier
-                .padding(0.dp)
-        ) {
-            items(items = pinnedApps) { app ->
-                PilledTextButtonComponent(
-                    text = app.name,
-                    textColor = MaterialTheme.colorScheme.onSurface,
-                    textStyle = MaterialTheme.typography.bodyLarge,
-                    backgroundColor = MaterialTheme.colorScheme.surface,
-                    onClick = {
-                        applicationsViewModel.openApp(app.packageName)
-                    },
-                    modifier = Modifier
+        )
+
+        if (pinnedApps.isNotEmpty()) {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(5.dp),
+            ) {
+                items(items = pinnedApps) { app ->
+                    RoundedSquareButtonComponent(
+                        text = app.name,
+                        contentColor = MaterialTheme.colorScheme.onSurface,
+                        padding = spacing.spaceSmall + spacing.spaceExtraSmall,
+                        textStyle = MaterialTheme.typography.bodyLarge,
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        onClick = {
+                            applicationsViewModel.openApp(app.packageName)
+                        },
+                        modifier = Modifier
+                    )
+                }
+            }
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+            ) {
+                Text(
+                    modifier = Modifier.align(Alignment.Center),
+                    text = "Your pinned apps go here",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }

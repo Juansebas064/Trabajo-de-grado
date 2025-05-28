@@ -1,13 +1,20 @@
 package com.brightbox.hourglass.viewmodel
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.Intent.ACTION_PACKAGE_ADDED
+import android.content.Intent.ACTION_PACKAGE_REMOVED
+import android.content.IntentFilter
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brightbox.hourglass.model.ApplicationsModel
 import com.brightbox.hourglass.states.ApplicationsState
 import com.brightbox.hourglass.usecases.ApplicationsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,8 +27,37 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ApplicationsViewModel @Inject constructor(
-    private val _applicationsUseCase: ApplicationsUseCase
+    private val _applicationsUseCase: ApplicationsUseCase,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
+
+    private val appChangeReceiver = object: BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            Log.d("ApplicationsViewModel", "onReceive called")
+            viewModelScope.launch {
+                _applicationsUseCase.queryInstalledApplicationsToDatabase()
+            }
+        }
+    }
+
+    init {
+        viewModelScope.launch {
+            _applicationsUseCase.queryInstalledApplicationsToDatabase()
+        }
+
+        val appChangeIntentFilter = IntentFilter().apply {
+            addAction(ACTION_PACKAGE_ADDED)
+            addAction(ACTION_PACKAGE_REMOVED)
+            addAction("QUERY_APPLICATIONS_TO_DATABASE")
+            addDataScheme("package") // Necesario para ACTION_PACKAGE_REMOVED, _ADDED, _REPLACED
+        }
+        ContextCompat.registerReceiver(
+            context,
+            appChangeReceiver,
+            appChangeIntentFilter,
+            ContextCompat.RECEIVER_EXPORTED
+        )
+    }
 
     // States
     private val _searchText = MutableStateFlow("")
@@ -38,17 +74,16 @@ class ApplicationsViewModel @Inject constructor(
             appsList
         } else {
             // Normalizamos a minúsculas para no repetir lowercase() en cada comparación
-            val lowerSearch = searchText.lowercase()
 
             appsList
                 // 1) Filtramos solo las que contienen el texto
-                .filter { it.name.contains(lowerSearch) }
+                .filter { it.name.lowercase().contains(searchText.lowercase()) }
                 // 2) Las ordenamos con dos claves:
                 //    a) Las que NO empiezan con lowerSearch van después (true> false)
                 //    b) Dentro de cada grupo, por índice de la subcadena (más bajo = más parecido)
                 .sortedWith(compareBy(
-                    { !it.name.lowercase().startsWith(lowerSearch) },
-                    { it.name.lowercase().indexOf(lowerSearch) }
+                    { !it.name.lowercase().startsWith(searchText, ignoreCase = true) },
+                    { it.name.lowercase().indexOf(searchText, ignoreCase = true) }
                 ))
         }
         ApplicationsState(
