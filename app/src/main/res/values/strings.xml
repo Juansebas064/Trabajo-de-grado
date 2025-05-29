@@ -67,7 +67,7 @@
 
     <!--  Menu  -->
     <string name="menu">Menu</string>
-    <string name="press_and_hold_an_app_for_more_options">Press and hold an app for more options</string>
+    <string name="press_and_hold_an_app_for_more_options">Press and hold an app for more options. Press ➞ in keyboard to open the app with the icon.</string>
     <string name="search">Search</string>
     <string name="on_the_internet">on the internet</string>
 

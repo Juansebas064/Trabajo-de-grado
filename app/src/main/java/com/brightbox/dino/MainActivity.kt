@@ -89,7 +89,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(
                             if (state.value.solidBackground) MaterialTheme.colorScheme.background
-                            else Color.Transparent
+                            else MaterialTheme.colorScheme.background.copy(0.1f)
                         )
                 ) {
                     NavigationRoot()

@@ -36,7 +36,6 @@ import com.brightbox.dino.views.home.pages.pomodoro_page.TimerComponent
 @Composable
 fun PomodoroPageView(
     modifier: Modifier = Modifier,
-    onNavigateToPreferences: () -> Unit
 ) {
     val pomodoroViewModel: PomodoroViewModel = viewModel()
 
@@ -157,16 +156,6 @@ fun PomodoroPageView(
                 )
             }
         }
-
-        NavigationButton(
-            modifier = Modifier.align(Alignment.TopStart),
-            icon = Icons.Default.Settings,
-            color = MaterialTheme.colorScheme.onBackground,
-            description = "Settings",
-            onNavigate = {
-                onNavigateToPreferences()
-            }
-        )
 
 //        NavigationButton(
 //            modifier = Modifier.align(Alignment.TopEnd),

@@ -85,7 +85,9 @@ fun MenuView(
                 text = context.getString(R.string.press_and_hold_an_app_for_more_options),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
+                lineHeight = MaterialTheme.typography.bodyMedium.fontSize,
+                modifier = Modifier.fillMaxWidth(0.8f)
             )
         }
 

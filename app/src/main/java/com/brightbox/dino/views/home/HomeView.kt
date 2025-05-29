@@ -66,9 +66,7 @@ fun HomeView(
             ) { page ->
                 when (page) {
                     0 -> {
-                        PomodoroPageView(
-                            onNavigateToPreferences = onNavigateToPreferences
-                        )
+                        PomodoroPageView()
                     }
 
                     1 -> {
@@ -79,9 +77,7 @@ fun HomeView(
                     }
                 }
             }
-            PinnedAppsAndMenuModalView(
-                modifier = Modifier
-                    .fillMaxWidth()
+            PinnedAppsAndMenuModalView(modifier = Modifier.fillMaxWidth()
             )
         }
     }

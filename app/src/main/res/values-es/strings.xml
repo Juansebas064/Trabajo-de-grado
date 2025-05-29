@@ -56,7 +56,7 @@
     <string name="category">Categoría</string>
     <string name="your_pinned_apps_go_here">Tus aplicaciones fijadas se mostrarán aquí</string>
     <string name="menu">Menu</string>
-    <string name="press_and_hold_an_app_for_more_options">Mantén presionada una aplicación para ver más opciones</string>
+    <string name="press_and_hold_an_app_for_more_options">Mantén presionada una app para más opciones. Presiona ➞ en el teclado para abrir la app con ícono</string>
     <string name="search">Buscar</string>
     <string name="on_the_internet">en internet</string>
     <string name="pomodoro">Pomodoro</string>

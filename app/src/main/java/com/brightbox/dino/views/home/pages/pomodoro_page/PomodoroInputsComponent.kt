@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -65,7 +66,7 @@ fun PomodoroInputsComponent(
                     enabled = enabled,
                     value = sessionTime,
                     textStyle = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
-                    backgroundColor = MaterialTheme.colorScheme.background,
+                    backgroundColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
                     indicationColor = MaterialTheme.colorScheme.onBackground,
                     onValueChange = {
@@ -104,7 +105,7 @@ fun PomodoroInputsComponent(
                     enabled = enabled,
                     value = breakTime,
                     textStyle = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
-                    backgroundColor = MaterialTheme.colorScheme.background,
+                    backgroundColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
                     indicationColor = MaterialTheme.colorScheme.onBackground,
                     onValueChange = {
@@ -143,7 +144,7 @@ fun PomodoroInputsComponent(
                     enabled = enabled,
                     value = numberOfSessions,
                     textStyle = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
-                    backgroundColor = MaterialTheme.colorScheme.background,
+                    backgroundColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.onBackground,
                     indicationColor = MaterialTheme.colorScheme.onBackground,
                     onValueChange = {
@@ -154,7 +155,7 @@ fun PomodoroInputsComponent(
                 Text(
                     text = context.getString(R.string.minutes_short),
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
-                    color = MaterialTheme.colorScheme.background,
+                    color = Color.Transparent,
                 )
             }
         }
