@@ -1,46 +1,37 @@
 package com.brightbox.dino.views.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.brightbox.dino.utils.formatMillisecondsToMinutes
 import com.brightbox.dino.viewmodel.PomodoroViewModel
-import com.brightbox.dino.viewmodel.preferences.PreferencesViewModel
 import com.brightbox.dino.views.common.IconButtonComponent
 import com.brightbox.dino.views.common.NavigationButton
-import com.brightbox.dino.views.common.TextFieldComponent
 import com.brightbox.dino.views.theme.LocalSpacing
 import com.brightbox.dino.R
+import com.brightbox.dino.views.home.pages.pomodoro_page.SessionAndBreakTimeComponent
+import com.brightbox.dino.views.home.pages.pomodoro_page.TimerComponent
 
 @Composable
 fun PomodoroPageView(
@@ -49,13 +40,15 @@ fun PomodoroPageView(
 ) {
     val pomodoroViewModel: PomodoroViewModel = viewModel()
 
-    val preferencesViewModel: PreferencesViewModel = hiltViewModel()
-
     val sessionTime = pomodoroViewModel.sessionTime.collectAsState()
     val breakTime = pomodoroViewModel.breakTime.collectAsState()
+    val numberOfSessions = pomodoroViewModel.numberOfSessions.collectAsState()
 
     val elapsedTime = pomodoroViewModel.elapsedTime.collectAsState().let { millis ->
         formatMillisecondsToMinutes(millis.value, showSeconds = true)
+    }
+    val elapsedNumberOfSessions = pomodoroViewModel.elapsedNumberOfSessions.collectAsState().let {
+        it.value.toString()
     }
     var currentProgress = pomodoroViewModel.progressIndicator.collectAsState()
 
@@ -64,7 +57,7 @@ fun PomodoroPageView(
     val isBreakTimeRunning = pomodoroViewModel.isBreakTimeRunning.collectAsState()
 
     val spacing = LocalSpacing.current
-    val clockSize = 300.dp
+    val timerSize = 300.dp
 
     val context = LocalContext.current
 
@@ -78,7 +71,6 @@ fun PomodoroPageView(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             // Title
             Row(
                 horizontalArrangement = Arrangement.Center,
@@ -94,49 +86,18 @@ fun PomodoroPageView(
                 )
             }
 
+            // Timer component
+            TimerComponent(
+                elapsedTime = elapsedTime,
+                elapsedNumberOfSessions = elapsedNumberOfSessions,
+                currentProgress = currentProgress.value,
+                isSessionTimeRunning = isSessionTimeRunning.value,
+                isBreakTimeRunning = isBreakTimeRunning.value,
+                timerSize = timerSize
+            )
+
             Spacer(Modifier.height(spacing.spaceMedium))
 
-            // Clock
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surface)
-                    .size(clockSize)
-            ) {
-                // Clock content
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        text = elapsedTime,
-                        style = MaterialTheme.typography.displayMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Center
-                    )
-
-                    Text(
-                        text = if (isBreakTimeRunning.value)
-                            context.getString(R.string.break_time) else context.getString(R.string.session_time),
-                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Center
-                    )
-
-                }
-
-                // Progress indicator
-                CircularProgressIndicator(
-                    progress = {
-                        currentProgress.value
-                    },
-                    modifier = Modifier.size(clockSize),
-                    color = if (isSessionTimeRunning.value) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.inversePrimary,
-                    strokeWidth = spacing.spaceSmall + spacing.default,
-                    trackColor = Color.Transparent,
-                )
-            }
 
 
             Spacer(
@@ -144,100 +105,38 @@ fun PomodoroPageView(
                     .height(spacing.spaceLarge)
             )
 
-            // Fields container
-            Column(
-                verticalArrangement = Arrangement.spacedBy(
-                    spacing.spaceMedium,
-                ),
+            // Fields component
+            SessionAndBreakTimeComponent(
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
-                    .weight(1f)
-            ) {
-                // Session Time
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Text(
-                        text = context.getString(R.string.session_time),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        textAlign = TextAlign.Start
-                    )
+                    .weight(1f),
+                breakTime = breakTime.value,
+                sessionTime = sessionTime.value,
+                isTimerRunning = isTimerRunning.value,
+                numberOfSessions = numberOfSessions.value
+            )
 
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(spacing.spaceSmall)
-                    ) {
-                        TextFieldComponent(
-                            modifier = Modifier
-                                .height(IntrinsicSize.Min)
-                                .width(80.dp),
-                            enabled = !isTimerRunning.value,
-                            value = sessionTime.value,
-                            textStyle = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
-                            backgroundColor = MaterialTheme.colorScheme.background,
-                            contentColor = MaterialTheme.colorScheme.onBackground,
-                            indicationColor = MaterialTheme.colorScheme.onBackground,
-                            onValueChange = {
-                                pomodoroViewModel.updateSessionTime(it)
-                            },
-                        )
-
-                        Text(
-                            text = context.getString(R.string.minutes_short),
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
-                            color = MaterialTheme.colorScheme.onBackground,
-                        )
-                    }
-                }
-
-                // Break Time
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Text(
-                        text = context.getString(R.string.break_time),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        textAlign = TextAlign.Start
-                    )
-
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(spacing.spaceSmall)
-                    ) {
-                        TextFieldComponent(
-                            modifier = Modifier
-                                .height(IntrinsicSize.Min)
-                                .width(80.dp),
-                            enabled = !isTimerRunning.value,
-                            value = breakTime.value,
-                            textStyle = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
-                            backgroundColor = MaterialTheme.colorScheme.background,
-                            contentColor = MaterialTheme.colorScheme.onBackground,
-                            indicationColor = MaterialTheme.colorScheme.onBackground,
-                            onValueChange = {
-                                pomodoroViewModel.updateBreakTime(it)
-                            },
-                        )
-
-                        Text(
-                            text = context.getString(R.string.minutes_short),
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
-                            color = MaterialTheme.colorScheme.onBackground,
-                        )
-                    }
-                }
-            }
 
             Row(
                 verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.spacedBy(spacing.spaceMedium)
             ) {
+
+                if (isBreakTimeRunning.value || isSessionTimeRunning.value) {
+                    IconButtonComponent(
+                        modifier = Modifier,
+                        onClick = {
+                            pomodoroViewModel.cancelTimer()
+                        },
+                        containerColor = MaterialTheme.colorScheme.error,
+                        contentColor = MaterialTheme.colorScheme.onError,
+                        icon = Icons.Default.Stop,
+                        contentDescription = "Cancel Pomodoro timer",
+                    )
+                }
+
                 IconButtonComponent(
                     modifier = Modifier,
-//                        .padding(horizontal = spacing.spaceLarge)
                     onClick = {
                         if (!isTimerRunning.value) {
                             pomodoroViewModel.startTimer()
@@ -245,8 +144,8 @@ fun PomodoroPageView(
                             pomodoroViewModel.pauseTimer()
                         }
                     },
-                    containerColor = if (isSessionTimeRunning.value) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.inversePrimary,
+                    containerColor = if (!isBreakTimeRunning.value)
+                        MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.inversePrimary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                     icon = if (!isTimerRunning.value) {
                         Icons.Default.PlayArrow

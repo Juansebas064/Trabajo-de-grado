@@ -89,4 +89,5 @@
     <string name="time_limit_exceeded">Tiempo límite alcanzado para</string>
     <string name="consider_to_rest_or_do_your_tasks">Dino no puede cerrar tu aplicación, pero si el tiempo se cumplió, considera descansar, hacer ejercicio o cumplir con tus pendientes. Cuídate :3</string>
     <string name="exit">Salir</string>
+    <string name="number_of_sessions">Numero de sesiones</string>
 </resources>

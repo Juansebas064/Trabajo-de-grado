@@ -24,7 +24,6 @@ fun DaysOfWeekComponent(
     val spacing = LocalSpacing.current
     val context = LocalContext.current
     val daysOfWeek = context.resources.getStringArray(R.array.days_of_week).toList()
-    Log.d("DaysOfWeekComponent", "today: $daysOfWeek")
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(spacing.spaceMedium),

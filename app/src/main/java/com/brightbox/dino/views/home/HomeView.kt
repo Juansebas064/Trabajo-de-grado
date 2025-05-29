@@ -77,13 +77,6 @@ fun HomeView(
                             onNavigateToPreferences = onNavigateToPreferences
                         )
                     }
-
-//                2 -> {
-//                    Text(
-//                        text = "Page 3",
-//                        color = Color.Green
-//                    )
-//                }
                 }
             }
             PinnedAppsAndMenuModalView(

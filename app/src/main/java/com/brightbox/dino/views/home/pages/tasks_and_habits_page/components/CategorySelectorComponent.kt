@@ -48,10 +48,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.brightbox.dino.R
 import com.brightbox.dino.events.CategoriesEvent
 import com.brightbox.dino.viewmodel.CategoriesViewModel
 import com.brightbox.dino.views.theme.LocalSpacing
@@ -64,6 +66,7 @@ fun CategorySelectorComponent(
     onCategoryChange: (Int) -> Unit,
 ) {
     val categoriesState = categoriesViewModel.state.collectAsState()
+    val context = LocalContext.current
 
     val spacing = LocalSpacing.current
     val areCategoriesExpanded = remember {
@@ -112,7 +115,7 @@ fun CategorySelectorComponent(
                     }
                 },
                 label = {
-                    Text(text = "Category")
+                    Text(text = context.getString(R.string.category))
                 },
                 modifier = Modifier
                     .pointerInput(categoriesDropdownPosition) {
@@ -215,7 +218,7 @@ fun CategorySelectorComponent(
                 },
                 label = {
                     Text(
-                        text = "Title",
+                        text = context.getString(R.string.title),
                     )
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -224,7 +227,6 @@ fun CategorySelectorComponent(
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        Log.d("CategorySelectorComponent", "Done action fired")
                         categoriesViewModel.onEvent(CategoriesEvent.SaveCategory)
                     }
                 ),

@@ -1,6 +1,7 @@
 package com.brightbox.dino.views.common
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -21,12 +22,13 @@ fun RoundedSquareButtonComponent(
     containerColor: Color,
     padding: Dp? = null,
     onClick: () -> Unit,
+    circleShape: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
 
     Button(
-        shape = RoundedCornerShape(spacing.spaceSmall),
+        shape = if (!circleShape) RoundedCornerShape(spacing.spaceSmall) else CircleShape,
         contentPadding = PaddingValues(padding ?: spacing.spaceMedium),
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,

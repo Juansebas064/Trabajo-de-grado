@@ -77,6 +77,7 @@
     <string name="break_time">Break time</string>
     <string name="minutes_short">min</string>
 
+
     <!--  Applications time limit  -->
     <string name="applications_time_limit">Applications time limit</string>
     <string name="today_usage">Today usage</string>
@@ -104,6 +105,7 @@
     <string name="time_limit_exceeded">Time limit exceeded for</string>
     <string name="consider_to_rest_or_do_your_tasks">Dino can\'t close your application, but if the time is up, consider resting, exercising, or catching up on your tasks. Take care :3</string>
     <string name="exit">Exit</string>
+    <string name="number_of_sessions">Number of sessions</string>
 
 
 </resources>

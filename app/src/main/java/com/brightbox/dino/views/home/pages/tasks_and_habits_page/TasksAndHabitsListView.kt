@@ -49,6 +49,7 @@ fun TasksAndHabitsListView(
     timeViewModel: TimeViewModel = hiltViewModel()
 ) {
     val spacing = LocalSpacing.current
+    val context = LocalContext.current
     val tasksState = tasksViewModel.state.collectAsState()
     val selectedTasks = tasksViewModel.selectedTasks.collectAsState()
     val habitsState = habitsViewModel.state.collectAsState()
@@ -61,11 +62,10 @@ fun TasksAndHabitsListView(
     }
     val today = timeViewModel.currentTimeMillis.collectAsState().let { time ->
         mapOf(
-            "day" to formatMillisecondsToDay(time.value),
+            "day" to formatMillisecondsToDay(time.value, context),
             "date" to formatMillisecondsToSQLiteDate(time.value)
         )
     }
-    val context = LocalContext.current
 
     LaunchedEffect(key1 = selectedTasks.value, key2 = selectedHabits.value) {
         isSelectingElements.value =

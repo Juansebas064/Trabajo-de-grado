@@ -12,7 +12,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.brightbox.dino.R
 import com.brightbox.dino.constants.daysOfWeek
 import com.brightbox.dino.views.theme.LocalSpacing
 
@@ -23,6 +25,9 @@ fun DaysSelectorComponent(
     setHabitsDaysOfWeek: (List<String>) -> Unit
 ) {
     val spacing = LocalSpacing.current
+    val context = LocalContext.current
+
+    val daysOfWeek = context.resources.getStringArray(R.array.days_of_week).toList()
 
     Row(
         modifier = modifier.fillMaxWidth(),
