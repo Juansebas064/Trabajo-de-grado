@@ -135,8 +135,8 @@ fun ApplicationLimitComponent(
                                 )
                             )
                         },
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSecondary,
                         icon = Icons.Default.Remove,
                         size = 40.dp,
                         contentDescription = "Minus 5 minutes"
@@ -206,7 +206,7 @@ fun ApplicationLimitComponent(
                                     modifier = Modifier
                                         .height(1.dp)
                                         .fillMaxWidth()
-                                        .background(MaterialTheme.colorScheme.primary)
+                                        .background(MaterialTheme.colorScheme.secondary)
                                 )
                             }
                         },
@@ -223,8 +223,8 @@ fun ApplicationLimitComponent(
                                 )
                             )
                         },
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSecondary,
                         icon = Icons.Default.Add,
                         size = 40.dp,
                         contentDescription = "Plus 5 minutes"

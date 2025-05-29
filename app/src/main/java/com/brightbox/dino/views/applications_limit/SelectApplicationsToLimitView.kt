@@ -86,7 +86,8 @@ fun SelectApplicationsToLimitView(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.BottomEnd),
+                .align(Alignment.BottomEnd)
+                .padding(spacing.spaceMedium),
             horizontalArrangement = Arrangement.Center
         ) {
             RoundedSquareButtonComponent(
@@ -99,7 +100,7 @@ fun SelectApplicationsToLimitView(
                     onNavigateBack()
                 },
                 modifier = Modifier
-                    .fillMaxWidth()
+//                    .fillMaxWidth()
             )
         }
 //        }

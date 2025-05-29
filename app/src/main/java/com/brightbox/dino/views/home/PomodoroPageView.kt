@@ -1,5 +1,6 @@
 package com.brightbox.dino.views.home
 
+import android.media.MediaPlayer
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,12 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -27,7 +29,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.brightbox.dino.utils.formatMillisecondsToMinutes
 import com.brightbox.dino.viewmodel.PomodoroViewModel
 import com.brightbox.dino.views.common.IconButtonComponent
-import com.brightbox.dino.views.common.NavigationButton
 import com.brightbox.dino.views.theme.LocalSpacing
 import com.brightbox.dino.R
 import com.brightbox.dino.views.home.pages.pomodoro_page.PomodoroInputsComponent
@@ -46,19 +47,44 @@ fun PomodoroPageView(
     val elapsedTime = pomodoroViewModel.elapsedTime.collectAsState().let { millis ->
         formatMillisecondsToMinutes(millis.value, showSeconds = true)
     }
-    val elapsedNumberOfSessions = pomodoroViewModel.elapsedNumberOfSessions.collectAsState().let {
-        it.value.toString()
-    }
+    val elapsedNumberOfSessions = pomodoroViewModel.elapsedNumberOfSessions.collectAsState().value.toString()
     var currentProgress = pomodoroViewModel.progressIndicator.collectAsState()
 
     val isTimerRunning = pomodoroViewModel.isTimerRunning.collectAsState()
     val isSessionTimeRunning = pomodoroViewModel.isSessionTimeRunning.collectAsState()
     val isBreakTimeRunning = pomodoroViewModel.isBreakTimeRunning.collectAsState()
 
+    val playSoundEvent = pomodoroViewModel.playSoundEvent.collectAsState(initial = "none")
+
     val spacing = LocalSpacing.current
     val timerSize = 300.dp
 
     val context = LocalContext.current
+
+    var startSessionPlayer = remember { MediaPlayer.create(context, R.raw.start_timer) }
+    var finishSessionPlayer = remember { MediaPlayer.create(context, R.raw.finish_timer) }
+
+    LaunchedEffect (playSoundEvent.value) {
+        if (playSoundEvent.value == "session") {
+            startSessionPlayer = MediaPlayer.create(context, R.raw.start_timer)
+            startSessionPlayer.start()
+        }
+
+        if (playSoundEvent.value == "break") {
+            finishSessionPlayer = MediaPlayer.create(context, R.raw.finish_timer)
+            finishSessionPlayer.start()
+        }
+    }
+
+    fun resetPlayers() {
+        if (startSessionPlayer.isPlaying) {
+            startSessionPlayer.release()
+        }
+
+        if (finishSessionPlayer.isPlaying) {
+            startSessionPlayer.release()
+        }
+    }
 
     // Container
     Box(
@@ -127,6 +153,7 @@ fun PomodoroPageView(
                         modifier = Modifier,
                         onClick = {
                             pomodoroViewModel.cancelTimer()
+                            resetPlayers()
                         },
                         containerColor = MaterialTheme.colorScheme.error,
                         contentColor = MaterialTheme.colorScheme.onError,
@@ -142,6 +169,7 @@ fun PomodoroPageView(
                             pomodoroViewModel.startTimer()
                         } else {
                             pomodoroViewModel.pauseTimer()
+                            resetPlayers()
                         }
                     },
                     containerColor = if (!isBreakTimeRunning.value)

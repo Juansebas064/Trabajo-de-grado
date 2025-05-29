@@ -43,9 +43,6 @@ fun TimerComponent(
     val context = LocalContext.current
     val spacing = LocalSpacing.current
 
-    val startSessionPlayer = remember { MediaPlayer.create(context, R.raw.start_timer) }
-    val finishSessionPlayer = remember { MediaPlayer.create(context, R.raw.finish_timer) }
-
     val animatedProgress by animateFloatAsState(
         targetValue = currentProgress,
         animationSpec = tween(
@@ -54,16 +51,6 @@ fun TimerComponent(
         ),
         label = "progressAnimation" // Etiqueta para herramientas de inspección
     )
-
-    LaunchedEffect(isBreakTimeRunning, isSessionTimeRunning) {
-        if (isSessionTimeRunning) {
-            startSessionPlayer.start()
-        }
-
-        if (isBreakTimeRunning) {
-            finishSessionPlayer.start()
-        }
-    }
 
     // Timer
     Box(

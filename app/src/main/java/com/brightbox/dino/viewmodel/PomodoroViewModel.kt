@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -15,11 +16,11 @@ class PomodoroViewModel(
 
 ) : ViewModel() {
 
-    private val _sessionTime = MutableStateFlow("")
+    private val _sessionTime = MutableStateFlow("1")
     val sessionTime = _sessionTime.asStateFlow()
-    private val _breakTime = MutableStateFlow("")
+    private val _breakTime = MutableStateFlow("1")
     val breakTime = _breakTime.asStateFlow()
-    private val _numberOfSessions = MutableStateFlow("")
+    private val _numberOfSessions = MutableStateFlow("1")
     val numberOfSessions = _numberOfSessions.asStateFlow()
 
     private val _elapsedTime = MutableStateFlow(0L)
@@ -39,6 +40,8 @@ class PomodoroViewModel(
     private val _isBreakTimeRunning = MutableStateFlow(false)
     val isBreakTimeRunning = _isBreakTimeRunning.asStateFlow()
 
+    val playSoundEvent = MutableSharedFlow<String>()
+
     var job: Job? = null
 
     fun startTimer() {
@@ -50,6 +53,9 @@ class PomodoroViewModel(
             if (_elapsedNumberOfSessions.value == 0) {
                 _isSessionTimeRunning.value = true
                 _elapsedNumberOfSessions.value = 1
+                viewModelScope.launch {
+                    playSoundEvent.emit("session")
+                }
             }
 
             _isTimerRunning.value = true
@@ -86,18 +92,30 @@ class PomodoroViewModel(
             _isSessionTimeRunning.value = false
             if (_elapsedNumberOfSessions.value < numberOfSessions.value.toInt()) {
                 _isBreakTimeRunning.value = true
+                viewModelScope.launch {
+                    playSoundEvent.emit("break")
+                }
                 startTimer()
             } else {
                 _elapsedNumberOfSessions.value = 0
+                viewModelScope.launch {
+                    playSoundEvent.emit("break")
+                }
             }
         } else if (_isBreakTimeRunning.value) {
             _isBreakTimeRunning.value = false
             _isSessionTimeRunning.value = true
             if (_elapsedNumberOfSessions.value < numberOfSessions.value.toInt()) {
                 _elapsedNumberOfSessions.value += 1
+                viewModelScope.launch {
+                    playSoundEvent.emit("session")
+                }
                 startTimer()
             } else {
                 _elapsedNumberOfSessions.value = 0
+                viewModelScope.launch {
+                    _isSessionTimeRunning.emit(false)
+                }
             }
         }
     }
@@ -110,6 +128,9 @@ class PomodoroViewModel(
         _isSessionTimeRunning.value = false
         _isBreakTimeRunning.value = false
         _elapsedNumberOfSessions.value = 0
+        viewModelScope.launch {
+            playSoundEvent.emit("none")
+        }
     }
 
     fun updateSessionTime(time: String) {
