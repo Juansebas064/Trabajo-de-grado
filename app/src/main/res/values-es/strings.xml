@@ -1,2 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">Dino Launcher</string>
+    <string name="settings_name">Ajustes de Dino</string>
+
+    <!--  Tasks and habits page  -->
+
+    <!--  Days  -->
+    <string-array name="days_of_week">
+        <item>domingo</item>
+        <item>lunes</item>
+        <item>marter</item>
+        <item>miércoles</item>
+        <item>jueves</item>
+        <item>viernes</item>
+        <item>sábado</item>
+    </string-array>
+
+    <string name="sunday">domingo</string>
+    <string name="monday">lunes</string>
+    <string name="tuesday">martes</string>
+    <string name="wednesday">miércoles</string>
+    <string name="thursday">jueves</string>
+    <string name="friday">viernes</string>
+    <string name="saturday">sábado</string>
+
+    <!--  List of habits and tasks  -->
+    <string name="tasks">Tareas</string>
+    <string name="habits">Hábitos</string>
+    <string name="tap_plus_to_create_an_element">Presiona + para crear una tarea o hábito</string>
+    <string name="habit">Hábito</string>
+    <string name="task">Tarea</string>
+    <string name="add_task">Añadir tarea</string>
+    <string name="edit_task">Editar tarea</string>
+    <string name="title">Título</string>
+    <string name="description">Descripción</string>
+    <string name="due_date">Fecha límite</string>
+    <string name="priority">Prioridad</string>
+    <string name="priority_high">Alta</string>
+    <string name="priority_medium">Media</string>
+    <string name="priority_low">Baja</string>
+    <string name="delete_elements">Eliminar elementos</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="add_habit">Añadir hábito</string>
+    <string name="start_date">Fecha de inicio</string>
+    <string name="end_date">Fecha límite</string>
+    <string name="select_days_of_the_habit">Selecciona qué días se hará el hábito</string>
+    <string name="edit_habit">Editar hábito</string>
+    <string name="today">Hoy</string>
+    <string name="tomorrow">Mañana</string>
+    <string name="day">día</string>
+    <string name="days">días</string>
+    <string name="in">En</string>
+    <string name="delayed">Atrasada</string>
+    <string name="category">Categoría</string>
+    <string name="your_pinned_apps_go_here">Tus aplicaciones fijadas se mostrarán aquí</string>
+    <string name="menu">Menu</string>
+    <string name="press_and_hold_an_app_for_more_options">Mantén presionada una aplicación para ver más opciones</string>
+    <string name="search">Buscar</string>
+    <string name="on_the_internet">en internet</string>
+    <string name="pomodoro">Pomodoro</string>
+    <string name="session_time">Tiempo de sesión</string>
+    <string name="break_time">Tiempo de descanso</string>
+    <string name="minutes_short">min</string>
+    <string name="applications_time_limit">Tiempo límite de aplicaciones</string>
+    <string name="today_usage">Uso de hoy</string>
+    <string name="select_applications">Seleccionar aplicaciones</string>
+    <string name="tap_to_mark_or_unmark_an_app">Presiona para seleccionar o quitar una aplicación</string>
+    <string name="settings">Ajustes</string>
+    <string name="app_language">Idioma de la aplicación</string>
+    <string name="show_solid_background">Fondo de pantalla de color sólido</string>
+    <string name="open_keyboard_auto">Abrir teclado automáticamente en el menú de aplicaciones</string>
+    <string name="show_search_on_internet">Mostrar \"buscar en internet\" en el menú de aplicaciones</string>
+    <string name="search_engine">Motor de búsqueda</string>
+    <string name="are_you_sure_to_delete_elements">¿Desea eliminar estos elementos?</string>
+    <string name="delete">Eliminar</string>
+    <string name="title_is_required">El título es requerido</string>
+    <string name="late">tarde</string>
+    <string name="additional_permissions_required">Se requieren permisos adicionales</string>
+    <string name="in_order_to_use_app_limit">Para usar la función de límite de tiempo de las aplicaciones, debes conceder los permisos necesarios para obtener el tiempo de uso de las aplicaciones en tu dispositivo y para mostrar diálogos sobre otras aplicaciones.</string>
+    <string name="grant_usage_access">Conceder permiso de acceso de uso</string>
+    <string name="grant_system_alert_window">Conceder permiso de ventana de alerta del sistema</string>
+    <string name="done">Listo</string>
+    <string name="monitoring_app_usage">Monitoreando tiempo de uso de aplicaciones</string>
+    <string name="show_essential_shortcuts">Mostrar atajos esenciales</string>
+    <string name="dino_app_usage_monitoring_stopped">Monitoreo de uso de aplicaciones de Dino detenido</string>
+    <string name="one_or_more_permissions_missing">Uno o varios permisos no han sido otorgados. Diríjase a la sección de límites de aplicación para reactivarlos.</string>
+    <string name="time_limit_exceeded">Tiempo límite alcanzado para</string>
+    <string name="consider_to_rest_or_do_your_tasks">Dino no puede cerrar tu aplicación, pero si el tiempo se cumplió, considera descansar, hacer ejercicio o cumplir con tus pendientes. Cuídate :3</string>
+    <string name="exit">Salir</string>
+</resources>

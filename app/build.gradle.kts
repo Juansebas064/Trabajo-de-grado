@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace = "com.brightbox.hourglass"
+    namespace = "com.brightbox.dino"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.brightbox.hourglass"
+        applicationId = "com.brightbox.dino"
         minSdk = 29
         targetSdk = 35
         versionCode = 1 //Consecutivo para publicaciones en Google Play
