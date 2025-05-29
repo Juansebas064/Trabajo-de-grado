@@ -22,12 +22,13 @@ import com.brightbox.dino.views.common.TextFieldComponent
 import com.brightbox.dino.views.theme.LocalSpacing
 
 @Composable
-fun SessionAndBreakTimeComponent(
+fun PomodoroInputsComponent(
     modifier: Modifier = Modifier,
     breakTime: String,
     sessionTime: String,
     numberOfSessions: String,
     isTimerRunning: Boolean,
+    enabled: Boolean = true,
     pomodoroViewModel: PomodoroViewModel = viewModel(),
 ) {
 
@@ -61,7 +62,7 @@ fun SessionAndBreakTimeComponent(
                     modifier = Modifier
                         .height(IntrinsicSize.Min)
                         .width(80.dp),
-                    enabled = !isTimerRunning,
+                    enabled = enabled,
                     value = sessionTime,
                     textStyle = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
                     backgroundColor = MaterialTheme.colorScheme.background,
@@ -100,7 +101,7 @@ fun SessionAndBreakTimeComponent(
                     modifier = Modifier
                         .height(IntrinsicSize.Min)
                         .width(80.dp),
-                    enabled = !isTimerRunning,
+                    enabled = enabled,
                     value = breakTime,
                     textStyle = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
                     backgroundColor = MaterialTheme.colorScheme.background,
@@ -139,7 +140,7 @@ fun SessionAndBreakTimeComponent(
                     modifier = Modifier
                         .height(IntrinsicSize.Min)
                         .width(80.dp),
-                    enabled = !isTimerRunning,
+                    enabled = enabled,
                     value = numberOfSessions,
                     textStyle = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
                     backgroundColor = MaterialTheme.colorScheme.background,

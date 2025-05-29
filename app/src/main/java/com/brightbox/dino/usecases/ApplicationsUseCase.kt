@@ -1,5 +1,6 @@
 package com.brightbox.dino.usecases
 
+import android.R.drawable.sym_def_app_icon
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -7,6 +8,7 @@ import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
+import androidx.appcompat.content.res.AppCompatResources
 import com.brightbox.dino.config.DinoDatabase
 import com.brightbox.dino.model.ApplicationsModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -41,8 +43,14 @@ class ApplicationsUseCase @Inject constructor(
         val appIcons = mutableMapOf<String, Drawable>()
         withContext(Dispatchers.IO) {
             appList.forEach { app ->
-                appIcons[app.packageName] =
-                    application.packageManager.getApplicationIcon(app.packageName)
+                try {
+                    Log.d("ApplicationsUseCase", "getApplicationsIcons: app = $app")
+                    appIcons[app.packageName] =
+                        application.packageManager.getApplicationIcon(app.packageName)
+                }
+                catch(exception: Exception) {
+                    appIcons[app.packageName] = AppCompatResources.getDrawable(application, sym_def_app_icon)!!
+                }
             }
         }
         return appIcons
@@ -98,7 +106,6 @@ class ApplicationsUseCase @Inject constructor(
                 isRestricted = false
             )
             db.applicationsDao().upsertApplication(app)
-//            queryInstalledApplicationsToDatabase()
         }
     }
 
@@ -140,16 +147,13 @@ class ApplicationsUseCase @Inject constructor(
             }
 
             installedAppsIntents.forEach {
-                var app = db.applicationsDao().findByPackageName(it.activityInfo.packageName)
-                if (app == null) {
-                    app = ApplicationsModel(
-                        packageName = getAppNameInLocale(it.activityInfo.packageName, locale) ?: it.activityInfo.packageName,
+                    val app = ApplicationsModel(
+                        packageName = it.activityInfo.packageName,
                         name = it.loadLabel(packageManager).toString(),
                         isPinned = false,
                         isRestricted = false
                     )
                     db.applicationsDao().upsertApplication(app)
-                }
             }
         }
     }

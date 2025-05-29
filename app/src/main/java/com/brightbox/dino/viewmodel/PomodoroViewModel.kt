@@ -2,6 +2,7 @@ package com.brightbox.dino.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -54,16 +55,16 @@ class PomodoroViewModel(
             _isTimerRunning.value = true
 
             val timeFactor = if (_isSessionTimeRunning.value) {
-                sessionTime.value.toFloat()
+                sessionTime.value.toFloat() * 60
             } else {
-                breakTime.value.toFloat()
+                breakTime.value.toFloat() * 60
             }
 
-            job = CoroutineScope(Dispatchers.Unconfined).launch {
+            job = viewModelScope.launch {
                 while (progressIndicator.value < 1) {
-                    _progressIndicator.value += 1 / (timeFactor * 6000)
-                    _elapsedTime.value += 10
-                    delay(10)
+                    _progressIndicator.value += 1 / timeFactor
+                    _elapsedTime.value += 1000
+                    delay(1000)
                 }
                 stopTimer()
             }

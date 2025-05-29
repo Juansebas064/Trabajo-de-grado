@@ -1,5 +1,9 @@
 package com.brightbox.dino.views.home.pages.pomodoro_page
 
+import android.media.MediaPlayer
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +14,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +42,28 @@ fun TimerComponent(
 ) {
     val context = LocalContext.current
     val spacing = LocalSpacing.current
+
+    val startSessionPlayer = remember { MediaPlayer.create(context, R.raw.start_timer) }
+    val finishSessionPlayer = remember { MediaPlayer.create(context, R.raw.finish_timer) }
+
+    val animatedProgress by animateFloatAsState(
+        targetValue = currentProgress,
+        animationSpec = tween(
+            durationMillis = 1000, // Ajusta esto según el intervalo de tu ViewModel
+            easing = LinearEasing   // Para un progreso constante, o puedes probar otros easings
+        ),
+        label = "progressAnimation" // Etiqueta para herramientas de inspección
+    )
+
+    LaunchedEffect(isBreakTimeRunning, isSessionTimeRunning) {
+        if (isSessionTimeRunning) {
+            startSessionPlayer.start()
+        }
+
+        if (isBreakTimeRunning) {
+            finishSessionPlayer.start()
+        }
+    }
 
     // Timer
     Box(
@@ -68,7 +97,7 @@ fun TimerComponent(
         // Progress indicator
         CircularProgressIndicator(
             progress = {
-                currentProgress
+                animatedProgress
             },
             modifier = Modifier.size(timerSize),
             color = if (!isBreakTimeRunning) MaterialTheme.colorScheme.primary
@@ -86,7 +115,10 @@ fun TimerComponent(
                 onClick = {},
                 circleShape = true,
                 padding = 0.dp,
-                modifier = Modifier.align(Alignment.BottomCenter).size(40.dp).offset(y = (-20).dp)
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .size(40.dp)
+                    .offset(y = (-20).dp)
             )
         }
     }

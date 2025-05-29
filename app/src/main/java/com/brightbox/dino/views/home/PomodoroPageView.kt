@@ -30,7 +30,7 @@ import com.brightbox.dino.views.common.IconButtonComponent
 import com.brightbox.dino.views.common.NavigationButton
 import com.brightbox.dino.views.theme.LocalSpacing
 import com.brightbox.dino.R
-import com.brightbox.dino.views.home.pages.pomodoro_page.SessionAndBreakTimeComponent
+import com.brightbox.dino.views.home.pages.pomodoro_page.PomodoroInputsComponent
 import com.brightbox.dino.views.home.pages.pomodoro_page.TimerComponent
 
 @Composable
@@ -106,14 +106,15 @@ fun PomodoroPageView(
             )
 
             // Fields component
-            SessionAndBreakTimeComponent(
+            PomodoroInputsComponent(
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
                     .weight(1f),
                 breakTime = breakTime.value,
                 sessionTime = sessionTime.value,
                 isTimerRunning = isTimerRunning.value,
-                numberOfSessions = numberOfSessions.value
+                numberOfSessions = numberOfSessions.value,
+                enabled = !isTimerRunning.value && !isBreakTimeRunning.value && !isSessionTimeRunning.value
             )
 
 
