@@ -3,6 +3,7 @@ package com.brightbox.dino.services
 import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
+import com.brightbox.dino.R
 
 class NotificationSender {
     companion object {
@@ -26,7 +27,7 @@ class NotificationSender {
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
             val builder = NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(android.R.drawable.sym_def_app_icon)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
                 .setContentText(content)
                 .setPriority(notificationManager.getNotificationChannel(channelId).importance)
