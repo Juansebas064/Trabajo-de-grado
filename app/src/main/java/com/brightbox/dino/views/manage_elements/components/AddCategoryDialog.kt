@@ -1,4 +1,4 @@
-package com.brightbox.dino.views.home.pages.tasks_and_habits_page
+package com.brightbox.dino.views.manage_elements.components
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -20,13 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import com.brightbox.dino.events.CategoriesEvent
-import com.brightbox.dino.events.TasksEvent
 import com.brightbox.dino.states.CategoriesState
+import com.brightbox.dino.views.common.BottomModalDialogComponent
 import com.brightbox.dino.views.common.RoundedSquareButtonComponent
 import com.brightbox.dino.views.theme.LocalSpacing
 
@@ -34,19 +31,15 @@ import com.brightbox.dino.views.theme.LocalSpacing
 @Composable
 fun AddCategoryDialog(
     categoriesState: CategoriesState,
-    onTasksEvent: (TasksEvent) -> Unit,
     onCategoriesEvent: (CategoriesEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
-    val halfScreenDp = (LocalConfiguration.current.screenHeightDp / 5).dp
 
-    BasicAlertDialog(
+    BottomModalDialogComponent(
         onDismissRequest = {
             onCategoriesEvent(CategoriesEvent.HideDialog)
         },
-        modifier = modifier
-            .padding(top = halfScreenDp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,7 +51,7 @@ fun AddCategoryDialog(
         ) {
             Box(
                 modifier = Modifier
-                    .padding(top = spacing.spaceMedium)
+                    .padding(top = spacing.spaceLarge)
             ) {
                 Text(
                     text = "Add a category",
@@ -105,7 +98,6 @@ fun AddCategoryDialog(
                     onClick = {
                         onCategoriesEvent(CategoriesEvent.ClearDialogFields)
                         onCategoriesEvent(CategoriesEvent.HideDialog)
-                        onTasksEvent(TasksEvent.ShowAddTaskDialog)
                     },
                     modifier = Modifier
                         .padding(spacing.spaceExtraSmall)
@@ -119,7 +111,6 @@ fun AddCategoryDialog(
                     containerColor = MaterialTheme.colorScheme.primary,
                     onClick = {
                         onCategoriesEvent(CategoriesEvent.SaveCategory)
-                        onTasksEvent(TasksEvent.ShowAddTaskDialog)
                     },
                     modifier = Modifier
                         .padding(spacing.spaceExtraSmall)

@@ -108,4 +108,5 @@
     <string name="tap_plus_to_create_a_task">Presiona + para crear una tarea</string>
     <string name="categories">Categorías</string>
     <string name="tap_plus_to_create_an_habit">Presiona + para crear un hábito</string>
+    <string name="tap_plus_to_create_a_category">Presiona + para crear una categoría</string>
 </resources>

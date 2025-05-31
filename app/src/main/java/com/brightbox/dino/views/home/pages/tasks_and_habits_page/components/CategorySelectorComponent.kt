@@ -151,19 +151,6 @@ fun CategorySelectorComponent(
                             categoriesDropdownPosition.intValue = index
                             areCategoriesExpanded.value = !areCategoriesExpanded.value
                         },
-                        trailingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = "Delete category",
-                                modifier = Modifier
-                                    .scale(0.8f)
-                                    .clickable {
-                                        categoriesViewModel.onEvent(
-                                            CategoriesEvent.DeleteCategory(category.id!!)
-                                        )
-                                    }
-                            )
-                        }
                     )
                 }
             }

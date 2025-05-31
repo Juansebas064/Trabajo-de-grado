@@ -71,10 +71,27 @@ fun ManageTasksHabitsAndCategoriesView(
 
                 when (selectedIndex) {
                     0 -> ManageTasksView(
-                        modifier = Modifier.padding(horizontal = spacing.spaceLarge)
+                        modifier = Modifier.padding(
+                            top = spacing.spaceLarge,
+                            start = spacing.spaceLarge,
+                            end = spacing.spaceLarge
+                        )
                     )
+
                     1 -> ManageHabitsView(
-                        modifier = Modifier.padding(horizontal = spacing.spaceLarge)
+                        modifier = Modifier.padding(
+                            top = spacing.spaceLarge,
+                            start = spacing.spaceLarge,
+                            end = spacing.spaceLarge
+                        )
+                    )
+
+                    2 -> ManageCategoriesView(
+                        modifier = Modifier.padding(
+                            top = spacing.spaceLarge,
+                            start = spacing.spaceLarge,
+                            end = spacing.spaceLarge
+                        )
                     )
                 }
             }

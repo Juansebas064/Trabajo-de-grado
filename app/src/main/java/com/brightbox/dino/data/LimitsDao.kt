@@ -21,4 +21,6 @@ interface LimitsDao {
     @Query("DELETE FROM limits WHERE id = :id")
     suspend fun deleteLimit(id: Int)
 
+    @Query("SELECT * FROM limits WHERE id = :id")
+    fun getLimitById(id: Int): LimitsModel
 }

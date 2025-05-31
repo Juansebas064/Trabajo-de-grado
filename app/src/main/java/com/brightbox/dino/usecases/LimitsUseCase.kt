@@ -136,7 +136,10 @@ class LimitsUseCase @Inject constructor(
 
     suspend fun deleteLimit(id: Int) {
         withContext(Dispatchers.IO) {
+            val limit = db.limitsDao().getLimitById(id)
+            val app = db.applicationsDao().findByPackageName(limit.applicationPackageName)
             db.limitsDao().deleteLimit(id)
+            db.applicationsDao().upsertApplication(app!!.copy(limitTimeReached = false))
         }
     }
 

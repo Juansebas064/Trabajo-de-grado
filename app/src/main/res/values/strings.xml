@@ -51,6 +51,7 @@
     <!--  Tasks  -->
     <string name="task">Task</string>
     <string name="tasks">Tasks</string>
+    <string name="tap_plus_to_create_a_task">Tap + to create a task</string>
     <string name="add_task">Add task</string>
     <string name="edit_task">Edit task</string>
     <string name="due_date">Due date</string>
@@ -70,11 +71,16 @@
     <!--  Habits  -->
     <string name="habit">Habit</string>
     <string name="habits">Habits</string>
+    <string name="tap_plus_to_create_an_habit">Tap + to create an habit</string>
     <string name="add_habit">Add habit</string>
     <string name="start_date">Start date</string>
     <string name="end_date">End date</string>
     <string name="select_days_of_the_habit">Select which days to do the habit</string>
     <string name="edit_habit">Edit habit</string>
+
+    <!--  Category  -->
+    <string name="categories">Categories</string>
+    <string name="tap_plus_to_create_a_category">Tap + to create a category</string>
 
     <!--  Pinned apps and menu  -->
     <!--  Pinned apps  -->
@@ -123,9 +129,6 @@
     <string name="time_limit_exceeded">Time limit exceeded for</string>
     <string name="consider_to_rest_or_do_your_tasks">Dino can\'t close your application, but if the time is up, consider resting, exercising, or catching up on your tasks. Take care :3</string>
     <string name="exit">Exit</string>
-    <string name="tap_plus_to_create_a_task">Tap + to create a task</string>
-    <string name="categories">Categories</string>
-    <string name="tap_plus_to_create_an_habit">Tap + to create an habit</string>
 
 
 </resources>

@@ -1,6 +1,5 @@
 package com.brightbox.dino.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brightbox.dino.events.CategoriesEvent
@@ -35,6 +34,8 @@ class CategoriesViewModel @Inject constructor(
     private fun clearDialogFields() {
         _state.value = _state.value.copy(
             isAddingCategory = false,
+            isDeletingCategory = false,
+            categoryId = null,
             categoryName = ""
         )
     }
@@ -82,13 +83,38 @@ class CategoriesViewModel @Inject constructor(
                 }
             }
 
+            CategoriesEvent.ShowDeleteDialog -> {
+                _state.update {
+                    it.copy(
+                        isDeletingCategory = true
+                    )
+                }
+            }
+
+            CategoriesEvent.HideDeleteDialog -> {
+                _state.update {
+                    it.copy(
+                        isDeletingCategory = false
+                    )
+                }
+            }
+
             CategoriesEvent.ClearDialogFields -> {
                 clearDialogFields()
             }
 
             is CategoriesEvent.DeleteCategory -> {
                 viewModelScope.launch {
-                    _categoriesUseCase.deleteCategory(event.categoryId)
+                    _categoriesUseCase.deleteCategory(_state.value.categoryId!!)
+                }
+                clearDialogFields()
+            }
+
+            is CategoriesEvent.SetCategoryId -> {
+                _state.update {
+                    it.copy(
+                        categoryId = event.categoryId
+                    )
                 }
             }
         }
