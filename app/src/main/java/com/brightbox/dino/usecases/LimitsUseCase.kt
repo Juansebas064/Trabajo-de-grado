@@ -110,9 +110,11 @@ class LimitsUseCase @Inject constructor(
                 else -> limit.usedTime
             }
 
-            if (currentTimeInForeground >= limit.timeLimit) {
-                withContext(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
+                if (currentTimeInForeground >= limit.timeLimit) {
                     db.applicationsDao().updateLimitTimeReached(limit.applicationPackageName, true)
+                } else {
+                    db.applicationsDao().updateLimitTimeReached(limit.applicationPackageName, false)
                 }
             }
 
