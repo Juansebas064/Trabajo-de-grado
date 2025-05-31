@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.dino.R
 import com.brightbox.dino.events.LimitsEvent
@@ -57,6 +59,7 @@ fun SelectApplicationsToLimitView(
             .background(MaterialTheme.colorScheme.background)
             .navigationBarsPadding()
             .statusBarsPadding()
+            .imePadding()
             .padding(horizontal = spacing.spaceMedium)
     ) {
         Column {
@@ -65,13 +68,11 @@ fun SelectApplicationsToLimitView(
                 verticalAlignment = Alignment.Bottom,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = spacing.spaceExtraLarge)
+                    .padding(top = spacing.spaceExtraLarge, bottom = spacing.spaceMedium)
             ) {
                 Text(
                     text = context.getString(R.string.tap_to_mark_or_unmark_an_app),
-                    style = MaterialTheme.typography.displaySmall.copy(
-                        fontWeight = FontWeight.Normal
-                    ),
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
                 )
@@ -82,28 +83,26 @@ fun SelectApplicationsToLimitView(
                     .weight(1f)
             )
 
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomEnd)
-                .padding(spacing.spaceMedium),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            RoundedSquareButtonComponent(
-                text = context.getString(R.string.done),
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                textStyle = MaterialTheme.typography.bodyMedium,
-                containerColor = MaterialTheme.colorScheme.primary,
-                onClick = {
-                    limitsViewModel.onEvent(LimitsEvent.SaveApplicationLimits)
-                    onNavigateBack()
-                },
+            Row(
                 modifier = Modifier
-//                    .fillMaxWidth()
-            )
+                    .fillMaxWidth()
+                    .padding(vertical = spacing.spaceMedium, horizontal = 0.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                RoundedSquareButtonComponent(
+                    text = context.getString(R.string.done),
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    textStyle = MaterialTheme.typography.bodyMedium,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    onClick = {
+                        limitsViewModel.onEvent(LimitsEvent.SaveApplicationLimits)
+                        onNavigateBack()
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
         }
-//        }
 
         // Go back
         NavigationButton(

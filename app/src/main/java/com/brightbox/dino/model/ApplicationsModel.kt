@@ -9,5 +9,5 @@ data class ApplicationsModel(
     val packageName: String,
     val name: String,
     val isPinned: Boolean,
-    val isRestricted: Boolean,
+    val limitTimeReached: Boolean,
 )

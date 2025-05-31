@@ -3,7 +3,7 @@ package com.brightbox.dino.states
 import com.brightbox.dino.model.HabitsModel
 
 data class HabitsState (
-    val todayHabits: List<HabitsModel> = emptyList(),
+    val habits: List<HabitsModel> = emptyList(),
     val habitId: Int? = null,
     val habitTitle: String = "",
     val habitCategory: Int? = null,

@@ -1,5 +1,6 @@
 package com.brightbox.dino.views.home.pages.tasks_and_habits_page.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.brightbox.dino.events.HabitsEvent
@@ -18,15 +20,22 @@ import com.brightbox.dino.views.common.IconButtonComponent
 import com.brightbox.dino.views.theme.LocalSpacing
 
 @Composable
-fun TasksControlsComponent(
+fun TasksAndHabitsControlsComponent(
     modifier: Modifier = Modifier,
-    selectedTasks: List<Int>,
-    selectedHabits: List<Int>,
-    isSelectingTasks: Boolean,
+    selectedTasks: List<Int>?,
+    selectedHabits: List<Int>?,
+    isSelectingElements: Boolean,
     onTasksEvent: (TasksEvent) -> Unit,
     onHabitsEvent: (HabitsEvent) -> Unit
 ) {
     val spacing = LocalSpacing.current
+    val controlsFor = if (selectedTasks != null && selectedHabits != null) {
+        "both"
+    } else if(selectedTasks != null) {
+        "tasks"
+    } else {
+        "habits"
+    }
 
     Box(
 //        horizontalArrangement = Arrangement.SpaceBetween,
@@ -41,16 +50,19 @@ fun TasksControlsComponent(
                 .align(Alignment.Center)
         ) {
             // Add task
-            if (!isSelectingTasks) {
-                AddElementsButton()
+            if (!isSelectingElements) {
+                // Add elements
+                AddAndListElementsComponent(
+                    controlsFor = controlsFor,
+                )
             } else {
                 // Show edit button only if one task is selected
-                if (selectedTasks.size + selectedHabits.size == 1) {
+                if ((selectedTasks?.size ?: 0) + (selectedHabits?.size ?: 0) == 1) {
                     IconButtonComponent(
                         onClick = {
-                            if (selectedTasks.isNotEmpty()) {
+                            if (selectedTasks != null && selectedTasks.isNotEmpty()) {
                                 onTasksEvent(TasksEvent.EditTask(selectedTasks.first()))
-                            } else {
+                            } else if (selectedHabits != null && selectedHabits.isNotEmpty()) {
                                 onHabitsEvent(HabitsEvent.EditHabit(selectedHabits.first()))
                             }
                         },
@@ -64,7 +76,11 @@ fun TasksControlsComponent(
                 // Delete tasks
                 IconButtonComponent(
                     onClick = {
-                        onTasksEvent(TasksEvent.ShowDeleteTasksDialog)
+                        if (selectedTasks != null && selectedTasks.isNotEmpty()) {
+                            onTasksEvent(TasksEvent.ShowDeleteTasksDialog)
+                        } else if (selectedHabits != null && selectedHabits.isNotEmpty()) {
+                            onHabitsEvent(HabitsEvent.ShowDeleteHabitDialog)
+                        }
                     },
                     containerColor = MaterialTheme.colorScheme.error,
                     contentColor = MaterialTheme.colorScheme.onError,

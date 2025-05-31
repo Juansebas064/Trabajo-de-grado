@@ -7,9 +7,11 @@ import android.content.Intent.ACTION_PACKAGE_ADDED
 import android.content.Intent.ACTION_PACKAGE_REMOVED
 import android.content.IntentFilter
 import android.util.Log
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.brightbox.dino.R
 import com.brightbox.dino.constants.SearchEnginesEnum
 import com.brightbox.dino.model.ApplicationsModel
 import com.brightbox.dino.states.ApplicationsState
@@ -105,9 +107,17 @@ class ApplicationsViewModel @Inject constructor(
         _searchText.value = searchText
     }
 
-    fun openApp(packageName: String) {
-        _applicationsUseCase.openApp(packageName)
-        _searchText.value = ""
+    fun openApp(app: ApplicationsModel) {
+        if (!app.limitTimeReached) {
+            _applicationsUseCase.openApp(app)
+            _searchText.value = ""
+        } else {
+            Toast.makeText(
+                context,
+                "${context.getString(R.string.time_limit_for)} ${app.name} ${context.getString(R.string.reached)}",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     fun openApp(intent: Intent) {
@@ -117,8 +127,7 @@ class ApplicationsViewModel @Inject constructor(
     fun openFirstApp() {
         if (appsList.value.isNotEmpty()) {
             if (filteredAppList.value.applications.isNotEmpty()) {
-                _applicationsUseCase.openApp(filteredAppList.value.applications.first().packageName)
-                _searchText.value = ""    // Clear searchText
+                openApp(filteredAppList.value.applications.first())
             } else {
                 searchOnInternet()
             }
@@ -148,8 +157,9 @@ class ApplicationsViewModel @Inject constructor(
     fun searchOnInternet() {
         viewModelScope.launch {
             _preferencesUseCase.getPreferences().collectLatest { preferences ->
-                if(preferences.showSearchOnInternet) {
-                    val searchEngineEnum = SearchEnginesEnum.entries.find { it.engineName == preferences.searchEngine }
+                if (preferences.showSearchOnInternet) {
+                    val searchEngineEnum =
+                        SearchEnginesEnum.entries.find { it.engineName == preferences.searchEngine }
                     _applicationsUseCase.searchOnInternet(_searchText.value, searchEngineEnum!!)
                 }
             }

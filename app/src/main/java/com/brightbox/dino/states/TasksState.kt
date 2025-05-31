@@ -8,10 +8,12 @@ data class TasksState(
     val taskId: Int? = null,
     val taskTitle: String = "",
     val taskDescription: String = "",
+    val taskDateCreated: String? = null,
     val taskDueDate: Long = 0L,
     val wasTaskDelayed: Boolean = false,
     val taskCategory: Int? = null,
-    val taskPriority: String = PrioritiesEnum.High.priority,
+    val taskPriority: PrioritiesEnum = PrioritiesEnum.High,
+    val taskVisible: Boolean = true,
 
     val isAddingTask: Boolean = false,
     val isDeletingTasks: Boolean = false,

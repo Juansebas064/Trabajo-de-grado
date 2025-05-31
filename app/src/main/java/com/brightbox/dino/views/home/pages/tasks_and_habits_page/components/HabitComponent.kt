@@ -69,7 +69,7 @@ fun HabitComponent(
     val isSelected = selectedHabits.contains(habit.id)
     val today = timeViewModel.currentTimeMillis.collectAsState().let { time ->
         mapOf(
-            "day" to formatMillisecondsToDay(time.value, context),
+            "day" to formatMillisecondsToDay(time.value),
             "date" to formatMillisecondsToSQLiteDate(time.value)
         )
     }
@@ -79,9 +79,6 @@ fun HabitComponent(
         mutableStateOf<HabitsLogsModel?>(null)
     }
     val isCompletedForToday = habitLog?.completed == true
-
-
-    val daysOfWeek = context.resources.getStringArray(R.array.days_of_week)
 
     LaunchedEffect(habitsLogs.value) {
         habitLog = habitsLogs.value.find { it.habitId == habit.id && it.date == today["date"] }
@@ -144,8 +141,6 @@ fun HabitComponent(
                     } else {
                         onHabitsEvent(HabitsEvent.MarkHabitSelected(habit.id!!))
                     }
-//                    val toast = Toast.makeText(context, "Long click detected", Toast.LENGTH_SHORT)
-//                    toast.show()
                 }
             )
     ) {
@@ -183,13 +178,12 @@ fun HabitComponent(
                 )
 
                 // Days of week the habit will be shown
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    daysOfWeek.forEach { day ->
+                    daysOfWeek.keys.forEach { day ->
                         Box(
                             modifier = Modifier
                                 .size(28.dp)
@@ -197,7 +191,7 @@ fun HabitComponent(
                                 .background(if (day in habit.daysOfWeek) (if (day == today["day"]) MaterialTheme.colorScheme.inversePrimary else MaterialTheme.colorScheme.secondary) else Color.Transparent)
                         ) {
                             Text(
-                                text = day[0].uppercase(),
+                                text = context.resources.getString(daysOfWeek[day]!!)[0].uppercase(),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = if (day in habit.daysOfWeek)
                                     MaterialTheme.colorScheme.onSecondary

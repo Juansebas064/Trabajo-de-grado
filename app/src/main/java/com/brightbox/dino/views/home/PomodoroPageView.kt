@@ -148,6 +148,7 @@ fun PomodoroPageView(
                 horizontalArrangement = Arrangement.spacedBy(spacing.spaceMedium)
             ) {
 
+                // Cancel pomodoro timer
                 if (isBreakTimeRunning.value || isSessionTimeRunning.value) {
                     IconButtonComponent(
                         modifier = Modifier,
@@ -162,6 +163,7 @@ fun PomodoroPageView(
                     )
                 }
 
+                // Play and pause pomodoro timer
                 IconButtonComponent(
                     modifier = Modifier,
                     onClick = {
@@ -184,22 +186,5 @@ fun PomodoroPageView(
                 )
             }
         }
-
-//        NavigationButton(
-//            modifier = Modifier.align(Alignment.TopEnd),
-//            icon = when (preferencesState.value.theme) {
-//                "system" -> Icons.Default.CloudSync
-//                "light" -> Icons.Default.LightMode
-//                "dark" -> Icons.Default.DarkMode
-//                else -> Icons.Default.CloudSync
-//            },
-//            color = MaterialTheme.colorScheme.onBackground,
-//            description = "Change theme",
-//            onNavigate = {
-//                preferencesViewModel.onEvent(
-//                    GeneralPreferencesEvent.ChangeTheme
-//                )
-//            }
-//        )
     }
 }

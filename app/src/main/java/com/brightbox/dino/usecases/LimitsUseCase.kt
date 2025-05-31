@@ -96,13 +96,22 @@ class LimitsUseCase @Inject constructor(
         }
     }
 
-    fun syncLimit(limit: LimitsModel): LimitsModel {
+    suspend fun syncLimit(limit: LimitsModel): LimitsModel {
         val stats = getTodayUsageStats()
-        Log.d("LimitsUseCase", "Updating limit: ${limit},\nstats: ${stats[limit.applicationPackageName]}")
+        Log.d(
+            "LimitsUseCase",
+            "Updating limit: ${limit},\nstats: ${stats[limit.applicationPackageName]}"
+        )
         val currentTimeInForeground = stats[limit.applicationPackageName]!!
         val previousTimeInForeground = when (limit.usedTime) {
             0 -> currentTimeInForeground
             else -> limit.usedTime
+        }
+
+        if (currentTimeInForeground >= limit.timeLimit) {
+            withContext(Dispatchers.IO) {
+                db.applicationsDao().updateLimitTimeReached(limit.applicationPackageName, true)
+            }
         }
 
         return limit.copy(
@@ -120,6 +129,7 @@ class LimitsUseCase @Inject constructor(
                     previousUsedTime = 0
                 )
                 upsertLimit(limitReset)
+                db.applicationsDao().updateLimitTimeReached(limit.applicationPackageName, false)
             }
         }
     }

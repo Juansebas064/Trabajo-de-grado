@@ -47,9 +47,9 @@ class ApplicationsUseCase @Inject constructor(
                     Log.d("ApplicationsUseCase", "getApplicationsIcons: app = $app")
                     appIcons[app.packageName] =
                         application.packageManager.getApplicationIcon(app.packageName)
-                }
-                catch(exception: Exception) {
-                    appIcons[app.packageName] = AppCompatResources.getDrawable(application, sym_def_app_icon)!!
+                } catch (exception: Exception) {
+                    appIcons[app.packageName] =
+                        AppCompatResources.getDrawable(application, sym_def_app_icon)!!
                 }
             }
         }
@@ -57,9 +57,9 @@ class ApplicationsUseCase @Inject constructor(
     }
 
 
-    fun openApp(packageName: String) {
+    fun openApp(app: ApplicationsModel) {
         val packageManager = application.packageManager
-        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        val intent = packageManager.getLaunchIntentForPackage(app.packageName)
         if (intent != null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             application.applicationContext.startActivity(intent)
@@ -103,7 +103,7 @@ class ApplicationsUseCase @Inject constructor(
                 packageName = packageName,
                 name = packageManager.getApplicationLabel(appInfo).toString(),
                 isPinned = false,
-                isRestricted = false
+                limitTimeReached = false
             )
             db.applicationsDao().upsertApplication(app)
         }
@@ -146,14 +146,15 @@ class ApplicationsUseCase @Inject constructor(
                 }
             }
 
-            installedAppsIntents.forEach {
-                    val app = ApplicationsModel(
-                        packageName = it.activityInfo.packageName,
-                        name = it.loadLabel(packageManager).toString(),
-                        isPinned = false,
-                        isRestricted = false
-                    )
-                    db.applicationsDao().upsertApplication(app)
+            installedAppsIntents.forEach { appIntent ->
+                val existingApp = dbApps.find { dbApp -> dbApp.packageName == appIntent.activityInfo.packageName }
+                val app = ApplicationsModel(
+                    packageName = appIntent.activityInfo.packageName,
+                    name = appIntent.loadLabel(packageManager).toString(),
+                    isPinned = existingApp?.isPinned == true,
+                    limitTimeReached = existingApp?.limitTimeReached == true
+                )
+                db.applicationsDao().upsertApplication(app)
             }
         }
     }
@@ -193,7 +194,7 @@ class ApplicationsUseCase @Inject constructor(
         searchEngine: SearchEnginesEnum = SearchEnginesEnum.GOOGLE
     ) {
         val query = Uri.encode(text)
-        val url = searchEngine.baseUrl+query
+        val url = searchEngine.baseUrl + query
         val intent = Intent(Intent.ACTION_VIEW, url.toUri())
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         // Ensure there's an app to handle the intent

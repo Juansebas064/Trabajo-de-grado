@@ -47,7 +47,7 @@ fun PinnedAppsView(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = modifier
-            .padding(spacing.spaceSmall)
+            .padding(spacing.spaceExtraSmall)
     ) {
         Icon(
             imageVector = Icons.Default.KeyboardArrowUp,
@@ -69,7 +69,7 @@ fun PinnedAppsView(
                         textStyle = MaterialTheme.typography.bodyLarge,
                         containerColor = MaterialTheme.colorScheme.surface,
                         onClick = {
-                            applicationsViewModel.openApp(app.packageName)
+                            applicationsViewModel.openApp(app)
                         },
                         modifier = Modifier
                     )

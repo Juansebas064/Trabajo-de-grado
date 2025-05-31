@@ -27,5 +27,5 @@ data class TasksModel(
     val isCompleted: Boolean,
     val wasDelayed: Boolean,
     val categoryId: Int?,
-    val visible: Boolean
+    val visible: Boolean = true
 )

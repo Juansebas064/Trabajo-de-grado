@@ -41,10 +41,9 @@ fun DateAndTimeView(
             .padding(vertical = spacing.spaceExtraSmall)
     ) {
         ClockComponent(
-            currentTime = today.value,
             onClick = { openApp(Intent(AlarmClock.ACTION_SHOW_ALARMS)) }
         )
-        val dayOfToday = formatMillisecondsToDay(today.value, context)
+        val dayOfToday = formatMillisecondsToDay(today.value)
         DaysOfWeekComponent(
             today = dayOfToday,
             onClick = {

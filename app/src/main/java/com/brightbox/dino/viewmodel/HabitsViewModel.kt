@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -61,7 +60,7 @@ class HabitsViewModel @Inject constructor(
 
     val state = combine(_state, _habitsList) { state, habits ->
         state.copy(
-            todayHabits = habits,
+            habits = habits,
         )
     }.onStart {
         loadTodayHabitsList()
@@ -224,7 +223,7 @@ class HabitsViewModel @Inject constructor(
                 _selectedHabits.update {
                     emptyList()
                 }
-                val habit = state.value.todayHabits.find { it.id == event.id }
+                val habit = state.value.habits.find { it.id == event.id }
                 _state.update {
                     it.copy(
                         habitId = habit!!.id,
@@ -266,6 +265,21 @@ class HabitsViewModel @Inject constructor(
             HabitsEvent.ShowAddHabitDialog -> {
                 _state.value = _state.value.copy(
                     isAddingHabit = true
+                )
+            }
+
+            HabitsEvent.HideDeleteHabitDialog -> {
+                _state.value = _state.value.copy(
+                    isDeletingHabits = false
+                )
+                _selectedHabits.update {
+                        emptyList()
+                    }
+            }
+
+            HabitsEvent.ShowDeleteHabitDialog -> {
+                _state.value = _state.value.copy(
+                    isDeletingHabits = true
                 )
             }
         }

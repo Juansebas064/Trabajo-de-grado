@@ -27,6 +27,7 @@
     <!--  List of habits and tasks  -->
     <string name="tasks">Tareas</string>
     <string name="habits">Hábitos</string>
+    <string name="december">diciembre</string>
     <string name="tap_plus_to_create_an_element">Presiona + para crear una tarea o hábito</string>
     <string name="habit">Hábito</string>
     <string name="task">Tarea</string>
@@ -66,7 +67,7 @@
     <string name="applications_time_limit">Tiempo límite de aplicaciones</string>
     <string name="today_usage">Uso de hoy</string>
     <string name="select_applications">Seleccionar aplicaciones</string>
-    <string name="tap_to_mark_or_unmark_an_app">Presiona para seleccionar o quitar una aplicación</string>
+    <string name="tap_to_mark_or_unmark_an_app">Presiona para seleccionar una aplicación y fijar un límite de tiempo diario o quitarla</string>
     <string name="settings">Ajustes</string>
     <string name="app_language">Idioma de la aplicación</string>
     <string name="show_solid_background">Fondo de pantalla de color sólido</string>
@@ -90,4 +91,21 @@
     <string name="consider_to_rest_or_do_your_tasks">Dino no puede cerrar tu aplicación, pero si el tiempo se cumplió, considera descansar, hacer ejercicio o cumplir con tus pendientes. Cuídate :3</string>
     <string name="exit">Salir</string>
     <string name="number_of_sessions">Numero de sesiones</string>
+    <string name="time_limit_for">Tiempo límite de</string>
+    <string name="reached">alcanzado</string>
+    <string name="dino_elements_manager">Gestionar elementos de Dino</string>
+    <string name="january">enero</string>
+    <string name="february">febrero</string>
+    <string name="march">marzo</string>
+    <string name="april">abril</string>
+    <string name="may">mayo</string>
+    <string name="june">junio</string>
+    <string name="july">julio</string>
+    <string name="august">agosto</string>
+    <string name="september">septiembre</string>
+    <string name="october">octubre</string>
+    <string name="november">noviembre</string>
+    <string name="tap_plus_to_create_a_task">Presiona + para crear una tarea</string>
+    <string name="categories">Categorías</string>
+    <string name="tap_plus_to_create_an_habit">Presiona + para crear un hábito</string>
 </resources>

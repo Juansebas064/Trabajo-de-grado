@@ -3,10 +3,8 @@ package com.brightbox.dino.views.home.pages.tasks_and_habits_page
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -25,19 +23,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.dino.R
-import com.brightbox.dino.events.HabitsEvent
-import com.brightbox.dino.events.TasksEvent
 import com.brightbox.dino.utils.formatMillisecondsToDay
 import com.brightbox.dino.utils.formatMillisecondsToSQLiteDate
 import com.brightbox.dino.viewmodel.CategoriesViewModel
 import com.brightbox.dino.viewmodel.HabitsViewModel
 import com.brightbox.dino.viewmodel.TasksViewModel
 import com.brightbox.dino.viewmodel.TimeViewModel
-import com.brightbox.dino.views.common.BottomModalDialogComponent
-import com.brightbox.dino.views.common.RoundedSquareButtonComponent
+import com.brightbox.dino.views.home.pages.tasks_and_habits_page.components.DeleteElementsDialog
 import com.brightbox.dino.views.home.pages.tasks_and_habits_page.components.HabitComponent
 import com.brightbox.dino.views.home.pages.tasks_and_habits_page.components.TaskComponent
-import com.brightbox.dino.views.home.pages.tasks_and_habits_page.components.TasksControlsComponent
+import com.brightbox.dino.views.home.pages.tasks_and_habits_page.components.TasksAndHabitsControlsComponent
 import com.brightbox.dino.views.theme.LocalSpacing
 
 @Composable
@@ -62,7 +57,7 @@ fun TasksAndHabitsListView(
     }
     val today = timeViewModel.currentTimeMillis.collectAsState().let { time ->
         mapOf(
-            "day" to formatMillisecondsToDay(time.value, context),
+            "day" to formatMillisecondsToDay(time.value),
             "date" to formatMillisecondsToSQLiteDate(time.value)
         )
     }
@@ -78,7 +73,7 @@ fun TasksAndHabitsListView(
             .fillMaxWidth(0.65f)
     ) {
 
-        if (tasksState.value.tasks.isEmpty() && habitsState.value.todayHabits.isEmpty()) {
+        if (tasksState.value.tasks.isEmpty() && habitsState.value.habits.isEmpty()) {
             Box(
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -119,139 +114,94 @@ fun TasksAndHabitsListView(
 
             // Show delete dialog
             if (tasksState.value.isDeletingTasks || habitsState.value.isDeletingHabits) {
-                BottomModalDialogComponent(
-                    onDismissRequest = {
-                        tasksViewModel.onEvent(TasksEvent.HideDeleteTasksDialog)
-                    },
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(spacing.spaceLarge)
-
-                    ) {
-                        Box {
-                            Text(
-                                text = context.getString(R.string.delete_elements),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        }
-
-                        Spacer(Modifier.height(spacing.spaceMedium))
-
-                        Box {
-                            Text(
-                                text = context.getString(R.string.are_you_sure_to_delete_elements),
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        }
-
-                        Spacer(Modifier.height(spacing.spaceLarge))
-
-                        RoundedSquareButtonComponent(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = context.getString(R.string.delete),
-                            textStyle = MaterialTheme.typography.bodyMedium,
-                            contentColor = MaterialTheme.colorScheme.onError,
-                            containerColor = MaterialTheme.colorScheme.error,
-                            onClick = {
-                                tasksViewModel.onEvent(TasksEvent.DeleteTasks)
-                                habitsViewModel.onEvent(HabitsEvent.DeleteHabits)
-                                tasksViewModel.onEvent(TasksEvent.HideDeleteTasksDialog)
-                            },
-                        )
-
-                        Spacer(Modifier.height(spacing.spaceSmall))
-
-                        RoundedSquareButtonComponent(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = context.getString(R.string.cancel),
-                            textStyle = MaterialTheme.typography.bodyMedium,
-                            contentColor = MaterialTheme.colorScheme.onPrimary,
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            onClick = {
-                                tasksViewModel.onEvent(TasksEvent.HideDeleteTasksDialog)
-                            },
-                        )
-                    }
-                }
+                DeleteElementsDialog()
             }
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+
+            Box(
                 modifier = Modifier
                     .weight(1f)
             ) {
-                if (habitsState.value.todayHabits.isNotEmpty() && tasksState.value.tasks.isNotEmpty()) {
-                    item {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier
-                                .fillMaxWidth()
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                ) {
+                    if (habitsState.value.habits.isNotEmpty() && tasksState.value.tasks.isNotEmpty()) {
+                        item {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            ) {
+                                Text(
+                                    text = context.getString(R.string.habits),
+                                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                                    color = MaterialTheme.colorScheme.onBackground
+                                )
+                            }
+                        }
+                    }
+
+                    items(
+                        items = habitsState.value.habits,
+                        key = { it.id.toString() + it.startDate + it.title }
+                    ) { habit ->
+                        if (
+                            !habit.deleted &&
+                            today["day"].toString() in habit.daysOfWeek
+                            && (habit.endDate == null || habit.endDate >= today["date"].toString())
                         ) {
-                            Text(
-                                text = context.getString(R.string.habits),
-                                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                                color = MaterialTheme.colorScheme.onBackground
+                            HabitComponent(
+                                habit = habit,
+                                selectedHabits = selectedHabits.value,
+                                isSelectingElements = isSelectingElements.value,
+                                onHabitsEvent = habitsViewModel::onEvent,
+                                category = categoriesState.value.categories.find { it.id == habit.categoryId },
                             )
                         }
                     }
-                }
 
-                items(habitsState.value.todayHabits) { habit ->
-                    if (
-                        !habit.deleted &&
-                        today["day"].toString() in habit.daysOfWeek
-                        && (habit.endDate == null || habit.endDate >= today["date"].toString())
-                    ) {
-                        HabitComponent(
-                            habit = habit,
-                            selectedHabits = selectedHabits.value,
-                            isSelectingElements = isSelectingElements.value,
-                            onHabitsEvent = habitsViewModel::onEvent,
-                            category = categoriesState.value.categories.find { it.id == habit.categoryId },
-                        )
-                    }
-                }
-
-                if (habitsState.value.todayHabits.isNotEmpty() && tasksState.value.tasks.isNotEmpty()) {
-                    item {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        ) {
-                            Text(
-                                text = context.getString(R.string.tasks),
-                                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
+                    if (habitsState.value.habits.isNotEmpty() && tasksState.value.tasks.isNotEmpty()) {
+                        item {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            ) {
+                                Text(
+                                    text = context.getString(R.string.tasks),
+                                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                                    color = MaterialTheme.colorScheme.onBackground
+                                )
+                            }
                         }
                     }
-                }
 
-                items(tasksState.value.tasks) { task ->
-                    if (
-                        (task.isCompleted && task.dateCompleted == today["date"])
-                        || (!task.isCompleted)
-                    ) {
-                        TaskComponent(
-                            task = task,
-                            selectedTasks = selectedTasks.value,
-                            isSelectingElements = isSelectingElements.value,
-                            category = categoriesState.value.categories.find { it.id == task.categoryId },
-                            onTasksEvent = tasksViewModel::onEvent
-                        )
+                    items(
+                        items = tasksState.value.tasks,
+                        key = { it.id.toString() + it.title + it.dateCreated }
+                    ) { task ->
+                        if (
+                            (task.isCompleted && task.dateCompleted == today["date"] && task.visible)
+                            || (!task.isCompleted && task.visible)
+                        ) {
+                            TaskComponent(
+                                task = task,
+                                selectedTasks = selectedTasks.value,
+                                isSelectingElements = isSelectingElements.value,
+                                category = categoriesState.value.categories.find { it.id == task.categoryId },
+                                onTasksEvent = tasksViewModel::onEvent
+                            )
+                        }
                     }
                 }
             }
 
-            TasksControlsComponent(
+            TasksAndHabitsControlsComponent(
                 selectedTasks = selectedTasks.value,
                 selectedHabits = selectedHabits.value,
-                isSelectingTasks = isSelectingElements.value,
+                isSelectingElements = isSelectingElements.value,
                 onTasksEvent = tasksViewModel::onEvent,
                 onHabitsEvent = habitsViewModel::onEvent
             )

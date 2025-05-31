@@ -20,22 +20,6 @@ class TasksUseCase @Inject constructor(
                 ))
         }
 
-//    suspend fun getTodayTasksAtMidnight(date: String): List<TasksModel> {
-//        var todayTaskList: List<TasksModel> = emptyList()
-//        db.tasksDao().getTasks().map { tasks ->
-//            tasks.filter { task ->
-//                if (task.isCompleted) {
-//                    task.dateCompleted == date
-//                } else {
-//                    true
-//                }
-//            }
-//        }.collectLatest { taskList ->
-//            todayTaskList = taskList
-//        } // Use toList() to collect the flow into a list
-//        return todayTaskList
-//    }
-
     suspend fun validateCurrentTasksOnMidnight(
         previousDate: String,
         tasks: List<TasksModel>

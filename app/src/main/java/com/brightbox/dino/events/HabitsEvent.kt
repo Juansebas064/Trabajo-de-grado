@@ -20,6 +20,8 @@ sealed interface HabitsEvent {
 
     data object ShowAddHabitDialog : HabitsEvent
     data object HideAddHabitDialog : HabitsEvent
+    data object ShowDeleteHabitDialog : HabitsEvent
+    data object HideDeleteHabitDialog : HabitsEvent
 
     // Other potential events
     data object ClearDialogFields : HabitsEvent // To clear the input fields for adding/editing

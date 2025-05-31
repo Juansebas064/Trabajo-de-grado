@@ -1,6 +1,5 @@
 package com.brightbox.dino.views.home.pages.tasks_and_habits_page.components
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -23,7 +22,6 @@ fun DaysOfWeekComponent(
 ) {
     val spacing = LocalSpacing.current
     val context = LocalContext.current
-    val daysOfWeek = context.resources.getStringArray(R.array.days_of_week).toList()
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(spacing.spaceMedium),
@@ -32,10 +30,10 @@ fun DaysOfWeekComponent(
                 onClick()
             }
     ) {
-        daysOfWeek.forEach { day ->
+        daysOfWeek.keys.forEach { day ->
             if (today == day) {
                 RoundedSquareButtonComponent(
-                    text = today.replaceFirstChar { char ->
+                    text = context.resources.getString(daysOfWeek[today]!!).replaceFirstChar { char ->
                         char.uppercase()
                     },
                     padding = spacing.spaceSmall + spacing.spaceExtraSmall,
@@ -48,7 +46,7 @@ fun DaysOfWeekComponent(
             }
             else {
                 Text(
-                    text = day[0].uppercase(),
+                    text = context.resources.getString(daysOfWeek[day]!!)[0].uppercase(),
                     color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.bodyLarge
                 )

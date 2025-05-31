@@ -138,10 +138,12 @@ fun TaskComponent(
                         }
 
                         false -> {
-                            if (task.isCompleted) {
-                                onTasksEvent(TasksEvent.SetTaskUncompleted(task.id))
-                            } else {
-                                onTasksEvent(TasksEvent.SetTaskCompleted(task.id))
+                            if (task.visible) {
+                                if (task.isCompleted) {
+                                    onTasksEvent(TasksEvent.SetTaskUncompleted(task.id))
+                                } else {
+                                    onTasksEvent(TasksEvent.SetTaskCompleted(task.id))
+                                }
                             }
                         }
                     }

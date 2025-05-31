@@ -27,14 +27,12 @@ fun DaysSelectorComponent(
     val spacing = LocalSpacing.current
     val context = LocalContext.current
 
-    val daysOfWeek = context.resources.getStringArray(R.array.days_of_week).toList()
-
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
 
     ) {
-        daysOfWeek.forEach { day ->
+        daysOfWeek.keys.forEach { day ->
             Button(
                 shape = RoundedCornerShape(spacing.spaceSmall),
                 colors = ButtonDefaults.buttonColors(
@@ -60,7 +58,7 @@ fun DaysSelectorComponent(
                 modifier = Modifier.size(37.dp)
             ) {
                 Text(
-                    text = day[0].uppercase(),
+                    text = context.resources.getString(daysOfWeek[day]!!)[0].uppercase(),
                     style = MaterialTheme.typography.bodySmall
                 )
             }

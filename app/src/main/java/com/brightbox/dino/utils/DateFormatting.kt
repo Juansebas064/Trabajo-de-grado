@@ -10,18 +10,11 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.Calendar
 import java.util.Locale
 import kotlin.math.round
 
 private val SQLITE_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-
-// Get difference between two dates in days
-fun getDifferenceInDays(startDate: String, endDate: String): Int {
-    val startDateConverted = LocalDate.parse(startDate, SQLITE_DATE_FORMATTER)
-    val endDateConverted = LocalDate.parse(endDate, SQLITE_DATE_FORMATTER)
-
-    return ChronoUnit.DAYS.between(startDateConverted, endDateConverted).toInt()
-}
 
 fun getDifferenceInDays(startDate: Long, endDate: String): Int {
     val startDateConverted = Instant.ofEpochMilli(startDate)
@@ -53,7 +46,7 @@ fun formatSQLiteDateToMilliseconds(date: String): Long {
 // Format the milliseconds date to String according to SQLite date's best practices
 fun formatMillisecondsToMinutes(time: Long, showSeconds: Boolean = false): String {
     if (!showSeconds) {
-        return "${round(((time/1000)/60).toDouble()).toInt()}"
+        return "${round(((time / 1000) / 60).toDouble()).toInt()}"
     } else {
         val formatter = SimpleDateFormat("mm:ss", Locale.getDefault())
         val formattedDate = formatter.format(time)
@@ -61,18 +54,21 @@ fun formatMillisecondsToMinutes(time: Long, showSeconds: Boolean = false): Strin
     }
 }
 
-fun formatMillisecondsToDay(date: Long, context: Context? = null): String {
+fun formatSQLiteDateToMonth(date: String): String {
+    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val formattedDate = formatter.parse(date)
+    val calendar = Calendar.getInstance()
+    calendar.time = formattedDate!!
+    val month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US)
+    return month!!.lowercase()
+}
+
+fun formatMillisecondsToDay(date: Long): String {
     val localDate = Instant.ofEpochMilli(date)
         .atZone(ZoneId.systemDefault())
         .toLocalDate()
 
     var day = localDate.dayOfWeek.name.lowercase()
-
-    if (context != null) {
-        val packageName = context.packageName
-        val resourceId = context.resources.getIdentifier(day, "string", packageName)
-        day = context.getString(resourceId)
-    }
 
     return day
 }

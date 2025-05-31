@@ -30,10 +30,6 @@ fun ApplicationListToSetLimitsComponent(
     val icons = state.value.appIcons
     val selectedApplicationsToLimit = state.value.selectedApplicationsToLimit
 
-    LaunchedEffect(state.value.limitsList) {
-        Log.d("ApplicationListToSetLimitsComponent", "Limits: ${state.value.limitsList}")
-    }
-
     if (!state.value.appList.isEmpty() && icons.isNotEmpty()) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(spacing.spaceSmall),
@@ -55,10 +51,6 @@ fun ApplicationListToSetLimitsComponent(
                     isSelectedToLimit = isSelectedToLimit,
                     onLimitsEvent = limitsViewModel::onEvent
                 )
-            }
-
-            item {
-                Spacer(Modifier.height(70.dp))
             }
 
         }

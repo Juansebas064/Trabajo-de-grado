@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Dino Launcher</string>
     <string name="settings_name">Dino Settings</string>
+    <string name="dino_elements_manager">Dino elements manager</string>
 
     <!--  Tasks and habits page  -->
     <!--  Days  -->
@@ -21,6 +22,20 @@
     <string name="thursday">thursday</string>
     <string name="friday">friday</string>
     <string name="saturday">saturday</string>
+
+    <!-- Months of the year -->
+    <string name="january">january</string>
+    <string name="february">february</string>
+    <string name="march">march</string>
+    <string name="april">april</string>
+    <string name="may">may</string>
+    <string name="june">june</string>
+    <string name="july">july</string>
+    <string name="august">august</string>
+    <string name="september">september</string>
+    <string name="october">october</string>
+    <string name="november">november</string>
+    <string name="december">december</string>
 
     <!--  List of habits and tasks  -->
     <string name="tap_plus_to_create_an_element">Tap + to create a task or habit</string>
@@ -76,18 +91,21 @@
     <string name="session_time">Session time</string>
     <string name="break_time">Break time</string>
     <string name="minutes_short">min</string>
+    <string name="number_of_sessions">Number of sessions</string>
 
 
     <!--  Applications time limit  -->
     <string name="applications_time_limit">Applications time limit</string>
     <string name="today_usage">Today usage</string>
     <string name="select_applications">Select applications</string>
-    <string name="tap_to_mark_or_unmark_an_app">Tap to mark or unmark an application</string>
+    <string name="tap_to_mark_or_unmark_an_app">Tap to mark an application to set a daily limit time or to unmark it</string>
     <string name="additional_permissions_required">Additional permissions required</string>
     <string name="in_order_to_use_app_limit">In order to use the application time limit feature, you need to grant some permissions required to get your app\'s usage time from your device and to show dialogs outside the launcher.</string>
     <string name="grant_usage_access">Grant usage access permission</string>
     <string name="grant_system_alert_window">Grant system alert window permission</string>
     <string name="done">Done</string>
+    <string name="time_limit_for">Time limit for</string>
+    <string name="reached">reached</string>
 
     <!--  Preferences  -->
     <string name="settings">Settings</string>
@@ -105,7 +123,9 @@
     <string name="time_limit_exceeded">Time limit exceeded for</string>
     <string name="consider_to_rest_or_do_your_tasks">Dino can\'t close your application, but if the time is up, consider resting, exercising, or catching up on your tasks. Take care :3</string>
     <string name="exit">Exit</string>
-    <string name="number_of_sessions">Number of sessions</string>
+    <string name="tap_plus_to_create_a_task">Tap + to create a task</string>
+    <string name="categories">Categories</string>
+    <string name="tap_plus_to_create_an_habit">Tap + to create an habit</string>
 
 
 </resources>

@@ -92,10 +92,12 @@ class TasksViewModel @Inject constructor(
                 taskId = null,
                 taskTitle = "",
                 taskDescription = "",
+                taskDateCreated = null,
                 taskDueDate = 0,
                 wasTaskDelayed = false,
                 taskCategory = null,
-                taskPriority = PrioritiesEnum.High.priority
+                taskPriority = PrioritiesEnum.High,
+                taskVisible = true
             )
         }
     }
@@ -154,16 +156,16 @@ class TasksViewModel @Inject constructor(
                 val taskId = state.value.taskId
                 val taskTitle = state.value.taskTitle
                 val taskDescription = state.value.taskDescription
-                val taskDateCreated = formatMillisecondsToSQLiteDate(System.currentTimeMillis())
+                val taskDateCreated = state.value.taskDateCreated ?: formatMillisecondsToSQLiteDate(System.currentTimeMillis())
                 val taskDueDate =
                     if (state.value.taskDueDate == 0L) "" else formatMillisecondsToSQLiteDate(state.value.taskDueDate)
                 val taskCategory = state.value.taskCategory
                 val taskPriority = state.value.taskPriority
                 val wasTaskDelayed = state.value.wasTaskDelayed
+                val taskVisible = state.value.taskVisible
 
                 if (
                     taskTitle.isBlank()
-                    || taskPriority.isBlank()
                 ) {
                     return
                 }
@@ -175,10 +177,10 @@ class TasksViewModel @Inject constructor(
                     isCompleted = false,
                     wasDelayed = wasTaskDelayed,
                     categoryId = taskCategory,
-                    priority = taskPriority,
+                    priority = taskPriority.priority,
                     dateCreated = taskDateCreated,
                     dateCompleted = null,
-                    visible = true
+                    visible = taskVisible
                 )
 
                 viewModelScope.launch {
@@ -202,12 +204,14 @@ class TasksViewModel @Inject constructor(
                         taskId = task!!.id,
                         taskTitle = task.title,
                         taskDescription = task.description,
+                        taskDateCreated = task.dateCreated.toString(),
                         taskDueDate = if (task.dateDue!!.isEmpty()) 0L else formatSQLiteDateToMilliseconds(
                             task.dateDue
                         ),
                         wasTaskDelayed = task.wasDelayed,
-                        taskPriority = task.priority,
+                        taskPriority = PrioritiesEnum.valueOf(task.priority),
                         taskCategory = task.categoryId,
+                        taskVisible = task.visible
                     )
                 }
             }
@@ -247,7 +251,7 @@ class TasksViewModel @Inject constructor(
             is TasksEvent.SetTaskPriority -> {
                 _state.update {
                     it.copy(
-                        taskPriority = event.priority
+                        taskPriority = PrioritiesEnum.valueOf(event.priority)
                     )
                 }
             }

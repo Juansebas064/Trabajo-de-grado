@@ -213,8 +213,8 @@ fun ApplicationsLimitView(
                         onNavigateToSelectApplicationToLimit()
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.background,
-                        contentColor = MaterialTheme.colorScheme.onBackground
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface
                     ),
                     shape = RoundedCornerShape(spacing.spaceSmall),
                     contentPadding = PaddingValues(spacing.spaceMedium),
@@ -230,7 +230,7 @@ fun ApplicationsLimitView(
                         Text(
                             text = context.getString(R.string.select_applications),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onBackground
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,

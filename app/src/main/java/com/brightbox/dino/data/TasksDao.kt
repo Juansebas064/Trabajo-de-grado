@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TasksDao {
-    @Query("SELECT * FROM tasks WHERE visible = 1 ORDER BY isCompleted ASC, dateDue ASC")
+    @Query("SELECT * FROM tasks ORDER BY isCompleted ASC, dateDue ASC")
     fun getTasks(): Flow<List<TasksModel>>
 
     @Upsert

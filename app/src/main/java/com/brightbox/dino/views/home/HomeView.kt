@@ -30,7 +30,6 @@ fun HomeView(
         initialPage = 1,
         pageCount = { 2 }
     )
-    val context = LocalContext.current
 
     rememberSystemUiController().apply {
         setNavigationBarColor(

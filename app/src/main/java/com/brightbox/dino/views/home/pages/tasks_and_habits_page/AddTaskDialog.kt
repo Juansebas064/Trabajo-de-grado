@@ -179,7 +179,7 @@ fun AddTaskDialog(
                     .fillMaxWidth()
             ) {
                 OutlinedTextField(
-                    value = tasksState.taskPriority,
+                    value = context.getString(tasksState.taskPriority.stringResource),
                     onValueChange = {
                         onTasksEvent(TasksEvent.SetTaskPriority(it))
                     },
@@ -227,7 +227,7 @@ fun AddTaskDialog(
                     PrioritiesEnum.entries.forEach {
                         DropdownMenuItem(
                             text = {
-                                Text(text = it.priority)
+                                Text(text = context.getString(it.stringResource))
                             },
                             onClick = {
                                 onTasksEvent(TasksEvent.SetTaskPriority(it.priority))

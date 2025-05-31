@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -102,6 +103,12 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
         val serviceIntent = Intent(this, TimeLimitService::class.java)
         stopService(serviceIntent)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        Log.d("MainActivity", "Configuración cambiada. ${newConfig.locales.get(0)}")
     }
 
     private fun scheduleMidnightTaskValidation() {

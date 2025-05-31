@@ -23,31 +23,6 @@ class HomeViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-    private val timeLimitWorkerReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            // El Worker envió el evento, actualizar la lista de tareas
-            notifyTimeLimitWork()
-        }
-    }
-
-    private val _timeLimitWorkDone = MutableSharedFlow<Unit>()
-    val timeLimitWorkDone = _timeLimitWorkDone.asSharedFlow()
-
-    fun notifyTimeLimitWork() {
-        viewModelScope.launch {
-            _timeLimitWorkDone.emit(Unit)
-        }
-    }
-
-    init {
-        registerReceiver(
-            context,
-            timeLimitWorkerReceiver,
-            IntentFilter("TIME_LIMIT_WORKER"),
-            ContextCompat.RECEIVER_NOT_EXPORTED
-        )
-    }
-
     fun expandNotificationsPanel() {
         try {
             val service = context.getSystemService(STATUS_BAR_SERVICE)

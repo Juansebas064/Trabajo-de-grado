@@ -79,7 +79,10 @@ fun MenuAppListComponent(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
     ) {
-        itemsIndexed(items = apps.applications) { index, app ->
+        itemsIndexed(
+            items = apps.applications,
+            key = { _, app -> app.packageName }
+        ) { index, app ->
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -98,7 +101,7 @@ fun MenuAppListComponent(
                                 if (appShowingOptions != "none") {
                                     applicationsViewModel.setAppShowingOptions("none")
                                 } else {
-                                    applicationsViewModel.openApp(app.packageName)
+                                    applicationsViewModel.openApp(app)
                                     focusManager.clearFocus()
                                 }
                             }
@@ -268,6 +271,9 @@ fun MenuAppListComponent(
                 ) {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = Modifier
+                            .width(IntrinsicSize.Min)
+                            .weight(1f)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Language,
@@ -278,12 +284,23 @@ fun MenuAppListComponent(
                         )
 
                         Text(
-                            text = "${context.getString(R.string.search)} \"${searchText.value}\" ${context.getString(R.string.on_the_internet)}",
+                            text = "${context.getString(R.string.search)} \"${searchText.value}\"",
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onBackground,
                             textAlign = TextAlign.Start,
                             softWrap = false,
                             maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+
+                        Text(
+                            text = context.getString(R.string.on_the_internet),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            textAlign = TextAlign.Start,
+                            softWrap = false,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
 

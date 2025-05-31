@@ -1,6 +1,7 @@
 package com.brightbox.dino.views.home.menu
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -35,17 +37,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.dino.viewmodel.ApplicationsViewModel
+import com.brightbox.dino.viewmodel.preferences.PreferencesViewModel
 import com.brightbox.dino.views.theme.LocalSpacing
 import kotlinx.coroutines.launch
 
 @Composable
 fun SearchBarView(
     applicationsViewModel: ApplicationsViewModel = hiltViewModel(),
+    preferencesViewModel: PreferencesViewModel = hiltViewModel(),
     focusRequester: FocusRequester,
     focusManager: FocusManager,
     modifier: Modifier,
 ) {
     val searchText by applicationsViewModel.searchText.collectAsState()
+    val preferencesState = preferencesViewModel.state.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val spacing = LocalSpacing.current
 
@@ -89,7 +94,7 @@ fun SearchBarView(
                 ),
                 keyboardActions = KeyboardActions(
                     onGo = {
-                        if (searchText.isNotEmpty()) {
+                        if (searchText.isNotEmpty() && preferencesState.value.showSearchOnInternet) {
                             applicationsViewModel.openFirstApp()
                             focusManager.clearFocus()
                         }
@@ -106,7 +111,7 @@ fun SearchBarView(
                     Box(
                         contentAlignment = AbsoluteAlignment.CenterLeft,
                         modifier = Modifier
-                            .fillMaxWidth()
+//                            .fillMaxWidth()
                     ) {
                         if (searchText.isEmpty()) {
                             Text(
@@ -122,19 +127,23 @@ fun SearchBarView(
                 singleLine = true,
                 modifier = Modifier
                     .focusRequester(focusRequester)
-//                .wrapContentWidth()
-
-//                .width(IntrinsicSize.Min)
-//                .onKeyEvent { event ->
-//                    if (event.key.nativeKeyCode == KeyEvent.KEYCODE_BACK) {
-//                        focusManager.clearFocus()
-//                        true
-//                    } else {
-//                        false
-//
-//                    }
-//                }
+                    .weight(1f)
             )
+
+            if (!searchText.isEmpty()) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "",
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier
+                        .clickable {
+                            coroutineScope.launch {
+                                applicationsViewModel.onSearchTextChange("")
+                                applicationsViewModel.setAppShowingOptions("none")
+                            }
+                        }
+                )
+            }
         }
     }
 }

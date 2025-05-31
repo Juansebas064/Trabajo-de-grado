@@ -23,4 +23,7 @@ interface ApplicationsDao {
 
     @Query("SELECT * FROM applications WHERE packageName = :packageName")
     suspend fun findByPackageName(packageName: String?): ApplicationsModel?
+
+    @Query("UPDATE applications SET limitTimeReached = :limitTimeReached WHERE packageName = :packageName")
+    suspend fun updateLimitTimeReached(packageName: String, limitTimeReached: Boolean)
 }
