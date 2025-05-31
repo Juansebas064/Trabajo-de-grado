@@ -1,8 +1,5 @@
 package com.brightbox.dino.utils
 
-import android.content.Context
-import android.util.Log
-import com.brightbox.dino.R
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate

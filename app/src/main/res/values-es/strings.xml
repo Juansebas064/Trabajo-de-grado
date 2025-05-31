@@ -109,4 +109,7 @@
     <string name="categories">Categorías</string>
     <string name="tap_plus_to_create_an_habit">Presiona + para crear un hábito</string>
     <string name="tap_plus_to_create_a_category">Presiona + para crear una categoría</string>
+    <string name="help_me_filling_this_form">Ayúdame completando esta encuesta</string>
+    <string name="set_as_default_launcher">Establecer Dino como Launcher predeterminado</string>
+    <string name="go">Ir</string>
 </resources>

@@ -9,17 +9,17 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.net.toUri
 import com.brightbox.dino.config.DinoDatabase
+import com.brightbox.dino.constants.SearchEnginesEnum
 import com.brightbox.dino.model.ApplicationsModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import androidx.core.net.toUri
-import com.brightbox.dino.constants.SearchEnginesEnum
 import java.util.Locale
+import javax.inject.Inject
 
 class ApplicationsUseCase @Inject constructor(
     private val db: DinoDatabase,

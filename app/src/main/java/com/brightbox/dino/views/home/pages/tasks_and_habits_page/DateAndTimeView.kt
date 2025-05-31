@@ -2,7 +2,6 @@ package com.brightbox.dino.views.home.pages.tasks_and_habits_page
 
 import android.content.Intent
 import android.provider.AlarmClock
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

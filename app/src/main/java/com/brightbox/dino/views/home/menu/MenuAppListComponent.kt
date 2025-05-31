@@ -49,11 +49,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.currentStateAsState
 import com.brightbox.dino.R
 import com.brightbox.dino.viewmodel.ApplicationsViewModel
 import com.brightbox.dino.viewmodel.preferences.PreferencesViewModel
 import com.brightbox.dino.views.theme.LocalSpacing
-import androidx.lifecycle.compose.currentStateAsState
 
 @Composable
 fun MenuAppListComponent(

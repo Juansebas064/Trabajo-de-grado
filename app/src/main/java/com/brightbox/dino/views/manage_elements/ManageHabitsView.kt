@@ -25,19 +25,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.dino.R
 import com.brightbox.dino.constants.months
 import com.brightbox.dino.model.HabitsModel
-import com.brightbox.dino.model.TasksModel
 import com.brightbox.dino.utils.formatSQLiteDateToMonth
 import com.brightbox.dino.viewmodel.CategoriesViewModel
 import com.brightbox.dino.viewmodel.HabitsViewModel
 import com.brightbox.dino.views.home.pages.tasks_and_habits_page.AddHabitDialog
-import com.brightbox.dino.views.home.pages.tasks_and_habits_page.AddTaskDialog
 import com.brightbox.dino.views.home.pages.tasks_and_habits_page.components.DeleteElementsDialog
 import com.brightbox.dino.views.home.pages.tasks_and_habits_page.components.HabitComponent
-import com.brightbox.dino.views.home.pages.tasks_and_habits_page.components.TaskComponent
 import com.brightbox.dino.views.home.pages.tasks_and_habits_page.components.TasksAndHabitsControlsComponent
 import com.brightbox.dino.views.theme.LocalSpacing
-import kotlin.collections.component1
-import kotlin.collections.component2
 
 @Composable
 fun ManageHabitsView(

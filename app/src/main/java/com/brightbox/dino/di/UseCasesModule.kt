@@ -3,11 +3,11 @@ package com.brightbox.dino.di
 import android.content.Context
 import com.brightbox.dino.config.DinoDatabase
 import com.brightbox.dino.data.preferences.PreferencesImpl
-import com.brightbox.dino.usecases.LimitsUseCase
 import com.brightbox.dino.usecases.ApplicationsUseCase
 import com.brightbox.dino.usecases.CategoriesUseCase
 import com.brightbox.dino.usecases.HabitsLogsUseCase
 import com.brightbox.dino.usecases.HabitsUseCase
+import com.brightbox.dino.usecases.LimitsUseCase
 import com.brightbox.dino.usecases.PreferencesUseCase
 import com.brightbox.dino.usecases.TasksUseCase
 import dagger.Module

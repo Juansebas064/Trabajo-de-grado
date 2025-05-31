@@ -38,7 +38,7 @@ fun ToggleComponent(
         Text(
             modifier = Modifier.weight(1f),
             text = text,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(Modifier.width(spacing.spaceSmall))

@@ -129,6 +129,9 @@
     <string name="time_limit_exceeded">Time limit exceeded for</string>
     <string name="consider_to_rest_or_do_your_tasks">Dino can\'t close your application, but if the time is up, consider resting, exercising, or catching up on your tasks. Take care :3</string>
     <string name="exit">Exit</string>
+    <string name="help_me_filling_this_form">Help me filling out this form</string>
+    <string name="set_as_default_launcher">Set Dino as default launcher</string>
+    <string name="go">Go</string>
 
 
 </resources>

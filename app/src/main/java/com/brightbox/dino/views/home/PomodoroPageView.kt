@@ -26,13 +26,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.brightbox.dino.R
 import com.brightbox.dino.utils.formatMillisecondsToMinutes
 import com.brightbox.dino.viewmodel.PomodoroViewModel
 import com.brightbox.dino.views.common.IconButtonComponent
-import com.brightbox.dino.views.theme.LocalSpacing
-import com.brightbox.dino.R
 import com.brightbox.dino.views.home.pages.pomodoro_page.PomodoroInputsComponent
 import com.brightbox.dino.views.home.pages.pomodoro_page.TimerComponent
+import com.brightbox.dino.views.theme.LocalSpacing
 
 @Composable
 fun PomodoroPageView(

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
@@ -23,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
+import com.brightbox.dino.views.theme.LocalSpacing
 
 @Composable
 fun DropdownComponent(
@@ -37,6 +39,8 @@ fun DropdownComponent(
     items: List<String>,
     onItemClick: (Int) -> Unit,
 ) {
+    val spacing = LocalSpacing.current
+
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -44,11 +48,15 @@ fun DropdownComponent(
             .fillMaxWidth()
     ) {
 
-        Box(modifier = Modifier.weight(1f)) {
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .offset(y = spacing.spaceExtraSmall)
+        ) {
             Text(
                 modifier = Modifier,
                 text = text,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.bodyMedium,
                 color = contentColor
             )
         }
@@ -112,7 +120,10 @@ fun DropdownComponent(
                 items.forEachIndexed { index, item ->
                     DropdownMenuItem(
                         text = {
-                            Text(text = item)
+                            Text(
+                                text = item,
+                                style = MaterialTheme.typography.bodyMedium,
+                            )
                         },
                         onClick = {
                             onItemClick(index)

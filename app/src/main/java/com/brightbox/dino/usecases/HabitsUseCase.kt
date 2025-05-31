@@ -6,7 +6,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.collections.forEach
 
 class HabitsUseCase @Inject constructor(
     private val db: DinoDatabase

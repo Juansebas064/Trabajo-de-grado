@@ -2,7 +2,6 @@ package com.brightbox.dino.services
 
 import android.app.NotificationManager
 import android.content.Context
-import android.util.Log
 import androidx.core.app.NotificationCompat
 
 class NotificationSender {

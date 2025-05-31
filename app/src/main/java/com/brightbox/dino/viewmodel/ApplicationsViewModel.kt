@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.Intent.ACTION_PACKAGE_ADDED
 import android.content.Intent.ACTION_PACKAGE_REMOVED
 import android.content.IntentFilter
-import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel

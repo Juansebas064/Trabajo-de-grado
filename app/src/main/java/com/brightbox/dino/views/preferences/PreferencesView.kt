@@ -1,5 +1,8 @@
 package com.brightbox.dino.views.preferences
 
+import android.content.Intent
+import android.content.Intent.ACTION_VIEW
+import android.provider.Settings
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -15,7 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -29,17 +32,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.dino.R
-import com.brightbox.dino.constants.LANGUAGES
+import com.brightbox.dino.constants.FORM_LINK
 import com.brightbox.dino.constants.SearchEnginesEnum
 import com.brightbox.dino.events.preferences.GeneralPreferencesEvent
-import com.brightbox.dino.navigation.ApplicationsLimitRoute
-import com.brightbox.dino.navigation.LocalNavController
 import com.brightbox.dino.viewmodel.preferences.PreferencesViewModel
 import com.brightbox.dino.views.common.DropdownComponent
+import com.brightbox.dino.views.common.RoundedSquareButtonComponent
 import com.brightbox.dino.views.preferences.components.ToggleComponent
 import com.brightbox.dino.views.theme.LocalSpacing
 
@@ -70,7 +74,7 @@ fun PreferencesView(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(spacing.spaceLarge)
+                    .padding(spacing.spaceMedium)
             ) {
                 Box(
                     modifier = Modifier
@@ -90,29 +94,8 @@ fun PreferencesView(
                     ),
                     modifier = Modifier
                         .weight(1f)
+                        .padding(spacing.spaceMedium)
                 ) {
-                    // App language
-//                    DropdownComponent(
-//                        modifier = Modifier.fillMaxWidth(0.5f),
-//                        text = "App language",
-//                        textStyle = MaterialTheme.typography.bodyLarge,
-//                        textFieldLabel = "",
-//                        contentColor = MaterialTheme.colorScheme.onBackground,
-//                        value = LANGUAGES[state.value.appLanguage].toString(),
-//                        expanded = languageDropdownExpanded.value,
-//                        setExpanded = {
-//                            languageDropdownExpanded.value = !languageDropdownExpanded.value
-//                        },
-//                        items = LANGUAGES.values.toList(),
-//                        onItemClick = {
-//                            preferencesViewModel.onEvent(
-//                                GeneralPreferencesEvent.SetAppLanguage(
-//                                    LANGUAGES.keys.toList()[it].toString()
-//                                )
-//                            )
-//                        },
-//                    )
-
                     // Show solid background
                     ToggleComponent(
                         text = context.getString(R.string.show_solid_background),
@@ -153,7 +136,7 @@ fun PreferencesView(
                         DropdownComponent(
                             modifier = Modifier.fillMaxWidth(0.6f),
                             text = context.getString(R.string.search_engine),
-                            textStyle = MaterialTheme.typography.bodyLarge,
+                            textStyle = MaterialTheme.typography.bodyMedium,
                             textFieldLabel = "",
                             contentColor = MaterialTheme.colorScheme.onBackground,
                             value = state.value.searchEngine,
@@ -184,10 +167,69 @@ fun PreferencesView(
                         }
                     )
 
+                    // Set Dino as default launcher
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(spacing.spaceSmall))
+                    ) {
+                        Text(
+                            text = context.getString(R.string.set_as_default_launcher),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier
+                                .weight(1f)
+                        )
 
-                    // Turn on dnd when pomodoro is running
+                        RoundedSquareButtonComponent(
+                            onClick = {
+                                val goToHomeSettings = Intent(Settings.ACTION_HOME_SETTINGS)
+                                context.startActivity(goToHomeSettings)
+                            },
+                            text = context.getString(R.string.go),
+                            textStyle = MaterialTheme.typography.bodyMedium,
+                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                            containerColor = MaterialTheme.colorScheme.inversePrimary,
+                        )
+                    }
+                }
 
 
+                // Go to form
+                Button(
+                    onClick = {
+                        val goToFormIntent = Intent(ACTION_VIEW, FORM_LINK.toUri())
+                        context.startActivity(goToFormIntent)
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    ),
+                    shape = RoundedCornerShape(spacing.spaceSmall),
+                    contentPadding = PaddingValues(spacing.spaceMedium),
+                    modifier = Modifier
+
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = context.getString(R.string.help_me_filling_this_form),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                            contentDescription = "Set application limit",
+                            modifier = Modifier
+                                .scale(0.7f)
+                        )
+                    }
                 }
             }
 

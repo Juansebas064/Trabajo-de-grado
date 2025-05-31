@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.brightbox.dino.R
 import com.brightbox.dino.constants.daysOfWeek
 import com.brightbox.dino.views.common.RoundedSquareButtonComponent
 import com.brightbox.dino.views.theme.LocalSpacing
