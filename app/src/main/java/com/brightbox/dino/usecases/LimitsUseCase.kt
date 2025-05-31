@@ -102,23 +102,27 @@ class LimitsUseCase @Inject constructor(
             "LimitsUseCase",
             "Updating limit: ${limit},\nstats: ${stats[limit.applicationPackageName]}"
         )
-        val currentTimeInForeground = stats[limit.applicationPackageName]!!
-        val previousTimeInForeground = when (limit.usedTime) {
-            0 -> currentTimeInForeground
-            else -> limit.usedTime
-        }
+        val currentTimeInForeground = stats[limit.applicationPackageName] ?: -1
 
-        if (currentTimeInForeground >= limit.timeLimit) {
-            withContext(Dispatchers.IO) {
-                db.applicationsDao().updateLimitTimeReached(limit.applicationPackageName, true)
+        if (currentTimeInForeground != -1) {
+            val previousTimeInForeground = when (limit.usedTime) {
+                0 -> currentTimeInForeground
+                else -> limit.usedTime
             }
+
+            if (currentTimeInForeground >= limit.timeLimit) {
+                withContext(Dispatchers.IO) {
+                    db.applicationsDao().updateLimitTimeReached(limit.applicationPackageName, true)
+                }
+            }
+
+            return limit.copy(
+                usedTime = currentTimeInForeground,
+                previousUsedTime = previousTimeInForeground
+            )
+        } else {
+            return limit
         }
-
-        return limit.copy(
-            usedTime = currentTimeInForeground,
-            previousUsedTime = previousTimeInForeground
-        )
-
     }
 
     suspend fun resetLimitsAtMidnight(limitList: List<LimitsModel>) {
