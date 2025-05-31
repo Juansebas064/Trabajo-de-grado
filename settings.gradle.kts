@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Hourglass - Productivity Launcher"
+rootProject.name = "Dino Launcher"
 include(":app")

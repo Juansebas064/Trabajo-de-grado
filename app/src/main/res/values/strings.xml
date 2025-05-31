@@ -1,4 +1,137 @@
 <resources>
-    <string name="app_name">Hourglass</string>
-    <string name="settings_name">Hourglass Settings</string>
+    <string name="app_name">Dino Launcher</string>
+    <string name="settings_name">Dino Settings</string>
+    <string name="dino_elements_manager">Dino elements manager</string>
+
+    <!--  Tasks and habits page  -->
+    <!--  Days  -->
+    <string-array name="days_of_week">
+        <item>sunday</item>
+        <item>monday</item>
+        <item>tuesday</item>
+        <item>wednesday</item>
+        <item>thursday</item>
+        <item>friday</item>
+        <item>saturday</item>
+    </string-array>
+
+    <string name="sunday">sunday</string>
+    <string name="monday">monday</string>
+    <string name="tuesday">tuesday</string>
+    <string name="wednesday">wednesday</string>
+    <string name="thursday">thursday</string>
+    <string name="friday">friday</string>
+    <string name="saturday">saturday</string>
+
+    <!-- Months of the year -->
+    <string name="january">january</string>
+    <string name="february">february</string>
+    <string name="march">march</string>
+    <string name="april">april</string>
+    <string name="may">may</string>
+    <string name="june">june</string>
+    <string name="july">july</string>
+    <string name="august">august</string>
+    <string name="september">september</string>
+    <string name="october">october</string>
+    <string name="november">november</string>
+    <string name="december">december</string>
+
+    <!--  List of habits and tasks  -->
+    <string name="tap_plus_to_create_an_element">Tap + to create a task or habit</string>
+    <string name="title">Title</string>
+    <string name="title_is_required">Title is required</string>
+    <string name="description">Description</string>
+    <string name="delete_elements">Delete elements</string>
+    <string name="are_you_sure_to_delete_elements">Are you sure you want to delete these elements?</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+
+    <!--  Tasks  -->
+    <string name="task">Task</string>
+    <string name="tasks">Tasks</string>
+    <string name="tap_plus_to_create_a_task">Tap + to create a task</string>
+    <string name="add_task">Add task</string>
+    <string name="edit_task">Edit task</string>
+    <string name="due_date">Due date</string>
+    <string name="category">Category</string>
+    <string name="priority">Priority</string>
+    <string name="priority_high">High</string>
+    <string name="priority_medium">Medium</string>
+    <string name="priority_low">Low</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="day">day</string>
+    <string name="days">days</string>
+    <string name="in">In</string>
+    <string name="late">late</string>
+    <string name="delayed">Delayed</string>
+
+    <!--  Habits  -->
+    <string name="habit">Habit</string>
+    <string name="habits">Habits</string>
+    <string name="tap_plus_to_create_an_habit">Tap + to create an habit</string>
+    <string name="add_habit">Add habit</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">End date</string>
+    <string name="select_days_of_the_habit">Select which days to do the habit</string>
+    <string name="edit_habit">Edit habit</string>
+
+    <!--  Category  -->
+    <string name="categories">Categories</string>
+    <string name="tap_plus_to_create_a_category">Tap + to create a category</string>
+
+    <!--  Pinned apps and menu  -->
+    <!--  Pinned apps  -->
+    <string name="your_pinned_apps_go_here">Your pinned apps go here</string>
+
+    <!--  Menu  -->
+    <string name="menu">Menu</string>
+    <string name="press_and_hold_an_app_for_more_options">Press and hold an app for more options. Press ➞ in keyboard to open the app with the icon.</string>
+    <string name="search">Search</string>
+    <string name="on_the_internet">on the internet</string>
+
+    <!--  Pomodoro  -->
+    <string name="pomodoro">Pomodoro</string>
+    <string name="session_time">Session time</string>
+    <string name="break_time">Break time</string>
+    <string name="minutes_short">min</string>
+    <string name="number_of_sessions">Number of sessions</string>
+
+
+    <!--  Applications time limit  -->
+    <string name="applications_time_limit">Applications time limit</string>
+    <string name="today_usage">Today usage</string>
+    <string name="select_applications">Select applications</string>
+    <string name="tap_to_mark_or_unmark_an_app">Tap to mark an application to set a daily limit time or to unmark it</string>
+    <string name="additional_permissions_required">Additional permissions required</string>
+    <string name="in_order_to_use_app_limit">In order to use the application time limit feature, you need to grant some permissions required to get your app\'s usage time from your device and to show dialogs outside the launcher.</string>
+    <string name="grant_usage_access">Grant usage access permission</string>
+    <string name="grant_system_alert_window">Grant system alert window permission</string>
+    <string name="done">Done</string>
+    <string name="time_limit_for">Time limit for</string>
+    <string name="reached">reached</string>
+
+    <!--  Preferences  -->
+    <string name="settings">Settings</string>
+    <string name="app_language">App language</string>
+    <string name="show_solid_background">Show solid color background</string>
+    <string name="open_keyboard_auto">Open keyboard automatically in applications menu</string>
+    <string name="show_search_on_internet">Show \"search on internet\" in applications menu</string>
+    <string name="search_engine">Search engine</string>
+    <string name="show_essential_shortcuts">Show essential shortcuts</string>
+
+    <!--  Notifications and services -->
+    <string name="monitoring_app_usage">Monitoring app usage</string>
+    <string name="dino_app_usage_monitoring_stopped">Dino app usage monitoring stopped</string>
+    <string name="one_or_more_permissions_missing">One or more permissions are not granted, please go to application limits to re-enable them</string>
+    <string name="time_limit_exceeded">Time limit exceeded for</string>
+    <string name="consider_to_rest_or_do_your_tasks">Dino can\'t close your application, but if the time is up, consider resting, exercising, or catching up on your tasks. Take care :3</string>
+    <string name="exit">Exit</string>
+    <string name="help_me_filling_this_form">Help me filling out this form</string>
+    <string name="set_as_default_launcher">Set Dino as default launcher</string>
+    <string name="go">Go</string>
+
+
 </resources>

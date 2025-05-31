@@ -24,8 +24,21 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.HourglassProductivityLauncher"
+        android:theme="@style/Theme.DinoLauncher"
         tools:targetApi="35">
+
+        <!--    Manage elements activity    -->
+        <activity
+            android:name=".ManageElementsActivity"
+            android:label="@string/dino_elements_manager"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:excludeFromRecents="true"
+            android:taskAffinity="com.brightbox.dino.ManageElementsActivity"
+            android:theme="@style/Theme.DinoLauncher"/>
+
+        <!--    Preferences activity    -->
         <activity
             android:name=".SettingsActivity"
             android:label="@string/settings_name"
@@ -33,24 +46,26 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:excludeFromRecents="false"
-            android:taskAffinity="com.brightbox.hourglass.SettingsActivity"
-            android:theme="@style/Theme.HourglassProductivityLauncher"/>
+            android:taskAffinity="com.brightbox.dino.SettingsActivity"
+            android:theme="@style/Theme.DinoLauncher"/>
 
+        <!--    Time limit overlay activity    -->
         <activity
             android:name=".TimeLimitOverlayActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:excludeFromRecents="true"
-            android:taskAffinity="com.brightbox.hourglass.TimeLimitOverlayActivity"
-            android:theme="@style/Theme.HourglassProductivityLauncher"/>
+            android:taskAffinity="com.brightbox.dino.TimeLimitOverlayActivity"
+            android:theme="@style/Theme.DinoLauncher"/>
 
+        <!--    Main activity    -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.HourglassProductivityLauncher"
+            android:theme="@style/Theme.DinoLauncher"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
