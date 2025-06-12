@@ -1,0 +1,66 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+Reallocating 'name_of_file' (item size: 1) to 7 items.
+The style file: ieeetr.bst
+Reallocating 'name_of_file' (item size: 1) to 12 items.
+A level-1 auxiliary file: Portada.aux
+Reallocating 'name_of_file' (item size: 1) to 12 items.
+A level-1 auxiliary file: Resumen.aux
+Reallocating 'name_of_file' (item size: 1) to 41 items.
+A level-1 auxiliary file: Anteproyecto/1FormulacionDelProblema.aux
+Reallocating 'name_of_file' (item size: 1) to 35 items.
+A level-1 auxiliary file: Anteproyecto/2MarcoReferencial.aux
+Reallocating 'name_of_file' (item size: 1) to 49 items.
+A level-1 auxiliary file: Implementacion/LevantamientoDeRequerimientos.aux
+Reallocating 'name_of_file' (item size: 1) to 13 items.
+Database file #1: Bibliografia.bib
+Warning--empty journal in Kus2016
+Warning--empty journal in Neyman2017
+Warning--empty journal in Luisa2019
+Warning--empty journal in Orzikulova2022
+Warning--empty journal in Navarro2003
+Warning--empty journal in RendimientoEscolar
+Warning--empty year in RendimientoEscolar
+You've used 23 entries,
+            1876 wiz_defined-function locations,
+            630 strings with 8964 characters,
+and the built_in function-call counts, 5412 in all, are:
+= -- 478
+> -- 266
+< -- 0
++ -- 99
+- -- 76
+* -- 396
+:= -- 802
+add.period$ -- 21
+call.type$ -- 23
+change.case$ -- 23
+chr.to.int$ -- 0
+cite$ -- 30
+duplicate$ -- 258
+empty$ -- 509
+format.name$ -- 76
+if$ -- 1296
+int.to.chr$ -- 0
+int.to.str$ -- 23
+missing$ -- 18
+newline$ -- 72
+num.names$ -- 23
+pop$ -- 89
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 187
+stack$ -- 0
+substring$ -- 283
+swap$ -- 96
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 7
+while$ -- 40
+width$ -- 25
+write$ -- 195
+(There were 7 warnings)
