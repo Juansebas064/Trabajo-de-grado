@@ -1,6 +1,6 @@
-PWD /home/juan/Coding/Trabajo-de-grado/Documento
+PWD /home/juan/Coding/DinoLauncher/Documento
 INPUT /home/juan/.miktex/texmfs/data/miktex/data/le/pdftex/pdflatex.fmt
-INPUT /home/juan/Coding/Trabajo-de-grado/Documento/main.tex
+INPUT /home/juan/Coding/DinoLauncher/Documento/main.tex
 OUTPUT main.log
 INPUT /home/juan/.miktex/texmfs/install/tex/latex/base/article.cls
 INPUT /home/juan/.miktex/texmfs/install/tex/latex/base/article.cls
@@ -245,6 +245,7 @@ INPUT ./main.bbl
 INPUT ./main.bbl
 INPUT main.bbl
 INPUT /home/juan/.miktex/texmfs/install/fonts/tfm/jknappen/ec/tcrm1200.tfm
+INPUT /home/juan/.miktex/texmfs/install/fonts/tfm/jknappen/ec/tcti1200.tfm
 INPUT main.aux
 INPUT ./Portada.aux
 INPUT ./Portada.aux
@@ -263,6 +264,8 @@ INPUT ./Implementacion/LevantamientoDeRequerimientos.aux
 INPUT Implementacion/LevantamientoDeRequerimientos.aux
 INPUT ./main.out
 INPUT ./main.out
+INPUT /home/juan/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcti1200.pk
+INPUT /home/juan/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcti1200.pk
 INPUT /home/juan/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1200.pk
 INPUT /home/juan/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1200.pk
 INPUT /home/juan/.miktex/texmfs/data/fonts/pk/ljfour/public/cm/dpi600/cmr6.pk
