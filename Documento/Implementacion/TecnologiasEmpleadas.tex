@@ -1,0 +1,87 @@
+\subsection{Tecnologías empleadas.}
+
+En el panorama actual del desarrollo móvil, los desarrolladores se enfrentan a una decisión fundamental entre el desarrollo nativo y multiplataforma. Con el crecimiento exponencial del mercado de aplicaciones móviles y la demanda de experiencias de usuario cada vez más sofisticadas, la elección tecnológica se convierte en un factor determinante para el éxito del proyecto. Para el desarrollo del proyecto, se realizó una evaluación de las tecnologías disponibles, considerando las necesidades específicas del proyecto y las tendencias actuales de la industria.
+
+\subsubsection{Desarrollo nativo vs. multiplataforma.}
+
+Se optó por el desarrollo nativo de la aplicación ya que ofrece mejor rendimiento, fácil acceso a todos los recursos del smartphone y está enfocado a un sistema operativo en particular (Android). Los frameworks multiplataforma actuales también ofrecen buen rendimiento e integración con las herramientas de desarrollo de Android, pero son más propensos a tener menor rendimiento, usar más recursos del sistema y generar fallos debido a las diferencias entre iOS y Android.
+
+Esta decisión se fundamenta en la naturaleza específica del launcher, que requiere integración profunda con el sistema operativo Android para gestionar aplicaciones, controlar tiempos de uso y proporcionar una experiencia de usuario fluida y responsiva.
+
+\begin{table}[H]
+\centering
+\caption{Comparación entre desarrollo nativo y multiplataforma para Android}
+\begin{tabular}{|p{0.25\textwidth}|p{0.35\textwidth}|p{0.35\textwidth}|}
+\hline
+\textbf{Aspecto} & \textbf{Desarrollo Nativo Android} & \textbf{Desarrollo Multiplataforma} \\
+\hline
+Lenguaje de Programación & Kotlin o Java & JavaScript (React Native), Dart (Flutter), C\# (Xamarin) \\
+\hline
+Rendimiento & Óptimo, optimizado específicamente para Android & Bueno, pero generalmente inferior debido a la capa de abstracción \\
+\hline
+Acceso a Funcionalidades & Acceso total a todas las APIs y hardware específicos & Acceso limitado, requiere plugins para funcionalidades específicas \\
+\hline
+Experiencia de Usuario & Adaptación completa a Material Design & Puede no seguir completamente las directrices de Android \\
+\hline
+Tiempo de Desarrollo & Puede ser más largo debido a codificación específica & Más corto, código compartido entre plataformas \\
+\hline
+Costos de Desarrollo & Más altos para Android únicamente, pero justificados & Más bajos si se desarrolla para múltiples plataformas \\
+\hline
+Mantenimiento & Simplificado, enfoque exclusivo en Android & Más complejo para compatibilidad específica \\
+\hline
+Actualizaciones de SO & Implementación inmediata con nuevas versiones & Depende de actualizaciones del framework \\
+\hline
+Reutilización de Código & Nula entre plataformas, alta en proyectos Android & Alta reutilización multiplataforma \\
+\hline
+Compatibilidad & Total, diseño específico para Android & Buena, pero con posibles inconsistencias \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Selección del lenguaje: Kotlin.}
+
+Las dos alternativas principales para el desarrollo nativo en Android son Java y Kotlin. Aunque Java es el lenguaje tradicional para el desarrollo Android, ha perdido terreno gracias a Kotlin y sus mejoras significativas con respecto a Java para el desarrollo móvil, principalmente en cuanto a sintaxis y características modernas. Según la encuesta anual de desarrolladores de Stack Overflow de mayo de 2024, los desarrolladores que trabajan con Kotlin se sienten más cómodos con el lenguaje, al contrario de lo que se observa en Java, donde varios de los encuestados preferirían trabajar con Kotlin.
+
+La selección de Kotlin se fundamenta en los siguientes aspectos:
+
+\begin{itemize}
+    \item Google, propietario de Android, recomienda Kotlin para cualquier proyecto nuevo de Android y declaró que construiría sus herramientas de desarrollo con un enfoque Kotlin-first desde la conferencia Google I/O en 2019 \cite{Google2019}.
+    \item Es un lenguaje más fácil de entender por su sintaxis simplificada y la reducción de código repetitivo (\textit{boilerplate}), reduciendo el tiempo de aprendizaje.
+    \item Su desarrollo es muy activo y adaptado a las necesidades actuales de su campo de aplicación.
+    \item Tiene una gran comunidad y gran cantidad de recursos disponibles para capacitarse en el lenguaje.
+    \item Ofrece características modernas como corrutinas, funciones de extensión y clases de datos que facilitan el desarrollo de aplicaciones complejas.
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\caption{Comparación entre Kotlin y Java para desarrollo Android}
+\begin{tabular}{|p{0.25\textwidth}|p{0.35\textwidth}|p{0.35\textwidth}|}
+\hline
+\textbf{Aspecto} & \textbf{Kotlin} & \textbf{Java} \\
+\hline
+Año de Lanzamiento & 2011 & 1995 \\
+\hline
+Sintaxis & Concisa, moderna y más legible & Verbosa, más detallada y tradicional \\
+\hline
+Interoperabilidad & Totalmente interoperable con Java & No es nativamente interoperable con Kotlin \\
+\hline
+Seguridad de Tipos Nulos & Evita NullPointerExceptions & NullPointerExceptions son comunes \\
+\hline
+Compatibilidad Android & Totalmente compatible, lenguaje oficial & Compatible pero no recomendado oficialmente \\
+\hline
+Características Modernas & Lambdas, corrutinas, extension functions, data classes & Introducción más lenta de características modernas \\
+\hline
+Curva de Aprendizaje & Relativamente fácil para desarrolladores Java & Relativamente fácil pero más verboso \\
+\hline
+Productividad & Alta, gracias a sintaxis concisa & Moderada, requiere más código para tareas similares \\
+\hline
+Soporte y Comunidad & Creciente, especialmente en Android & Muy grande y establecida, décadas de documentación \\
+\hline
+Desempeño & Similar a Java, optimizaciones específicas & Similar a Kotlin, rendimiento comparable \\
+\hline
+Ecosistema de Herramientas & Totalmente soportado en Android Studio & Amplio soporte en diversas IDEs \\
+\hline
+\end{tabular}
+\end{table}
+
+Esta selección tecnológica garantiza que el launcher aproveche al máximo las capacidades del sistema Android, proporcionando la integración profunda necesaria para las funcionalidades de control de tiempo de uso, gestión de aplicaciones y las características de productividad que caracterizan al proyecto.

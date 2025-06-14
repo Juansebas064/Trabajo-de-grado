@@ -11,6 +11,8 @@ Reallocating 'name_of_file' (item size: 1) to 41 items.
 A level-1 auxiliary file: Anteproyecto/1FormulacionDelProblema.aux
 Reallocating 'name_of_file' (item size: 1) to 35 items.
 A level-1 auxiliary file: Anteproyecto/2MarcoReferencial.aux
+Reallocating 'name_of_file' (item size: 1) to 40 items.
+A level-1 auxiliary file: Implementacion/TecnologiasEmpleadas.aux
 Reallocating 'name_of_file' (item size: 1) to 49 items.
 A level-1 auxiliary file: Implementacion/LevantamientoDeRequerimientos.aux
 Reallocating 'name_of_file' (item size: 1) to 13 items.
@@ -22,45 +24,46 @@ Warning--empty journal in Orzikulova2022
 Warning--empty journal in Navarro2003
 Warning--empty journal in RendimientoEscolar
 Warning--empty year in RendimientoEscolar
-You've used 25 entries,
+Warning--empty journal in Santillan2020
+You've used 28 entries,
             1876 wiz_defined-function locations,
-            646 strings with 9805 characters,
-and the built_in function-call counts, 6071 in all, are:
-= -- 536
-> -- 306
+            662 strings with 10425 characters,
+and the built_in function-call counts, 6686 in all, are:
+= -- 589
+> -- 335
 < -- 0
-+ -- 113
-- -- 88
-* -- 452
-:= -- 902
-add.period$ -- 23
-call.type$ -- 25
-change.case$ -- 25
++ -- 124
+- -- 96
+* -- 493
+:= -- 991
+add.period$ -- 25
+call.type$ -- 28
+change.case$ -- 28
 chr.to.int$ -- 0
-cite$ -- 32
-duplicate$ -- 287
-empty$ -- 561
-format.name$ -- 88
-if$ -- 1454
+cite$ -- 36
+duplicate$ -- 316
+empty$ -- 624
+format.name$ -- 96
+if$ -- 1603
 int.to.chr$ -- 0
-int.to.str$ -- 25
-missing$ -- 20
-newline$ -- 78
-num.names$ -- 25
-pop$ -- 92
+int.to.str$ -- 28
+missing$ -- 22
+newline$ -- 87
+num.names$ -- 28
+pop$ -- 104
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 210
+skip$ -- 235
 stack$ -- 0
-substring$ -- 323
-swap$ -- 110
+substring$ -- 351
+swap$ -- 119
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 7
-while$ -- 46
-width$ -- 27
-write$ -- 215
-(There were 7 warnings)
+warning$ -- 8
+while$ -- 51
+width$ -- 30
+write$ -- 238
+(There were 8 warnings)

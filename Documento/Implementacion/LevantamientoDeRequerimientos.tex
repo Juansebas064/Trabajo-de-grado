@@ -8,15 +8,15 @@ Para llevar a cabo el desarrollo del launcher Android enfocado en combatir la pr
 
 \textbf{Observación:} Al analizar la interacción de los estudiantes con sus dispositivos móviles en entornos académicos, especialmente de la Universidad del Valle en Tuluá, se identificó que muchos de ellos utilizan aplicaciones de mensajería, redes sociales y juegos como una forma de distracción y abren dichas aplicaciones muchas veces por mera memoria muscular. Esta observación llevó a la conclusión de que un launcher que si, a nivel visual, reduce los estímulos que faciliten la detección de dichas aplicaciones, puede contribuir a que sean usadas con menor frecuencia. Es por esto que se definió que la interfaz debía ser minimalista, dejando de lado los íconos que caracterizan a cada aplicación por considerarse un disparador que apunta hacia el inmediato uso de la misma. Este proceso también reafirmó la necesidad de implementar un limite de tiempo a aplicaciones que el usuario identifique que necesita regular.
 
-\textbf{Análisis de documentación:} Se revisaron cuatro artículos relacionados con la procrastinación académica, los cuales sirvieron de apoyo para entender mejor el contexto en el que se desarrollaría el launcher.
+\textbf{Análisis de documentación:} Se revisaron cuatro artículos más relacionados con la procrastinación académica, los cuales sirvieron de apoyo para entender mejor el contexto en el que se desarrollaría el launcher.
 
 Durante el análisis se identificaron patrones de comportamiento que van más allá del simple uso de dispositivos móviles. Los estudios revisados revelaron que existe una relación negativa entre la procrastinación académica y las intenciones de llevar a cabo conductas saludables, asociada con una menor autoeficacia específica de la salud y bajo control conductual percibido \cite{Vanguardia2012}. Se encontró evidencia de una correlación directa de intensidad moderada a fuerte entre la postergación de actividades académicas y la dependencia al dispositivo móvil, siendo especialmente notable en estudiantes universitarios donde el 59,3\% presenta niveles moderados de dependencia \cite{Villagomez2023}.
 
-La investigación también demostró que el uso problemático del smartphone va más allá de las aplicaciones de mensajería y redes sociales, extendiéndose a lo que se denomina "procrastinación electrónica", que abarca el uso excesivo de computadoras, videojuegos, televisión, películas y consumo de noticias. Esta forma de procrastinación resulta particularmente seductora debido a la accesibilidad constante que proporciona internet, permitiendo la distracción en cualquier momento del día.
+La investigación también demostró que el uso problemático del smartphone va más allá de las aplicaciones de mensajería y redes sociales, extendiéndose a lo que se denomina "procrastinación electrónica", que abarca el uso excesivo de computadoras, videojuegos, televisión, películas y consumo de noticias. Esta forma de procrastinación resulta particularmente seductora debido a la accesibilidad constante que proporciona internet, permitiendo la distracción en cualquier momento del día \cite{Sociedad2023}.
 
-Los hallazgos confirman que a mayor uso problemático del smartphone, mayor es la tendencia a procrastinar en los estudiantes, y dado que este uso parece estar relacionado con un bajo autocontrol, se identificó la necesidad de implementar programas de intervención relacionados con la resiliencia para controlar el uso del smartphone y mejorar la gestión del tiempo. Estos insights fueron fundamentales para definir las funcionalidades del launcher, especialmente las relacionadas con el control de tiempo de uso y el modo concentración.
+Los hallazgos confirman que a mayor uso problemático del smartphone, mayor es la tendencia a procrastinar en los estudiantes, y dado que este uso parece estar relacionado con un bajo autocontrol, se identificó la necesidad de implementar programas de intervención relacionados con la resiliencia para controlar el uso del smartphone y mejorar la gestión del tiempo \cite{Santillan2020}.
 
-La combinación de estas técnicas permitió construir una base sólida para el desarrollo del launcher. Los resultados obtenidos a través de este proceso de levantamiento de requerimientos fueron fundamentales para definir los requisitos funcionales y no funcionales del sistema, asegurando así que el producto final respondiera de manera efectiva a las necesidades de los usuarios.
+Estos indicadores fueron fundamentales para definir las funcionalidades del launcher, especialmente las relacionadas con el control de tiempo de uso y el modo concentración.
 
 \subsubsection{Requerimientos funcionales.}
 
@@ -25,13 +25,11 @@ Los requerimientos funcionales identificados se organizaron en las siguientes ca
 \begin{enumerate}
     \item \textbf{Lanzador de aplicaciones:} Funcionalidad principal del launcher que mostrará la lista de aplicaciones disponibles para su ejecución. Incluirá gestión básica de aplicaciones mediante pulsación prolongada para desinstalar, acceder a información de la aplicación o fijar aplicaciones en el escritorio.
     
-    \item \textbf{Accesos rápidos:} Sistema de accesos directos para aplicaciones esenciales predeterminadas como correo electrónico,cámara o teléfono, sin necesidad de búsqueda. Permitirá la personalización mediante el fijado de aplicaciones al escritorio.
+    \item \textbf{Accesos rápidos esenciales:} Sistema de accesos directos para aplicaciones indispensables como correo electrónico,cámara o teléfono en una barra lateral siempre visible en la pantalla principal.
     
-    \item \textbf{Búsqueda integrada:} Barra de búsqueda que mostrará aplicaciones que coincidan con el texto ingresado, así como configuraciones específicas del launcher.
+    \item \textbf{Búsqueda de apliciones:} Barra de búsqueda que mostrará aplicaciones que coincidan con el texto ingresado en el menú.
     
-    \item \textbf{Modo concentración:} Sistema de bloqueo temporal de aplicaciones que impedirá su uso hasta la desactivación manual o automática del modo. Incluirá bloqueo de notificaciones de aplicaciones restringidas y programación automática basada en horarios académicos.
-    
-    \item \textbf{Control de tiempo de uso:} Funcionalidad para establecer límites de tiempo en aplicaciones específicas. Una vez agotado el tiempo permitido, se implementará un período de espera antes de permitir el uso nuevamente.
+    \item \textbf{Control de tiempo de uso:} Funcionalidad para establecer límites de tiempo en aplicaciones específicas. Una vez agotado el tiempo permitido, el usuario no podrá abrir la aplicación restringida desde el launcher.
     
     \item \textbf{Gestión de tareas:} Sistema tipo to-do que permitirá asignar fechas específicas a las tareas. Las tareas sin fecha asignada aparecerán diariamente hasta su completación. Incluirá sistema de etiquetas para clasificación y organización.
     
@@ -45,76 +43,14 @@ Los requerimientos funcionales identificados se organizaron en las siguientes ca
 Los requerimientos no funcionales establecidos para el proyecto incluyen:
 
 \begin{itemize}
-    \item \textbf{Compatibilidad:} El launcher debe ser compatible exclusivamente con el sistema operativo Android, diseñado específicamente para smartphones (no tablets).
+    \item \textbf{Compatibilidad:} El launcher es compatible exclusivamente con el sistema operativo Android, diseñado específicamente para smartphones.
     
     \item \textbf{Rendimiento:} Debe ofrecer un rendimiento óptimo aprovechando las ventajas del desarrollo nativo en Android.
     
     \item \textbf{Usabilidad:} Interfaz minimalista con diseño centrado en el usuario, siguiendo las directrices de Material Design de Android.
     
-    \item \textbf{Seguridad:} Implementación de controles de acceso para las funcionalidades de bloqueo y restricción de aplicaciones.
-    
-    \item \textbf{Mantenibilidad:} Código estructurado y documentado para facilitar futuras actualizaciones y mejoras.
+    \item \textbf{Mantenibilidad:} Código estructurado, teniendo en cuenta las mejores prácticas de desarrollo que se usan actualmente, para facilitar futuras actualizaciones y mejoras.
 \end{itemize}
-
-\subsubsection{Investigación tecnológica.}
-
-Como parte del proceso de levantamiento de requerimientos, se realizó una investigación exhaustiva para determinar las tecnologías más apropiadas para el desarrollo del launcher.
-
-\textbf{Decisión de desarrollo nativo vs. multiplataforma:}
-
-Se optó por el desarrollo nativo de la aplicación ya que ofrece mejor rendimiento, fácil acceso a todos los recursos del smartphone y está enfocado a un sistema operativo en particular (Android). Los frameworks multiplataforma actuales también ofrecen buen rendimiento e integración con las herramientas de desarrollo de Android, pero son más propensos a tener menor rendimiento, usar más recursos del sistema y generar fallos debido a las diferencias entre iOS y Android.
-
-\begin{table}[H]
-\centering
-\caption{Comparación desarrollo nativo vs. multiplataforma}
-\begin{tabular}{|p{0.25\textwidth}|p{0.35\textwidth}|p{0.35\textwidth}|}
-\hline
-\textbf{Aspecto} & \textbf{Desarrollo Nativo Android} & \textbf{Desarrollo Multiplataforma} \\
-\hline
-Lenguaje & Kotlin o Java & JavaScript, Dart, C\# \\
-\hline
-Rendimiento & Óptimo, optimizado para Android & Bueno, pero inferior debido a abstracción \\
-\hline
-Acceso a APIs & Total acceso a APIs y hardware & Limitado, requiere plugins específicos \\
-\hline
-Experiencia UX & Adaptación completa a Material Design & Puede no seguir completamente las directrices \\
-\hline
-Mantenimiento & Simplificado para Android & Más complejo para compatibilidad específica \\
-\hline
-\end{tabular}
-\end{table}
-
-\textbf{Selección del lenguaje de programación:}
-
-Las dos alternativas de desarrollo nativo en Android son Java y Kotlin. Java es el lenguaje tradicional para el desarrollo Android, pero ha perdido terreno gracias a Kotlin y sus mejoras con respecto a Java para el desarrollo móvil, principalmente en cuanto a sintaxis. Se seleccionó Kotlin por las siguientes razones:
-
-\begin{itemize}
-    \item Google recomienda Kotlin para cualquier proyecto nuevo de Android y declaró un enfoque Kotlin-first desde 2019.
-    \item Sintaxis más concisa y moderna que reduce el código boilerplate.
-    \item Seguridad de tipos nulos que evita NullPointerExceptions.
-    \item Totalmente interoperable con Java.
-    \item Comunidad activa y gran cantidad de recursos disponibles.
-\end{itemize}
-
-\begin{table}[H]
-\centering
-\caption{Comparación Kotlin vs. Java}
-\begin{tabular}{|p{0.25\textwidth}|p{0.35\textwidth}|p{0.35\textwidth}|}
-\hline
-\textbf{Aspecto} & \textbf{Kotlin} & \textbf{Java} \\
-\hline
-Sintaxis & Concisa, moderna y legible & Verbosa y tradicional \\
-\hline
-Seguridad de tipos nulos & Evita NullPointerExceptions & NullPointerExceptions comunes \\
-\hline
-Compatibilidad Android & Lenguaje oficial recomendado & Compatible pero no recomendado \\
-\hline
-Características modernas & Coroutines, extension functions, data classes & Introducción más lenta de características \\
-\hline
-Productividad & Alta debido a sintaxis concisa & Moderada, requiere más código \\
-\hline
-\end{tabular}
-\end{table}
 
 \textbf{Tecnologías complementarias:}
 

@@ -1,6 +1,6 @@
-PWD /home/juan/Coding/DinoLauncher/Documento
+PWD /home/juan/Coding/Trabajo-de-grado/Documento
 INPUT /home/juan/.miktex/texmfs/data/miktex/data/le/pdftex/pdflatex.fmt
-INPUT /home/juan/Coding/DinoLauncher/Documento/main.tex
+INPUT /home/juan/Coding/Trabajo-de-grado/Documento/main.tex
 OUTPUT main.log
 INPUT /home/juan/.miktex/texmfs/install/tex/latex/base/article.cls
 INPUT /home/juan/.miktex/texmfs/install/tex/latex/base/article.cls
@@ -153,6 +153,9 @@ INPUT Anteproyecto/1FormulacionDelProblema.aux
 INPUT ./Anteproyecto/2MarcoReferencial.aux
 INPUT ./Anteproyecto/2MarcoReferencial.aux
 INPUT Anteproyecto/2MarcoReferencial.aux
+INPUT ./Implementacion/TecnologiasEmpleadas.aux
+INPUT ./Implementacion/TecnologiasEmpleadas.aux
+INPUT Implementacion/TecnologiasEmpleadas.aux
 INPUT ./Implementacion/LevantamientoDeRequerimientos.aux
 INPUT ./Implementacion/LevantamientoDeRequerimientos.aux
 INPUT Implementacion/LevantamientoDeRequerimientos.aux
@@ -235,6 +238,12 @@ INPUT Anteproyecto/4Objetivos.tex
 INPUT ./Implementacion/5Implementacion.tex
 INPUT ./Implementacion/5Implementacion.tex
 INPUT Implementacion/5Implementacion.tex
+INPUT ./Implementacion/TecnologiasEmpleadas.tex
+INPUT ./Implementacion/TecnologiasEmpleadas.tex
+OUTPUT Implementacion/TecnologiasEmpleadas.aux
+INPUT ./Implementacion/TecnologiasEmpleadas.tex
+INPUT ./Implementacion/TecnologiasEmpleadas.tex
+INPUT Implementacion/TecnologiasEmpleadas.tex
 INPUT ./Implementacion/LevantamientoDeRequerimientos.tex
 INPUT ./Implementacion/LevantamientoDeRequerimientos.tex
 OUTPUT Implementacion/LevantamientoDeRequerimientos.aux
@@ -259,6 +268,9 @@ INPUT Anteproyecto/1FormulacionDelProblema.aux
 INPUT ./Anteproyecto/2MarcoReferencial.aux
 INPUT ./Anteproyecto/2MarcoReferencial.aux
 INPUT Anteproyecto/2MarcoReferencial.aux
+INPUT ./Implementacion/TecnologiasEmpleadas.aux
+INPUT ./Implementacion/TecnologiasEmpleadas.aux
+INPUT Implementacion/TecnologiasEmpleadas.aux
 INPUT ./Implementacion/LevantamientoDeRequerimientos.aux
 INPUT ./Implementacion/LevantamientoDeRequerimientos.aux
 INPUT Implementacion/LevantamientoDeRequerimientos.aux
