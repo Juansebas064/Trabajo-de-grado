@@ -11,10 +11,10 @@ Reallocating 'name_of_file' (item size: 1) to 41 items.
 A level-1 auxiliary file: Anteproyecto/1FormulacionDelProblema.aux
 Reallocating 'name_of_file' (item size: 1) to 35 items.
 A level-1 auxiliary file: Anteproyecto/2MarcoReferencial.aux
-Reallocating 'name_of_file' (item size: 1) to 40 items.
-A level-1 auxiliary file: Implementacion/TecnologiasEmpleadas.aux
-Reallocating 'name_of_file' (item size: 1) to 49 items.
-A level-1 auxiliary file: Implementacion/LevantamientoDeRequerimientos.aux
+Reallocating 'name_of_file' (item size: 1) to 37 items.
+A level-1 auxiliary file: Metodologia/TecnologiasEmpleadas.aux
+Reallocating 'name_of_file' (item size: 1) to 46 items.
+A level-1 auxiliary file: Metodologia/LevantamientoDeRequerimientos.aux
 Reallocating 'name_of_file' (item size: 1) to 13 items.
 Database file #1: Bibliografia.bib
 Warning--empty journal in Kus2016
@@ -25,36 +25,36 @@ Warning--empty journal in Navarro2003
 Warning--empty journal in RendimientoEscolar
 Warning--empty year in RendimientoEscolar
 Warning--empty journal in Santillan2020
-You've used 28 entries,
+You've used 30 entries,
             1876 wiz_defined-function locations,
-            662 strings with 10425 characters,
-and the built_in function-call counts, 6686 in all, are:
-= -- 589
-> -- 335
+            669 strings with 10591 characters,
+and the built_in function-call counts, 6914 in all, are:
+= -- 605
+> -- 343
 < -- 0
-+ -- 124
-- -- 96
-* -- 493
-:= -- 991
++ -- 128
+- -- 98
+* -- 499
+:= -- 1021
 add.period$ -- 25
-call.type$ -- 28
-change.case$ -- 28
+call.type$ -- 30
+change.case$ -- 30
 chr.to.int$ -- 0
-cite$ -- 36
-duplicate$ -- 316
-empty$ -- 624
-format.name$ -- 96
-if$ -- 1603
+cite$ -- 38
+duplicate$ -- 324
+empty$ -- 660
+format.name$ -- 98
+if$ -- 1661
 int.to.chr$ -- 0
-int.to.str$ -- 28
+int.to.str$ -- 30
 missing$ -- 22
-newline$ -- 87
-num.names$ -- 28
-pop$ -- 104
+newline$ -- 93
+num.names$ -- 30
+pop$ -- 114
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 235
+skip$ -- 251
 stack$ -- 0
 substring$ -- 351
 swap$ -- 119
@@ -63,7 +63,7 @@ text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 8
-while$ -- 51
-width$ -- 30
-write$ -- 238
+while$ -- 53
+width$ -- 32
+write$ -- 250
 (There were 8 warnings)

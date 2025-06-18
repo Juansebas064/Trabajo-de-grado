@@ -1,22 +1,18 @@
 \subsection{Levantamiento de requerimientos.}
 
-Para llevar a cabo el desarrollo del launcher Android enfocado en combatir la procrastinación en estudiantes universitarios, se utilizaron múltiples técnicas de recolección de información que representaran de una manera clara las acciones a realizar para cumplir los objetivos, desde la teoría hasta la manera en cómo se interactúa con los dispositivos móviles. A continuación, se detallan las técnicas empleadas y los resultados obtenidos:
-
-\subsubsection{Metodología empleada.}
+Se utilizaron múltiples técnicas de recolección de información que representaran de una manera clara las acciones a realizar para cumplir los objetivos, desde la teoría hasta la manera en cómo se interactúa con los dispositivos móviles. A continuación, se detallan las técnicas empleadas y los resultados obtenidos:
 
 \textbf{Lluvia de ideas (Brainstorming):} Se recurrió a la técnica de brainstorming para generar un amplio abanico de ideas sobre las funcionalidades que el launcher podría ofrecer. A través de sesiones creativas, se exploraron diversas posibilidades y se identificaron las características más importantes que podrían contribuir a mejorar la productividad de los estudiantes. Esta técnica permitió establecer el conjunto inicial de funcionalidades como la gestión de tareas, gestión de hábitos y control de tiempo de uso de aplicaciones, en conjunto con sus particularidades a nivel de desarrollo y diseño.
 
 \textbf{Observación:} Al analizar la interacción de los estudiantes con sus dispositivos móviles en entornos académicos, especialmente de la Universidad del Valle en Tuluá, se identificó que muchos de ellos utilizan aplicaciones de mensajería, redes sociales y juegos como una forma de distracción y abren dichas aplicaciones muchas veces por mera memoria muscular. Esta observación llevó a la conclusión de que un launcher que si, a nivel visual, reduce los estímulos que faciliten la detección de dichas aplicaciones, puede contribuir a que sean usadas con menor frecuencia. Es por esto que se definió que la interfaz debía ser minimalista, dejando de lado los íconos que caracterizan a cada aplicación por considerarse un disparador que apunta hacia el inmediato uso de la misma. Este proceso también reafirmó la necesidad de implementar un limite de tiempo a aplicaciones que el usuario identifique que necesita regular.
 
-\textbf{Análisis de documentación:} Se revisaron cuatro artículos más relacionados con la procrastinación académica, los cuales sirvieron de apoyo para entender mejor el contexto en el que se desarrollaría el launcher.
+\textbf{Análisis de documentación:} Se revisaron cuatro artículos más relacionados con la procrastinación académica, los cuales sirvieron de apoyo para entender mejor el contexto en el que se desarrollaría el launcher:
 
 Durante el análisis se identificaron patrones de comportamiento que van más allá del simple uso de dispositivos móviles. Los estudios revisados revelaron que existe una relación negativa entre la procrastinación académica y las intenciones de llevar a cabo conductas saludables, asociada con una menor autoeficacia específica de la salud y bajo control conductual percibido \cite{Vanguardia2012}. Se encontró evidencia de una correlación directa de intensidad moderada a fuerte entre la postergación de actividades académicas y la dependencia al dispositivo móvil, siendo especialmente notable en estudiantes universitarios donde el 59,3\% presenta niveles moderados de dependencia \cite{Villagomez2023}.
 
 La investigación también demostró que el uso problemático del smartphone va más allá de las aplicaciones de mensajería y redes sociales, extendiéndose a lo que se denomina "procrastinación electrónica", que abarca el uso excesivo de computadoras, videojuegos, televisión, películas y consumo de noticias. Esta forma de procrastinación resulta particularmente seductora debido a la accesibilidad constante que proporciona internet, permitiendo la distracción en cualquier momento del día \cite{Sociedad2023}.
 
 Los hallazgos confirman que a mayor uso problemático del smartphone, mayor es la tendencia a procrastinar en los estudiantes, y dado que este uso parece estar relacionado con un bajo autocontrol, se identificó la necesidad de implementar programas de intervención relacionados con la resiliencia para controlar el uso del smartphone y mejorar la gestión del tiempo \cite{Santillan2020}.
-
-Estos indicadores fueron fundamentales para definir las funcionalidades del launcher, especialmente las relacionadas con el control de tiempo de uso y el modo concentración.
 
 \subsubsection{Requerimientos funcionales.}
 
@@ -33,9 +29,9 @@ Los requerimientos funcionales identificados se organizaron en las siguientes ca
     
     \item \textbf{Gestión de tareas:} Sistema tipo to-do que permitirá asignar fechas específicas a las tareas. Las tareas sin fecha asignada aparecerán diariamente hasta su completación. Incluirá sistema de etiquetas para clasificación y organización.
     
-    \item \textbf{Gestión de hábitos:} Implementación de tareas recurrentes programadas para días específicos de la semana, con fechas de inicio y fin definidas. Permitirá marcado de completación similar al sistema de tareas.
+    \item \textbf{Gestión de hábitos:} Implementación de tareas recurrentes programadas para días específicos de la semana, con fechas de inicio y fin definidas. Permitirá marcado de completitud similar al sistema de tareas.
     
-    \item \textbf{Integración Pomodoro:} Herramienta de productividad configurable que permitirá establecer número de sesiones, duración de sesiones de trabajo y tiempos de descanso.
+    \item \textbf{Integración de pomodoro:} Herramienta de productividad configurable que permitirá establecer número de sesiones, duración de sesiones de trabajo y tiempos de descanso.
 \end{enumerate}
 
 \subsubsection{Requerimientos no funcionales.}
@@ -47,15 +43,7 @@ Los requerimientos no funcionales establecidos para el proyecto incluyen:
     
     \item \textbf{Rendimiento:} Debe ofrecer un rendimiento óptimo aprovechando las ventajas del desarrollo nativo en Android.
     
-    \item \textbf{Usabilidad:} Interfaz minimalista con diseño centrado en el usuario, siguiendo las directrices de Material Design de Android.
+    \item \textbf{Usabilidad:} Interfaz minimalista que reduzca los elementos distractores, siguiendo las directrices de Material Design de Android.
     
-    \item \textbf{Mantenibilidad:} Código estructurado, teniendo en cuenta las mejores prácticas de desarrollo que se usan actualmente, para facilitar futuras actualizaciones y mejoras.
+    \item \textbf{Mantenibilidad:} Código estructurado, teniendo en cuenta las mejores prácticas de desarrollo que se usan actualmente para facilitar futuras actualizaciones y mejoras.
 \end{itemize}
-
-\textbf{Tecnologías complementarias:}
-
-Para el almacenamiento de datos se seleccionó SQLite como base de datos local, considerando su integración nativa con Android y su eficiencia para el manejo de datos de tareas, hábitos y configuraciones del usuario.
-
-\textbf{Versión mínima de Android:}
-
-Considerando que aproximadamente el 70\% de los usuarios poseedores de un smartphone a nivel mundial tienen instalado el sistema operativo Android, se estableció como requisito técnico soportar las versiones de Android más utilizadas para maximizar la compatibilidad y alcance del launcher.
