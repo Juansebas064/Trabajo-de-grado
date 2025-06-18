@@ -1,6 +1,6 @@
-PWD /home/juan/Coding/DinoLauncher/Documento
+PWD /home/juan/Coding/Trabajo-de-grado/Documento
 INPUT /home/juan/.miktex/texmfs/data/miktex/data/le/pdftex/pdflatex.fmt
-INPUT /home/juan/Coding/DinoLauncher/Documento/main.tex
+INPUT /home/juan/Coding/Trabajo-de-grado/Documento/main.tex
 OUTPUT main.log
 INPUT /home/juan/.miktex/texmfs/install/tex/latex/base/article.cls
 INPUT /home/juan/.miktex/texmfs/install/tex/latex/base/article.cls
@@ -258,6 +258,13 @@ INPUT ./Figuras/compose_vs_xml.jpg
 INPUT ./Figuras/compose_vs_xml.jpg
 INPUT ./Figuras/compose_vs_xml.jpg
 INPUT ./Figuras/compose_vs_xml.jpg
+INPUT ./Figuras/room.png
+INPUT ./Figuras/room.png
+INPUT ./Figuras/room.png
+INPUT ./Figuras/room.png
+INPUT ./Figuras/room.png
+INPUT ./Figuras/room.png
+INPUT ./Figuras/room.png
 INPUT ./Metodologia/LevantamientoDeRequerimientos.tex
 INPUT ./Metodologia/LevantamientoDeRequerimientos.tex
 OUTPUT Metodologia/LevantamientoDeRequerimientos.aux

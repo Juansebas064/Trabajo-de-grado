@@ -4,19 +4,6 @@
 
 En el panorama actual del desarrollo móvil, los desarrolladores se enfrentan a una decisión fundamental entre el desarrollo nativo y multiplataforma. Con el crecimiento exponencial del mercado de aplicaciones móviles y la demanda de experiencias de usuario cada vez más sofisticadas, la elección tecnológica se convierte en un factor determinante para el adecuado desarrollo del proyecto. Así pues, se realizó una evaluación de las tecnologías disponibles, considerando las necesidades específicas y las tendencias actuales de la industria.
 
-\subsubsection{Versión objetivo de la API de Android.}
-
-La elección de Android 10 (API 29) como versión mínima para el desarrollo de Dino Launcher se fundamenta en la convergencia entre las funcionalidades que introduce esta versión del sistema operativo, los requisitos específicos del launcher desarrollado y la posibilidad de que pueda ser ejecutado en dispositivos no tan recientes de manera satisfactoria. En la figura \ref{fig:versiones_android}, los datos de distribución de Android 10 alcanzan el 81.2\% de los dispositivos en el mercado, lo que garantiza una amplia compatibilidad con los dispositivos de los usuarios objetivo. 
-
-\begin{figure}[H]
-\caption{Distribución de versiones de Android a nivel mundial. \cite{AndroidStudio}}
-\label{fig:versiones_android}
-\includegraphics[width=\textwidth]{Figuras/versiones_android.png}
-\centering
-\end{figure}
-
-Esta versión introduce características esenciales que hacen posible una de las funcionalidades centrales del launcher, la introducción nativa del \textbf{modo oscuro}. Esta permite al launcher mostrar automáticamente los modos claro y oscuro dependiendo de la configuración del tema del sistema, reduciendo significativamente la fatiga visual durante el uso del launcher y mejorando la experiencia de usuario, especialmente durante las horas nocturnas cuando el control del tiempo de pantalla es más crítico. 
-
 
 \subsubsection{Desarrollo nativo vs. multiplataforma.}
 
@@ -54,6 +41,19 @@ Compatibilidad & Total, diseño específico para Android & Buena, pero con posib
 \hline
 \end{tabular}
 \end{table}
+
+\subsubsection{Versión objetivo de la API de Android.}
+
+La elección de Android 10 (API 29) como versión mínima para el desarrollo de Dino Launcher se fundamenta en la convergencia entre las funcionalidades que introduce esta versión del sistema operativo, los requisitos específicos del launcher desarrollado y la posibilidad de que pueda ser ejecutado en dispositivos no tan recientes de manera satisfactoria. En la figura \ref{fig:versiones_android}, los datos de distribución de Android 10 alcanzan el 81.2\% de los dispositivos en el mercado, lo que garantiza una amplia compatibilidad con los dispositivos de los usuarios objetivo. 
+
+\begin{figure}[H]
+\caption{Distribución de versiones de Android a nivel mundial. \cite{AndroidStudio}}
+\label{fig:versiones_android}
+\includegraphics[width=\textwidth]{Figuras/versiones_android.png}
+\centering
+\end{figure}
+
+Esta versión introduce características esenciales que hacen posible una de las funcionalidades centrales del launcher, la introducción nativa del \textbf{modo oscuro}. Esta permite al launcher mostrar automáticamente los modos claro y oscuro dependiendo de la configuración del tema del sistema, reduciendo significativamente la fatiga visual durante el uso del launcher y mejorando la experiencia de usuario, especialmente durante las horas nocturnas cuando el control del tiempo de pantalla es más crítico. 
 
 \subsubsection{Selección del lenguaje: Kotlin.}
 
@@ -160,75 +160,13 @@ Adopción empresarial & Creciente, recomendado por Google & Establecido, pero en
 
 \subsubsection{Persistencia de datos: Room.}
 
-La gestión eficiente de datos constituye un pilar fundamental en DinoLauncher, especialmente considerando las funcionalidades de seguimiento de tareas, hábitos, límites de aplicaciones y configuraciones de usuario que requieren persistencia local. Para satisfacer estos requerimientos, se optó por Room como la solución de base de datos del proyecto, una decisión que se fundamenta tanto en las necesidades específicas del launcher como en las ventajas técnicas que ofrece esta tecnología.
+Room es una biblioteca de persistencia que forma parte de Android Jetpack \cite{Jetpack} y proporciona una capa de abstracción sobre SQLite. Está diseñada específicamente para simplificar el trabajo con bases de datos en Android, combinando la potencia de SQLite con la comodidad y seguridad de tipos del desarrollo en Kotlin \cite{Room}. Entre las principales ventajas de utilizar Room en el desarrollo Android, se encuentran la posibilidad de observar cambios en los datos de manera reactiva con LiveData y Flow, facilitando la actualización automática de la interfaz de usuario; el soporte nativo para corrutinas, que permiten la ejecución de manera asíncrona utilizando \textit{suspend functions}, evitando bloqueos en el hilo principal y el uso de anotaciones para reducir código repetitivo (como \texttt{@Entity}, \texttt{@Dao} o \texttt{@Database}) para generar automáticamente el código necesario y realizar operaciones en SQLite. En la figura \ref{fig:room}, se muestra el flujo de datos de Room entre la base de datos y la aplicación desarrollada.
 
-Room es una biblioteca de persistencia desarrollada por Google que forma parte de Android Jetpack, diseñada específicamente para proporcionar una capa de abstracción sobre SQLite. Esta tecnología combina la potencia y flexibilidad de SQLite con la simplicidad y seguridad de tipos que caracteriza al desarrollo moderno en Android. Room facilita significativamente el trabajo con bases de datos locales mediante el uso de anotaciones, eliminando gran parte del código repetitivo tradicionalmente asociado con SQLite.
-
-La implementación de Room en DinoLauncher se evidencia a través de una arquitectura de datos bien estructurada que incluye múltiples entidades como ApplicationsModel, TasksModel, CategoriesModel, HabitsModel, HabitsLogsModel y LimitsModel, todas gestionadas mediante sus correspondientes interfaces DAO y centralizadas en DinoDatabase. Esta estructura permite un manejo eficiente de las relaciones entre entidades, como la relación entre hábitos y categorías, o entre registros de hábitos y hábitos específicos.
-
-Las ventajas principales que motivaron la selección de Room sobre alternativas como Firebase incluyen:
-
-\begin{itemize}
-    \item \textbf{Funcionamiento offline completo:} Room garantiza que todas las funcionalidades del launcher operen sin conexión a internet, aspecto crítico para un launcher que debe estar disponible en todo momento independientemente de la conectividad del dispositivo.
-    
-    \item \textbf{Rendimiento optimizado:} Al almacenar los datos localmente, Room elimina la latencia asociada con las consultas de red, proporcionando respuestas instantáneas para operaciones como la carga de aplicaciones, tareas y hábitos.
-    
-    \item \textbf{Privacidad y seguridad de datos:} Los datos permanecen completamente en el dispositivo del usuario, eliminando preocupaciones sobre privacidad y cumpliendo con las regulaciones de protección de datos sin requerir configuraciones adicionales.
-    
-    \item \textbf{Integración nativa con Android:} Room está diseñado específicamente para Android y se integra perfectamente con el ciclo de vida de las actividades y fragmentos, así como con otras bibliotecas de Jetpack como LiveData y ViewModel.
-    
-    \item \textbf{Verificación en tiempo de compilación:} Room valida las consultas SQL en tiempo de compilación, detectando errores antes de la ejecución y mejorando la estabilidad de la aplicación.
-    
-    \item \textbf{Soporte completo para corrutinas:} La integración nativa con corrutinas de Kotlin permite operaciones de base de datos asíncronas de manera elegante y eficiente, como se observa en las implementaciones de los casos de uso del proyecto.
-    
-    \item \textbf{Gestión automática de migraciones:} Room facilita las actualizaciones de esquema de base de datos mediante un sistema de migraciones robusto y controlado.
-    
-    \item \textbf{Menor complejidad de configuración:} No requiere configuración de servicios externos, autenticación o gestión de conexiones de red, simplificando significativamente el desarrollo y mantenimiento.
-\end{itemize}
-
-La Tabla \ref{tab:comparacion_room_firebase} presenta una comparación detallada entre Room y Firebase, destacando los aspectos técnicos y funcionales que justifican la elección de Room para DinoLauncher.
-
-\begin{table}[H]
+\begin{figure}[ht]
+\caption{Flujo de datos de Room. \cite{Room}}
+\label{fig:room}
+\includegraphics[width=\textwidth]{Figuras/room.png}
 \centering
-\caption{Comparación entre Room y Firebase para DinoLauncher}
-\label{tab:comparacion_room_firebase}
-\begin{tabular}{|p{0.25\textwidth}|p{0.35\textwidth}|p{0.35\textwidth}|}
-\hline
-\textbf{Aspecto} & \textbf{Room} & \textbf{Firebase} \\
-\hline
-Almacenamiento & Local SQLite en el dispositivo & Remoto en la nube de Google \\
-\hline
-Conectividad & Funciona completamente offline & Requiere conexión a internet \\
-\hline
-Rendimiento & Acceso instantáneo a datos locales & Latencia por consultas de red \\
-\hline
-Privacidad & Datos completamente privados & Datos almacenados en servidores externos \\
-\hline
-Sincronización & No aplicable, datos locales únicamente & Sincronización automática entre dispositivos \\
-\hline
-Configuración inicial & Mínima, integración directa & Requiere configuración de proyecto en consola \\
-\hline
-Costos & Gratuito completamente & Gratuito hasta ciertos límites, luego de pago \\
-\hline
-Escalabilidad & Limitada por almacenamiento del dispositivo & Alta escalabilidad en la nube \\
-\hline
-Autenticación & No requerida & Sistema de autenticación necesario \\
-\hline
-Backup automático & No incluido nativamente & Automático en la nube \\
-\hline
-Consultas complejas & SQL completo disponible & Limitaciones en consultas complejas \\
-\hline
-Integración Android & Nativa con Jetpack & Buena pero requiere SDKs adicionales \\
-\hline
-Verificación de tipos & Compilación con verificación SQL & Tipos dinámicos en tiempo de ejecución \\
-\hline
-Gestión de relaciones & Soporte completo para foreign keys & Requiere desnormalización de datos \\
-\hline
-Control de versiones & Migraciones controladas localmente & Versionado manejado por Firebase \\
-\hline
-\end{tabular}
-\end{table}
+\end{figure}
 
-La arquitectura implementada en DinoLauncher demuestra las ventajas prácticas de Room mediante casos de uso especializados como ApplicationsUseCase, TasksUseCase, CategoriesUseCase, HabitsUseCase y LimitsUseCase, que encapsulan la lógica de negocio y proporcionan una interfaz limpia para la interacción con la base de datos. Esta estructura facilita el mantenimiento del código, mejora la testabilidad y asegura la separación de responsabilidades en la aplicación.
-
-La decisión de utilizar Room se alinea perfectamente con la filosofía de DinoLauncher de promover la productividad y minimizar las distracciones, ya que elimina la dependencia de conectividad externa y garantiza un funcionamiento consistente y rápido en todas las circunstancias de uso.
+La selección de Room como solución de persistencia de datos por encima de alternativas basadas en la nube, como Firebase, se fundamenta en las características específicas del launcher y sus requerimientos funcionales en la sección \ref{chap:requerimientos_funcionales}. El proyecto no requiere que los datos estén disponibles en múltiples dispositivos o se sincronicen en tiempo real, ya que el launcher está diseñado para funcionar de manera individual en cada dispositivo. Además, el tipo de información que maneja la aplicación no demanda características de red en tiempo real ni almacenamiento de datos complejos o de gran tamaño. La naturaleza personal y privada de estos datos hace innecesaria la implementación de sistemas de autenticación de cuentas de usuario o gestión de perfiles en la nube, simplificando la arquitectura del sistema y minimizando el uso de recursos que puedan llegar a consumir las funciones de red.

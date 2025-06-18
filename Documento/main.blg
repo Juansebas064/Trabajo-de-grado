@@ -25,36 +25,36 @@ Warning--empty journal in Navarro2003
 Warning--empty journal in RendimientoEscolar
 Warning--empty year in RendimientoEscolar
 Warning--empty journal in Santillan2020
-You've used 30 entries,
+You've used 32 entries,
             1876 wiz_defined-function locations,
-            669 strings with 10591 characters,
-and the built_in function-call counts, 6914 in all, are:
-= -- 605
-> -- 343
+            675 strings with 10791 characters,
+and the built_in function-call counts, 7142 in all, are:
+= -- 621
+> -- 351
 < -- 0
-+ -- 128
-- -- 98
-* -- 499
-:= -- 1021
++ -- 132
+- -- 100
+* -- 505
+:= -- 1051
 add.period$ -- 25
-call.type$ -- 30
-change.case$ -- 30
+call.type$ -- 32
+change.case$ -- 32
 chr.to.int$ -- 0
-cite$ -- 38
-duplicate$ -- 324
-empty$ -- 660
-format.name$ -- 98
-if$ -- 1661
+cite$ -- 40
+duplicate$ -- 332
+empty$ -- 696
+format.name$ -- 100
+if$ -- 1719
 int.to.chr$ -- 0
-int.to.str$ -- 30
+int.to.str$ -- 32
 missing$ -- 22
-newline$ -- 93
-num.names$ -- 30
-pop$ -- 114
+newline$ -- 99
+num.names$ -- 32
+pop$ -- 124
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 251
+skip$ -- 267
 stack$ -- 0
 substring$ -- 351
 swap$ -- 119
@@ -63,7 +63,7 @@ text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 8
-while$ -- 53
-width$ -- 32
-write$ -- 250
+while$ -- 55
+width$ -- 34
+write$ -- 262
 (There were 8 warnings)
