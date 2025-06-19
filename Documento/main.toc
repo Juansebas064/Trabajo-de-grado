@@ -42,6 +42,9 @@
 \contentsline {subsubsection}{\numberline {7.1.1}Proyecto.}{36}{subsubsection.7.1.1}%
 \contentsline {subsubsection}{\numberline {7.1.2}Base de datos.}{37}{subsubsection.7.1.2}%
 \contentsline {subsection}{\numberline {7.2}Interfaces de la aplicación.}{39}{subsection.7.2}%
-\contentsline {section}{\numberline {8}Pruebas.}{40}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Pruebas de usabilidad.}{40}{subsection.8.1}%
-\contentsline {section}{\numberline {9}Referencias}{45}{section.9}%
+\contentsline {subsubsection}{\numberline {7.2.1}Home.}{39}{subsubsection.7.2.1}%
+\contentsline {subsubsection}{\numberline {7.2.2}Menú de aplicaciones.}{41}{subsubsection.7.2.2}%
+\contentsline {subsubsection}{\numberline {7.2.3}Límite de tiempo de aplicaciones.}{43}{subsubsection.7.2.3}%
+\contentsline {section}{\numberline {8}Pruebas.}{45}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Pruebas de usabilidad.}{45}{subsection.8.1}%
+\contentsline {section}{\numberline {9}Referencias}{50}{section.9}%

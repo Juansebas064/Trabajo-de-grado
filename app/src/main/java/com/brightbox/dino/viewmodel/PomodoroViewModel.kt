@@ -13,11 +13,11 @@ class PomodoroViewModel(
 
 ) : ViewModel() {
 
-    private val _sessionTime = MutableStateFlow("1")
+    private val _sessionTime = MutableStateFlow("25")
     val sessionTime = _sessionTime.asStateFlow()
-    private val _breakTime = MutableStateFlow("1")
+    private val _breakTime = MutableStateFlow("5")
     val breakTime = _breakTime.asStateFlow()
-    private val _numberOfSessions = MutableStateFlow("1")
+    private val _numberOfSessions = MutableStateFlow("3")
     val numberOfSessions = _numberOfSessions.asStateFlow()
 
     private val _elapsedTime = MutableStateFlow(0L)
