@@ -1,4 +1,4 @@
-package com.brightbox.dino.model.database.preferences
+package com.brightbox.dino.model.data.preferences
 
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -13,11 +13,11 @@ import com.brightbox.dino.model.constants.SHOW_SEARCH_ON_INTERNET
 import com.brightbox.dino.model.constants.SOLID_BACKGROUND
 import com.brightbox.dino.model.constants.THEME
 import com.brightbox.dino.model.constants.preferencesDefaults
-import com.brightbox.dino.model.database.preferences.PreferencesImpl.PreferencesKeys.APP_LANGUAGE_KEY
-import com.brightbox.dino.model.database.preferences.PreferencesImpl.PreferencesKeys.OPEN_KEYBOARD_IN_APP_MENU_KEY
-import com.brightbox.dino.model.database.preferences.PreferencesImpl.PreferencesKeys.SEARCH_ENGINE_KEY
-import com.brightbox.dino.model.database.preferences.PreferencesImpl.PreferencesKeys.SHOW_SEARCH_ON_INTERNET_KEY
-import com.brightbox.dino.model.database.preferences.PreferencesImpl.PreferencesKeys.SOLID_BACKGROUND_KEY
+import com.brightbox.dino.model.data.preferences.PreferencesImpl.PreferencesKeys.APP_LANGUAGE_KEY
+import com.brightbox.dino.model.data.preferences.PreferencesImpl.PreferencesKeys.OPEN_KEYBOARD_IN_APP_MENU_KEY
+import com.brightbox.dino.model.data.preferences.PreferencesImpl.PreferencesKeys.SEARCH_ENGINE_KEY
+import com.brightbox.dino.model.data.preferences.PreferencesImpl.PreferencesKeys.SHOW_SEARCH_ON_INTERNET_KEY
+import com.brightbox.dino.model.data.preferences.PreferencesImpl.PreferencesKeys.SOLID_BACKGROUND_KEY
 import com.brightbox.dino.model.states.preferences.PreferencesState
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow

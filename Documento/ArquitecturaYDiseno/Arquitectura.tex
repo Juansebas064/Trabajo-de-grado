@@ -71,37 +71,3 @@ El flujo de datos en MVVM es unidireccional, lo que significa que View observa l
 \end{figure}
 
 \pagebreak
-
-\subsection{Estructura del proyecto.}
-
-La estructura de la aplicación procura seguir cuidadosamente el patrón MVVM y las mejores prácticas de Android, organizando el código en módulos que facilitan el mantenimiento, la escalabilidad y la comprensión del sistema. La organización del proyecto se define de la siguiente manera:
-
-\begin{itemize}
-    \item \textbf{config:} Contiene la configuración de la base de datos Room, que centraliza todas las entidades y DAOs del sistema.
-    
-    \item \textbf{constants:} Almacena las constantes utilizadas a lo largo del proyecto, promoviendo la reutilización de valores y facilitando el mantenimiento del código. Incluye constantes para configuraciones de límites de tiempo, categorías predeterminadas y valores de configuración del sistema.
-    
-    \item \textbf{data:} Representa la capa de datos del patrón MVVM, implementando el patrón Repository para gestionar el acceso a la información. Esta carpeta encapsula toda la lógica relacionada con la persistencia y recuperación de datos, abstrayendo los detalles de implementación de la base de datos Room.
-    
-    \item \textbf{di:} Implementa la inyección de dependencias utilizando Dagger-Hilt, siguiendo las recomendaciones de Google para la gestión de dependencias en Android. Esta estructura facilita la creación y provisión automática de instancias de repositorios, casos de uso y ViewModels, mejorando la testabilidad y mantenibilidad del código.
-    
-    \item \textbf{events:} Define los eventos de la aplicación que facilitan la comunicación entre diferentes componentes del sistema. Implementa un sistema de eventos reactivo que permite la coordinación entre ViewModels y la gestión de estados complejos de la aplicación.
-    
-    \item \textbf{model:} Contiene las entidades de datos que representan la estructura de información del launcher. Incluye modelos como ApplicationsModel, TasksModel, HabitsModel, CategoriesModel, HabitsLogsModel y LimitsModel, cada uno definiendo la estructura de datos específica para su dominio correspondiente mediante anotaciones de Room.
-    
-    \item \textbf{navigation:} Gestiona la navegación entre pantallas utilizando Navigation Component de Jetpack, proporcionando una navegación fluida y consistente a través de toda la aplicación. Define las rutas de navegación y maneja las transiciones entre diferentes vistas del launcher.
-    
-    \item \textbf{services:} Implementa servicios especializados como TimeLimitService para el control de límites de tiempo de aplicaciones y NotificationSender para la gestión de notificaciones del sistema. Estos servicios operan en segundo plano y complementan las funcionalidades principales del launcher.
-    
-    \item \textbf{states:} Define los estados de la aplicación utilizando clases de datos inmutables que representan el estado de cada pantalla o funcionalidad. Esta estructura facilita la gestión reactiva del estado y la recomposición automática de la interfaz en Jetpack Compose.
-    
-    \item \textbf{usecases:} Implementa la capa de dominio opcional pero recomendada por Google, encapsulando la lógica de negocio específica de cada funcionalidad. Incluye casos de uso como ApplicationsUseCase, TasksUseCase, HabitsUseCase, CategoriesUseCase y LimitsUseCase, cada uno manejando las operaciones específicas de su dominio respectivo.
-    
-    \item \textbf{utils:} Proporciona utilidades y funciones auxiliares reutilizables a lo largo del proyecto. Incluye extensiones de Kotlin, formatters de fecha y hora, y otras herramientas que simplifican tareas comunes en la aplicación.
-    
-    \item \textbf{viewmodel:} Constituye el núcleo del patrón MVVM, implementando los ViewModels específicos para cada funcionalidad principal. Incluye TasksViewModel, HabitsViewModel, LimitsViewModel, PreferencesViewModel y ApplicationsViewModel, cada uno gestionando el estado y la lógica de presentación de su respectiva vista mediante StateFlow y corrutinas de Kotlin.
-    
-    \item \textbf{views:} Representa la capa de presentación implementada completamente en Jetpack Compose. Esta carpeta se subdivide en módulos específicos que incluyen componentes reutilizables, pantallas principales como TasksAndHabitsListView, MenuView, PreferencesView, y vistas especializadas para la gestión de elementos como ManageTasksHabitsAndCategoriesView. Cada vista observa los cambios en su ViewModel correspondiente y se recompone automáticamente según el estado de la aplicación.
-\end{itemize}
-
-Esta estructura modular no solo facilita la implementación del patrón MVVM, sino que también promueve la separación clara de responsabilidades, la reutilización de código y la facilidad de mantenimiento. La organización permite que cada desarrollador pueda ubicar rápidamente los componentes específicos según su función, mientras que la separación entre capas garantiza que los cambios en una parte del sistema no afecten innecesariamente a otras, cumpliendo así con los principios de bajo acoplamiento y alta cohesión recomendados en el desarrollo de software moderno.

@@ -15,8 +15,18 @@ Reallocating 'name_of_file' (item size: 1) to 37 items.
 A level-1 auxiliary file: Metodologia/TecnologiasEmpleadas.aux
 Reallocating 'name_of_file' (item size: 1) to 46 items.
 A level-1 auxiliary file: Metodologia/LevantamientoDeRequerimientos.aux
+Reallocating 'name_of_file' (item size: 1) to 40 items.
+A level-1 auxiliary file: Metodologia/MetodologiaDeDesarrollo.aux
 Reallocating 'name_of_file' (item size: 1) to 37 items.
 A level-1 auxiliary file: ArquitecturaYDiseno/Arquitectura.aux
+Reallocating 'name_of_file' (item size: 1) to 31 items.
+A level-1 auxiliary file: ArquitecturaYDiseno/Diseno.aux
+Reallocating 'name_of_file' (item size: 1) to 35 items.
+A level-1 auxiliary file: Desarrollo/Estructura/Proyecto.aux
+Reallocating 'name_of_file' (item size: 1) to 38 items.
+A level-1 auxiliary file: Desarrollo/Estructura/BaseDeDatos.aux
+Reallocating 'name_of_file' (item size: 1) to 32 items.
+A level-1 auxiliary file: Pruebas/PruebasDeUsabilidad.aux
 Reallocating 'name_of_file' (item size: 1) to 13 items.
 Database file #1: Bibliografia.bib
 Warning--empty journal in Kus2016
@@ -27,36 +37,36 @@ Warning--empty journal in Navarro2003
 Warning--empty journal in RendimientoEscolar
 Warning--empty year in RendimientoEscolar
 Warning--empty journal in Santillan2020
-You've used 34 entries,
+You've used 39 entries,
             1876 wiz_defined-function locations,
-            682 strings with 11058 characters,
-and the built_in function-call counts, 7370 in all, are:
-= -- 637
-> -- 359
+            703 strings with 11631 characters,
+and the built_in function-call counts, 7880 in all, are:
+= -- 674
+> -- 370
 < -- 0
-+ -- 136
-- -- 102
-* -- 511
-:= -- 1081
++ -- 143
+- -- 104
+* -- 523
+:= -- 1132
 add.period$ -- 25
-call.type$ -- 34
-change.case$ -- 34
+call.type$ -- 39
+change.case$ -- 39
 chr.to.int$ -- 0
-cite$ -- 42
-duplicate$ -- 340
-empty$ -- 732
-format.name$ -- 102
-if$ -- 1777
+cite$ -- 47
+duplicate$ -- 360
+empty$ -- 822
+format.name$ -- 104
+if$ -- 1916
 int.to.chr$ -- 0
-int.to.str$ -- 34
+int.to.str$ -- 39
 missing$ -- 22
-newline$ -- 105
-num.names$ -- 34
-pop$ -- 134
+newline$ -- 120
+num.names$ -- 36
+pop$ -- 162
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 283
+skip$ -- 323
 stack$ -- 0
 substring$ -- 351
 swap$ -- 119
@@ -65,7 +75,7 @@ text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 8
-while$ -- 57
-width$ -- 36
-write$ -- 274
+while$ -- 59
+width$ -- 41
+write$ -- 301
 (There were 8 warnings)

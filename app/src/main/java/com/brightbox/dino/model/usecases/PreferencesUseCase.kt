@@ -7,7 +7,7 @@ import com.brightbox.dino.model.constants.SHOW_ESSENTIAL_SHORTCUTS
 import com.brightbox.dino.model.constants.SHOW_SEARCH_ON_INTERNET
 import com.brightbox.dino.model.constants.SOLID_BACKGROUND
 import com.brightbox.dino.model.constants.THEME
-import com.brightbox.dino.model.database.preferences.PreferencesImpl
+import com.brightbox.dino.model.data.preferences.PreferencesImpl
 import com.brightbox.dino.model.states.preferences.PreferencesState
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

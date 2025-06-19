@@ -11,7 +11,7 @@ Se optó por el desarrollo nativo de la aplicación ya que ofrece mejor rendimie
 
 Esta decisión se fundamenta en la naturaleza específica del launcher, que requiere integración profunda con el sistema operativo Android para gestionar aplicaciones, controlar tiempos de uso y proporcionar una experiencia de usuario fluida y responsiva. Los resultados la comparativa se consignaron en la Tabla \ref{tab:comparacion_nativo_multiplataforma}.
 
-\begin{table}[H]
+\begin{table}[ht]
 \centering
 \caption{Comparación entre desarrollo nativo y multiplataforma para Android}
 \label{tab:comparacion_nativo_multiplataforma}
@@ -46,7 +46,7 @@ Compatibilidad & Total, diseño específico para Android & Buena, pero con posib
 
 La elección de Android 10 (API 29) como versión mínima para el desarrollo de Dino Launcher se fundamenta en la convergencia entre las funcionalidades que introduce esta versión del sistema operativo, los requisitos específicos del launcher desarrollado y la posibilidad de que pueda ser ejecutado en dispositivos no tan recientes de manera satisfactoria. En la figura \ref{fig:versiones_android}, los datos de distribución de Android 10 alcanzan el 81.2\% de los dispositivos en el mercado, lo que garantiza una amplia compatibilidad con los dispositivos de los usuarios objetivo. 
 
-\begin{figure}[H]
+\begin{figure}[ht]
 \caption{Distribución de versiones de Android a nivel mundial. \cite{AndroidStudio}}
 \label{fig:versiones_android}
 \includegraphics[width=\textwidth]{Figuras/versiones_android.png}
@@ -108,10 +108,10 @@ Jetpack Compose es el toolkit de UI más reciente y recomendado por Google para 
 
 El aspecto más relevante de Jetpack Compose es su integración nativa con Kotlin, lo que permite aprovechar plenamente las características modernas del lenguaje como las funciones lambda, la programación funcional y la sintaxis concisa, mejorando la legibilidad y mantenibilidad del código y reduciendo la cantidad de código necesario para construir interfaces. En la Figura \ref{fig:compose_vs_xml}, se muestra un ejemplo de código en Jetpack Compose que ilustra su simplicidad y claridad en comparación con el enfoque tradicional de XML para construir una interfaz que muestre las palabras \textit{"Good"} \textit{"Morning"} una arriba de la otra.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \caption{Ejemplo de código en Jetpack Compose}
 \label{fig:compose_vs_xml}
-\includegraphics[width=\textwidth]{Figuras/compose_vs_xml.jpg}
+\includegraphics[width=0.88\textwidth]{Figuras/compose_vs_xml.jpg}
 \centering
 \end{figure}
 
@@ -119,7 +119,7 @@ El aspecto más relevante de Jetpack Compose es su integración nativa con Kotli
 
 La Tabla \ref{tab:comparacion_compose_xml} presenta una comparación detallada entre Jetpack Compose y el sistema tradicional de vistas XML, destacando las ventajas técnicas que justifican la adopción de Compose para el desarrollo del launcher.
 
-\begin{table}[H]
+\begin{table}[ht]
 \centering
 \caption{Comparación entre Jetpack Compose y vistas XML para desarrollo Android}
 \label{tab:comparacion_compose_xml}

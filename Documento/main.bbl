@@ -155,6 +155,9 @@ A.~S. Garcia and M.~E. Escalera-Chávez, ``Vista de adicción hacia el
   teléfono móvil en estudiantes de nivel medio superior. ¿cómo es el
   comportamiento por género?,'' 11 2020.
 
+\bibitem{GithubProjects}
+J.~S.~R. Aguilar, ``Sprint board · trabajo de grado - launcher android.''
+
 \bibitem{AndroidBestPractices}
 Google, ``Guía de arquitectura de apps  |  app architecture  |  android
   developers.''
@@ -162,5 +165,19 @@ Google, ``Guía de arquitectura de apps  |  app architecture  |  android
 \bibitem{ArchitectureComponents}
 Google, ``Android developers blog: Announcing architecture components 1.0
   stable.''
+
+\bibitem{HexLauncher}
+``Mrmannwood/launcher.''
+
+\bibitem{MinimalLauncher}
+``finnmglas/launcher: :rocket: A distraction-free minimal homescreen for
+  android..''
+
+\bibitem{Olauncher}
+``tanujnotes/olauncher: Minimal af launcher for android. reduce your screen
+  time. daily wallpapers..''
+
+\bibitem{Mockups}
+J.~S.~R. Aguilar, ``Mockups – figma.''
 
 \end{thebibliography}

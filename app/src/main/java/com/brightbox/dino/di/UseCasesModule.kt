@@ -2,7 +2,7 @@ package com.brightbox.dino.di
 
 import android.content.Context
 import com.brightbox.dino.config.DinoDatabase
-import com.brightbox.dino.model.database.preferences.PreferencesImpl
+import com.brightbox.dino.model.data.preferences.PreferencesImpl
 import com.brightbox.dino.model.usecases.ApplicationsUseCase
 import com.brightbox.dino.model.usecases.CategoriesUseCase
 import com.brightbox.dino.model.usecases.HabitsLogsUseCase

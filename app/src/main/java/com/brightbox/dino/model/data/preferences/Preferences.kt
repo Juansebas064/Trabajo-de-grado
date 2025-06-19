@@ -1,4 +1,4 @@
-package com.brightbox.dino.model.database.preferences
+package com.brightbox.dino.model.data.preferences
 
 import com.brightbox.dino.model.states.preferences.PreferencesState
 import kotlinx.coroutines.flow.Flow

@@ -2,12 +2,12 @@ package com.brightbox.dino.config
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.brightbox.dino.model.database.ApplicationsDao
-import com.brightbox.dino.model.database.CategoriesDao
-import com.brightbox.dino.model.database.HabitsDao
-import com.brightbox.dino.model.database.HabitsLogsDao
-import com.brightbox.dino.model.database.LimitsDao
-import com.brightbox.dino.model.database.TasksDao
+import com.brightbox.dino.model.data.ApplicationsDao
+import com.brightbox.dino.model.data.CategoriesDao
+import com.brightbox.dino.model.data.HabitsDao
+import com.brightbox.dino.model.data.HabitsLogsDao
+import com.brightbox.dino.model.data.LimitsDao
+import com.brightbox.dino.model.data.TasksDao
 import com.brightbox.dino.model.ApplicationsModel
 import com.brightbox.dino.model.CategoriesModel
 import com.brightbox.dino.model.HabitsLogsModel

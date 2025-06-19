@@ -1,0 +1,26 @@
+\section{Desarrollo}
+\subsection{Estructura.}
+
+\subsubsection{Proyecto.}
+
+La estructura de la aplicación procura seguir cuidadosamente el patrón MVVM y las mejores prácticas de Android, organizando el código en módulos que facilitan el mantenimiento, la escalabilidad y la comprensión del sistema. La organización del proyecto se define de la siguiente manera:
+
+\begin{itemize}
+    \item \textbf{config:} Contiene las configuraciones de la base de datos Room, así como futuros archivos de configuración que pueda necesitar el proyecto.
+    
+    \item \textbf{di:} Implementa la inyección de dependencias utilizando Dagger-Hilt, siguiendo las recomendaciones de Google para la gestión de dependencias en Android. Hilt facilita la creación y provisión automática de instancias de UseCases y ViewModels.
+    
+    \item \textbf{events:} Define los eventos de la aplicación que permite la coordinación entre la UI, los ViewModels y la gestión de estados.
+    
+    \item \textbf{model:} Contiene las entidades de la base de datos que representan la estructura de información del launcher. Incluye modelos para tareas, hábitos, aplicaciones, límites y categorías, cada uno definiendo la estructura de datos específica para su dominio correspondiente mediante anotaciones de Room. Además, incluye clases de estado auxiliares, constantes usadas a lo largo del proyecto y la lógica de negocio encapsulada en UseCases, que representan las operaciones que pueden realizarse sobre los datos, como añadir, eliminar o actualizar tareas y hábitos.
+    
+    \item \textbf{navigation:} Gestiona la navegación entre pantallas utilizando \textit{Navigation Compose} de Jetpack, proporcionando una navegación fluida y consistente a través de toda la aplicación. Define las rutas de navegación y maneja las transiciones entre diferentes vistas del launcher.
+    
+    \item \textbf{services:} Implementa servicios especializados para límite de tiempo de aplicaciones, gestión de notificaciones del sistema y actualización de estado de tareas y hábitos al inicio de cada día.
+    
+    \item \textbf{utils:} Proporciona utilidades y funciones auxiliares reutilizables a lo largo del proyecto.
+    
+    \item \textbf{view:} Representa la capa de vista implementada completamente en Jetpack Compose. Esta carpeta se subdivide en módulos específicos que incluyen componentes reutilizables, pantallas principales y vistas especializadas para la gestión de elementos. Cada vista observa los cambios en su ViewModel correspondiente y se recompone automáticamente según el estado de la aplicación.
+    
+    \item \textbf{viewmodel:} Constituye el núcleo del patrón MVVM, implementando los ViewModels específicos para cada funcionalidad principal. Cada ViewModel gestiona el estado y la lógica de presentación de su respectiva vista mediante StateFlow y corrutinas de Kotlin.
+\end{itemize}

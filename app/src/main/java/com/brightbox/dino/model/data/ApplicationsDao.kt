@@ -1,4 +1,4 @@
-package com.brightbox.dino.model.database
+package com.brightbox.dino.model.data
 
 import androidx.room.Dao
 import androidx.room.Delete
