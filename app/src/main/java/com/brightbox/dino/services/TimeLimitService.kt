@@ -61,7 +61,7 @@ class TimeLimitService : Service() {
             NotificationCompat.Builder(this, NotificationSender.MONITORING_CHANNEL_ID)
                 .setContentTitle(application.getString(R.string.app_name)) // Title for the notification
                 .setContentText(application.getString(R.string.monitoring_app_usage)) // Text for the notification
-                .setSmallIcon(R.mipmap.ic_launcher) // **REQUIRED:** An icon for the notification
+                .setSmallIcon(android.R.drawable.sym_def_app_icon) // **REQUIRED:** An icon for the notification
                 .setPriority(NotificationCompat.PRIORITY_LOW) // Set priority (LOW is less intrusive)
                 .setOngoing(true)
                 .build()
