@@ -10,9 +10,9 @@ import androidx.lifecycle.viewModelScope
 import com.brightbox.dino.events.HabitsEvent
 import com.brightbox.dino.model.HabitsLogsModel
 import com.brightbox.dino.model.HabitsModel
-import com.brightbox.dino.states.HabitsState
-import com.brightbox.dino.usecases.HabitsLogsUseCase
-import com.brightbox.dino.usecases.HabitsUseCase
+import com.brightbox.dino.model.states.HabitsState
+import com.brightbox.dino.model.usecases.HabitsLogsUseCase
+import com.brightbox.dino.model.usecases.HabitsUseCase
 import com.brightbox.dino.utils.formatMillisecondsToDay
 import com.brightbox.dino.utils.formatMillisecondsToSQLiteDate
 import com.brightbox.dino.utils.formatSQLiteDateToMilliseconds

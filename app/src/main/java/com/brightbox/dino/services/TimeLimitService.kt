@@ -9,7 +9,7 @@ import androidx.core.app.NotificationCompat
 import com.brightbox.dino.R
 import com.brightbox.dino.TimeLimitOverlayActivity
 import com.brightbox.dino.model.LimitsModel
-import com.brightbox.dino.usecases.LimitsUseCase
+import com.brightbox.dino.model.usecases.LimitsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +61,7 @@ class TimeLimitService : Service() {
             NotificationCompat.Builder(this, NotificationSender.MONITORING_CHANNEL_ID)
                 .setContentTitle(application.getString(R.string.app_name)) // Title for the notification
                 .setContentText(application.getString(R.string.monitoring_app_usage)) // Text for the notification
-                .setSmallIcon(R.mipmap.ic_launcher) // **REQUIRED:** An icon for the notification
+                .setSmallIcon(android.R.drawable.sym_def_app_icon) // **REQUIRED:** An icon for the notification
                 .setPriority(NotificationCompat.PRIORITY_LOW) // Set priority (LOW is less intrusive)
                 .setOngoing(true)
                 .build()

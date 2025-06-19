@@ -61,7 +61,7 @@
     <string name="search">Buscar</string>
     <string name="on_the_internet">en internet</string>
     <string name="pomodoro">Pomodoro</string>
-    <string name="session_time">Tiempo de sesión</string>
+    <string name="session_time">Tiempo de trabajo</string>
     <string name="break_time">Tiempo de descanso</string>
     <string name="minutes_short">min</string>
     <string name="applications_time_limit">Tiempo límite de aplicaciones</string>

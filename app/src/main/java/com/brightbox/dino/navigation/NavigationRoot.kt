@@ -12,9 +12,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.brightbox.dino.SettingsActivity
-import com.brightbox.dino.views.applications_limit.ApplicationsLimitView
-import com.brightbox.dino.views.applications_limit.SelectApplicationsToLimitView
-import com.brightbox.dino.views.home.HomeView
+import com.brightbox.dino.view.applications_limit.ApplicationsLimitView
+import com.brightbox.dino.view.applications_limit.SelectApplicationsToLimitView
+import com.brightbox.dino.view.home.HomeView
 
 val LocalNavController = compositionLocalOf<NavHostController> {
     error("NavController no provisto. Asegúrate de proveerlo usando CompositionLocalProvider.")

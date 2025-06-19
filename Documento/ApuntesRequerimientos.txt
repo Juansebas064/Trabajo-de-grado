@@ -1,0 +1,148 @@
+# Reunión 15 de agosto
+Organizar la app de metodología, los sprints, las HU.
+
+Empezar por el análisis.
+
+Aprender Kotlin es una HU, y todas las tecnologías.
+
+Aprender de pruebas los mock, cómo acceder a la interfaz desde las pruebas, JUnit
+
+# Reunión 22 de agosto
+- Tablas de comparación de desarrollo nativo vs multi, Java vs Kotlin, mencionar el plus del conocimiento de Kotlin
+- Comunidad Kotlin muy activa (ej: GitHub)
+- Sacar documentación necesaria de las tecnologias
+- Tener en las hu con todas la pequeñas actividades e ir trabajando 
+- El documento ya no tiene las ultimas secciones de programa de hitos
+- Crear el backlog completo
+- Tener panorama completo
+- Seguir con capacitacion
+- Conclusión de por qué Kotlin
+- Trabajar el 1.2
+- Trabajar en el objetivo 1.3 
+- SQLite para almacenamiento de datos por ahora
+
+
+- Trabajar en el 1.1 al principio del sprint 2
+
+
+# Reunión 29 de agosto
+- Técnicas de levantamiento de requerimientos:
+	- **Brainstorm**
+	- **Observación:** Porque ya se han usado otros launchers, porque estoy rodeado de estudiantes y veo su comportamiento
+	- **Análisis de documentación:** Revisión de literatura de la problemática
+- Buscar análisis de user experience
+- Intentar varios diseños de wireframes y hacer un análisis para el documento.
+- Crear las hu de las características de la app y sus criterios de aceptación.
+
+
+# Naturaleza del proyecto: Native development
+Se optó por el desarrollo nativo de la aplicación ya que ofrece mejor rendimiento, fácil acceso a todos los recursos del smartphone y está enfocado a un sistema operativo en particular (Android). Los frameworks multiplataforma actuales también ofrecen buen rendimiento e integración con las herramientas de desarrollo de Android, pero son más propensos a tener menor rendimiento, usar más recursos del sistema y generar fallos debido a las diferencias entre, en el caso de desarrollo móvil, IOS y Android.
+
+| **Aspecto**                | **Desarrollo Nativo en Android**              | **Desarrollo Multiplataforma para Android**     |
+|----------------------------|-----------------------------------------------|------------------------------------------------|
+| **Lenguaje de Programación** | Kotlin o Java                               | JavaScript (React Native), Dart (Flutter), C# (Xamarin) |
+| **Rendimiento**            | Óptimo, ya que está optimizado específicamente para Android | Bueno, pero generalmente inferior al nativo debido a la capa de abstracción multiplataforma |
+| **Acceso a Funcionalidades del Dispositivo** | Acceso total a todas las APIs y hardware específicos de Android | Acceso limitado, aunque los frameworks ofrecen plugins para funcionalidades específicas de Android |
+| **Experiencia de Usuario (UX)** | Adaptación completa a las directrices de diseño de Android (Material Design) | Puede no seguir al 100% las directrices de diseño de Android, lo que puede afectar la coherencia de la UX |
+| **Tiempo de Desarrollo**   | Puede ser más largo debido a la codificación específica para Android | Más corto, ya que se comparte código con otras plataformas |
+| **Costos de Desarrollo**   | Más altos si solo se desarrolla para Android, pero justificados por el rendimiento óptimo | Más bajos, especialmente si se planea desarrollar también para otras plataformas, ya que se reutiliza el código |
+| **Mantenimiento**          | Simplificado en comparación con desarrollos multiplataforma, ya que solo se enfoca en Android | Más sencillo si se utiliza un solo código para varias plataformas, pero puede ser complejo si se necesita compatibilidad nativa específica de Android |
+| **Actualizaciones de Sistema Operativo** | Rápido, se puede implementar inmediatamente con las nuevas versiones de Android | Depende del framework utilizado; puede requerir actualizaciones del framework antes de soportar nuevas versiones de Android |
+| **Reutilización de Código**| Nula entre plataformas, pero puede reutilizarse en diferentes proyectos Android | Alta reutilización si se desarrolla también para otras plataformas, lo que puede reducir tiempo y costos |
+| **Compatibilidad con Android** | Total, ya que el código está diseñado específicamente para Android | Buena, pero puede haber inconsistencias o limitaciones con funcionalidades específicas de Android |
+
+
+**Fuente:** [JetBrains](https://www.jetbrains.com/help/kotlin-multiplatform-dev/native-and-cross-platform.html#what-is-native-mobile-app-development)
+
+
+# Lenguaje a utilizar: Kotlin
+Las dos alternativas de desarrollo nativo en Android son Java y Kotlin. Java es el lenguaje tradicional para el desarrollo Android, pero ha perdido terreno gracias a Kotlin y sus mejoras con respecto a Java para el desarrollo móvil, principalmente en cuanto a sintaxis. Según la encuesta anual de desarrolladores de Stack Overflow de mayo de 2024, los desarrolladores que trabajan con Kotlin se sienten cómodos con el lenguaje, al contrario de lo que se observa en Java, donde varios de los encuestados preferirían trabajar con Kotlin.
+
+## ¿Por qué Kotlin?
+- Google, propietario de Android, recomienta Kotlin para cualquier proyecto nuevo de android y declaró que construiría sus herramientas de desarrollo con un enfoque Kotlin-first desde la conferencia Google I/O en 2019.
+- Es un lenguaje más fácil de entender por su sintaxis simplificada y la reducción de 'boilerplate' en el código, reduciendo el tiempo de aprendizaje.
+- Su desarrollo es muy activo y adaptado a las necesidades actuales de su campo de aplicación.
+- Tiene una gran comunidad y gran cantidad de recursos disponibles para capacitarse en el lenguaje.
+
+| **Aspecto**                   | **Kotlin**                              | **Java**                                 |
+|-------------------------------|-----------------------------------------|------------------------------------------|
+| **Año de Lanzamiento**         | 2011                                    | 1995                                     |
+| **Sintaxis**                   | Concisa, moderna y más legible          | Verbosa, más detallada y tradicional     |
+| **Interoperabilidad**          | Totalmente interoperable con Java       | No es nativamente interoperable con Kotlin (aunque puede usarse con Kotlin) |
+| **Seguridad de Tipos Nulos**   | Ofrece seguridad de tipos nulos, evitando NullPointerExceptions | No tiene seguridad de tipos nulos; NullPointerExceptions son comunes |
+| **Compatibilidad con Android** | Totalmente compatible, lenguaje oficial para Android | Totalmente compatible, pero no es el lenguaje oficial recomendado |
+| **Características Modernas**   | Soporte para lambdas, coroutines, extension functions, data classes, etc. | Introducción más lenta de características modernas, aunque Java 8+ incluye lambdas y streams |
+| **Curva de Aprendizaje**       | Relativamente fácil para desarrolladores de Java debido a su similitud, pero más complejo en características avanzadas | Relativamente fácil debido a su amplia documentación y recursos, pero más verboso |
+| **Productividad**              | Alta, gracias a su sintaxis concisa y características avanzadas | Moderada, debido a la necesidad de escribir más código para realizar tareas similares |
+| **Soporte y Comunidad**        | Creciente, especialmente en el desarrollo Android, fuerte comunidad de usuarios | Muy grande y establecida, con décadas de documentación, recursos y bibliotecas disponibles |
+| **Desempeño**                  | Similar a Java, con optimizaciones específicas en compilación para Android | Similar a Kotlin, con un rendimiento generalmente comparable |
+| **Ecosistema de Herramientas** | Totalmente soportado en Android Studio, con soporte en IntelliJ IDEA | Amplio soporte en diversas IDEs como Eclipse, IntelliJ IDEA, y Android Studio |
+
+
+**Fuentes:** [Android](https://developer.android.com/kotlin/first), [Stack Overflow Annual Developer Survey](https://survey.stackoverflow.co/)
+
+
+
+Para llevar a cabo el desarrollo de un launcher Android enfocado en combatir la procrastinación en estudiantes universitarios, fue necesario emplear una metodología rigurosa de levantamiento de requerimientos. Con este objetivo, se implementaron diversas técnicas que permitieron obtener una comprensión profunda de las necesidades y expectativas de los usuarios.
+
+En primer lugar, se recurrió a la técnica de brainstorming para generar un amplio abanico de ideas sobre las funcionalidades que el launcher podría ofrecer. A través de sesiones creativas, se exploraron diversas posibilidades y se identificaron las características clave que podrían contribuir a mejorar la productividad de los estudiantes.
+
+Posteriormente, se realizó una exhaustiva observación del comportamiento de los usuarios. Al analizar cómo los estudiantes interactúan con sus dispositivos móviles en entornos académicos, se identificaron patrones de uso, distracciones comunes y oportunidades de mejora en la experiencia del usuario. Esta observación in situ permitió obtener una visión cualitativa de las necesidades reales de los estudiantes.
+
+Finalmente, se llevó a cabo una revisión sistemática de la literatura científica relacionada con la procrastinación, el diseño de interfaces y el desarrollo de aplicaciones móviles. Esta revisión bibliográfica permitió fundamentar teóricamente el proyecto, identificando las mejores prácticas y las tendencias actuales en el campo.
+
+La combinación de estas técnicas, a saber, el brainstorming, la observación y el análisis de la literatura, permitió construir una base sólida para el desarrollo del launcher. Los resultados obtenidos a través de este proceso de levantamiento de requerimientos fueron fundamentales para definir los requisitos funcionales y no funcionales del sistema, asegurando así que el producto final respondiera de manera efectiva a las necesidades de los usuarios.
+
+**Título:**  Procrastinación, procrastinación académica
+**Link:**  https://dialnet.unirioja.es/servlet/articulo?codigo=4815146
+**Resumen o aspectos importantes:** mostraron que existe una relación negativa entre la procrastinación académica y las intenciones de llevar a cabo conductas saludables y que las intenciones débiles de llevar a cabo conductas saludables en los procrastinadores estuvieron asociadas con una menor autoeficacia específica de la salud, todo lo cual indicó, según esa investigación, que la procrastinación académica estaba asociada con bajo control conductual percibido. 
+
+**Título:** Procrastinación académica y dependencia al dispositivo móvil en estudiantes universitarios
+**Link:** http://scielo.senescyt.gob.ec/scielo.php?script=sci_arttext&pid=S2661-67422023000300042&lang=es
+**Resumen o aspectos importantes:** El nivel moderado (59,3%) lo hizo en cuanto a la dependencia al dispositivo móvil (37,1% en mujeres y 20,4% en hombres). Existió una correlación directa con una intensidad de moderada a fuerte entre la postergación de actividades y la dependencia al dispositivo móvil 
+
+**Título:** Factores que inciden en la procrastinación académica de los estudiantes de educación superior en Colombia
+**Link:** http://scielo.sld.cu/scielo.php?script=sci_arttext&pid=S2218-36202023000400421&lang=es
+**Resumen o aspectos importantes:** Se identifica que el uso indebido del celular se convierte en un elemento distractor, es sabido de la adicción que muchas personas tienen por las redes sociales, las cuales demandan gran cantidad del tiempo de los estudiantes
+Sin embargo, este tipo de comportamiento no solo se limita al uso indebido del celular y las RRSS en tiempos de estudios, pues este puede abarcar otros elementos, que se establece como una procrastinación electrónica que se extiende al uso de la computadora, videojuegos, TV, película, noticias, etc. añadiendo, además, que brinda una dilación seductora, pues se pueden utilizar en cualquier momento debido a la accesibilidad que brinda el internet. 
+
+**Título:** Investigación sobre la relación estructural entre la relación padre-hijo y el uso de teléfonos inteligentes, la procrastinación académica y la autoestima basada en el modelo de ecuaciones estructurales en el contexto de Big Data
+**Link:** https://ieeexplore-ieee-org.bd.univalle.edu.co/document/10027327
+**Resumen o aspectos importantes:** las críticas a su adicción a los teléfonos inteligentes y la procrastinación académica reducirían su pasión por el estudio, despertando preocupaciones entre los maestros y los padres, amenazando así la relación padre-hijo. La procrastinación académica está correlacionada significativamente de forma negativa con la autoestima en el nivel de 0,01. El uso excesivo de teléfonos inteligentes está correlacionado significativamente de forma positiva con la procrastinación académica y negativamente con la autoestima.	 
+
+
+**Título:** Uso problemático del smartphone y procrastinación en el ámbito académico: un meta-análisis. Sergio Hidalgo Fuentes
+**Link:** https://www.revista-psicologia.unam.mx/revista_aip/index.php/aip/article/view/358/319
+**Resumen o aspectos importantes:** se concluye que a mayor uso problemático del smartphone, mayor tendencia a procrastinar en los estudiantes y dado que el uso del smartphone parece estar relacionado con un bajo autocontrol, programas de intervención relacionados con la resiliencia para controlar el uso del smartphone o la gestión del tiempo podrían tener efectos positivos.
+
+
+**Link documento:** [Aquí](https://docs.google.com/document/d/156l-rM5Cmdjxn16_Uz_aOnEZRIgbAcsHHBI5ex8NB1c/edit?usp=sharing)
+
+# Características
+- Lanzador de aplicaciones
+	- Tarea principal del launcher. Mostrará la lista de aplicaciones que se podrán lanzar al hacer tap
+	- Se podrá hacer una gestión básica de la aplicación seleccionada manteniendo pulsado para desinstalarla, abrir la información de la aplicación o fijarla en el escritorio
+- Accesos rápidos
+	- Contará con accesos rápidos de las aplicaciones escenciales predeterminadas como teléfono, contactos, cámara, galería, entre otros, sin necesidad de buscarlas.
+	- Se podrán fijar aplicaciones al escritorio
+- Barra de búsqueda de apps y opciones del launcher
+	- Contará con una barra de búsqueda que mostrará las aplicaciones que coincidan con el texto ingresado, así como configuraciones del launcher.
+- Modo concentración
+	- Funcionará con bloqueo de apps, que impedirá que se usen las aplicaciones hasta que se desactive el modo.
+	- Bloqueará las notificaciones de las aplicaciones restringidas
+	- Se podrá programar la activación/desactivación basado en el horario del estudiante
+- Limite de tiempo de apps
+	- Se podrá limitar el tiempo de uso de las aplicaciones.
+	- Una vez finalizado el tiempo, se podrá volver a usar, pero ya no el tiempo especificado, al final de un tiempo de espera
+- Gestión de tareas
+	- Tipo to-do
+	- Se le podrá asignar una fecha. Si no se le asigna fecha, aparecerá cada día hasta que se complete
+	- Se podrán agregar etiquetas a las tareas para una mejor clasificación
+- Gestión de hábitos
+	- Será un tipo de “tarea recurrente”
+	- Aparecerá los días especificados de la semana
+	- Tendrá una fecha de inicio y una de fin
+	- Se podrá marcar completada como un to-do
+- Integración de pomodoro
+	- Se podrá configurar el número de sesiones, tiempo de sesiones y tiempo de descansos de pomodoro
+

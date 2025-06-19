@@ -11,11 +11,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brightbox.dino.R
-import com.brightbox.dino.constants.SearchEnginesEnum
+import com.brightbox.dino.model.constants.SearchEnginesEnum
 import com.brightbox.dino.model.ApplicationsModel
-import com.brightbox.dino.states.ApplicationsState
-import com.brightbox.dino.usecases.ApplicationsUseCase
-import com.brightbox.dino.usecases.PreferencesUseCase
+import com.brightbox.dino.model.states.ApplicationsState
+import com.brightbox.dino.model.states.preferences.PreferencesState
+import com.brightbox.dino.model.usecases.ApplicationsUseCase
+import com.brightbox.dino.model.usecases.PreferencesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,6 +62,11 @@ class ApplicationsViewModel @Inject constructor(
             appChangeIntentFilter,
             ContextCompat.RECEIVER_EXPORTED
         )
+        viewModelScope.launch {
+            _preferencesUseCase.getPreferences().collectLatest {
+                _preferences.value = it
+            }
+        }
     }
 
     // States
@@ -99,8 +105,9 @@ class ApplicationsViewModel @Inject constructor(
 
 
     private val _appShowingOptions = MutableStateFlow("none")
-
     val appShowingOptions = _appShowingOptions.asStateFlow()
+
+    private val _preferences = MutableStateFlow(PreferencesState())
 
     fun onSearchTextChange(searchText: String = "") {
         _searchText.value = searchText
@@ -154,14 +161,10 @@ class ApplicationsViewModel @Inject constructor(
     }
 
     fun searchOnInternet() {
-        viewModelScope.launch {
-            _preferencesUseCase.getPreferences().collectLatest { preferences ->
-                if (preferences.showSearchOnInternet) {
-                    val searchEngineEnum =
-                        SearchEnginesEnum.entries.find { it.engineName == preferences.searchEngine }
-                    _applicationsUseCase.searchOnInternet(_searchText.value, searchEngineEnum!!)
-                }
-            }
+        if (_preferences.value.showSearchOnInternet) {
+            val searchEngineEnum =
+                SearchEnginesEnum.entries.find { it.engineName == _preferences.value.searchEngine }
+            _applicationsUseCase.searchOnInternet(_searchText.value, searchEngineEnum!!)
         }
     }
 }

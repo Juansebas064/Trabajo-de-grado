@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brightbox.dino.events.CategoriesEvent
 import com.brightbox.dino.model.CategoriesModel
-import com.brightbox.dino.states.CategoriesState
-import com.brightbox.dino.usecases.CategoriesUseCase
+import com.brightbox.dino.model.states.CategoriesState
+import com.brightbox.dino.model.usecases.CategoriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

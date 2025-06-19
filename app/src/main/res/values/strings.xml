@@ -94,7 +94,7 @@
 
     <!--  Pomodoro  -->
     <string name="pomodoro">Pomodoro</string>
-    <string name="session_time">Session time</string>
+    <string name="session_time">Work time</string>
     <string name="break_time">Break time</string>
     <string name="minutes_short">min</string>
     <string name="number_of_sessions">Number of sessions</string>

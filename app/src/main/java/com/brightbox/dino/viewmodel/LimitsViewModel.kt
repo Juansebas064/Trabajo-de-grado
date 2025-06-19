@@ -10,9 +10,9 @@ import androidx.lifecycle.viewModelScope
 import com.brightbox.dino.events.LimitsEvent
 import com.brightbox.dino.model.ApplicationsModel
 import com.brightbox.dino.model.LimitsModel
-import com.brightbox.dino.states.LimitsState
-import com.brightbox.dino.usecases.ApplicationsUseCase
-import com.brightbox.dino.usecases.LimitsUseCase
+import com.brightbox.dino.model.states.LimitsState
+import com.brightbox.dino.model.usecases.ApplicationsUseCase
+import com.brightbox.dino.model.usecases.LimitsUseCase
 import com.brightbox.dino.utils.formatMillisecondsToSQLiteDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

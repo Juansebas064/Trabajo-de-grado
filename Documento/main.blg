@@ -1,0 +1,81 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+Reallocating 'name_of_file' (item size: 1) to 7 items.
+The style file: ieeetr.bst
+Reallocating 'name_of_file' (item size: 1) to 12 items.
+A level-1 auxiliary file: Portada.aux
+Reallocating 'name_of_file' (item size: 1) to 12 items.
+A level-1 auxiliary file: Resumen.aux
+Reallocating 'name_of_file' (item size: 1) to 41 items.
+A level-1 auxiliary file: Anteproyecto/1FormulacionDelProblema.aux
+Reallocating 'name_of_file' (item size: 1) to 35 items.
+A level-1 auxiliary file: Anteproyecto/2MarcoReferencial.aux
+Reallocating 'name_of_file' (item size: 1) to 37 items.
+A level-1 auxiliary file: Metodologia/TecnologiasEmpleadas.aux
+Reallocating 'name_of_file' (item size: 1) to 46 items.
+A level-1 auxiliary file: Metodologia/LevantamientoDeRequerimientos.aux
+Reallocating 'name_of_file' (item size: 1) to 40 items.
+A level-1 auxiliary file: Metodologia/MetodologiaDeDesarrollo.aux
+Reallocating 'name_of_file' (item size: 1) to 37 items.
+A level-1 auxiliary file: ArquitecturaYDiseno/Arquitectura.aux
+Reallocating 'name_of_file' (item size: 1) to 31 items.
+A level-1 auxiliary file: ArquitecturaYDiseno/Diseno.aux
+Reallocating 'name_of_file' (item size: 1) to 26 items.
+A level-1 auxiliary file: Desarrollo/Estructura.aux
+Reallocating 'name_of_file' (item size: 1) to 40 items.
+A level-1 auxiliary file: Desarrollo/InterfacesDeLaAplicacion.aux
+Reallocating 'name_of_file' (item size: 1) to 32 items.
+A level-1 auxiliary file: Pruebas/PruebasDeUsabilidad.aux
+Reallocating 'name_of_file' (item size: 1) to 13 items.
+Database file #1: Bibliografia.bib
+Warning--empty journal in Kus2016
+Warning--empty journal in Neyman2017
+Warning--empty journal in Luisa2019
+Warning--empty journal in Orzikulova2022
+Warning--empty journal in Navarro2003
+Warning--empty journal in RendimientoEscolar
+Warning--empty year in RendimientoEscolar
+Warning--empty journal in Santillan2020
+You've used 40 entries,
+            1876 wiz_defined-function locations,
+            706 strings with 11682 characters,
+and the built_in function-call counts, 7994 in all, are:
+= -- 682
+> -- 374
+< -- 0
++ -- 145
+- -- 105
+* -- 526
+:= -- 1147
+add.period$ -- 25
+call.type$ -- 40
+change.case$ -- 40
+chr.to.int$ -- 0
+cite$ -- 48
+duplicate$ -- 364
+empty$ -- 840
+format.name$ -- 105
+if$ -- 1945
+int.to.chr$ -- 0
+int.to.str$ -- 40
+missing$ -- 22
+newline$ -- 123
+num.names$ -- 37
+pop$ -- 167
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 331
+stack$ -- 0
+substring$ -- 351
+swap$ -- 119
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 8
+while$ -- 60
+width$ -- 42
+write$ -- 307
+(There were 8 warnings)

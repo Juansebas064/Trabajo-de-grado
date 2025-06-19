@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.brightbox.dino.views.preferences.PreferencesView
-import com.brightbox.dino.views.theme.DinoLauncherTheme
+import com.brightbox.dino.view.preferences.PreferencesView
+import com.brightbox.dino.view.theme.DinoLauncherTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

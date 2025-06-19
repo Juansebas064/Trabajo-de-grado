@@ -34,7 +34,7 @@ import com.brightbox.dino.services.NotificationSender
 import com.brightbox.dino.services.TasksWorker
 import com.brightbox.dino.services.TimeLimitService
 import com.brightbox.dino.viewmodel.preferences.PreferencesViewModel
-import com.brightbox.dino.views.theme.DinoLauncherTheme
+import com.brightbox.dino.view.theme.DinoLauncherTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject

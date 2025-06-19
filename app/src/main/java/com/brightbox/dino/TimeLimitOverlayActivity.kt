@@ -20,10 +20,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.brightbox.dino.viewmodel.ApplicationsViewModel
-import com.brightbox.dino.views.common.BottomModalDialogComponent
-import com.brightbox.dino.views.common.RoundedSquareButtonComponent
-import com.brightbox.dino.views.theme.DinoLauncherTheme
-import com.brightbox.dino.views.theme.LocalSpacing
+import com.brightbox.dino.view.common.BottomModalDialogComponent
+import com.brightbox.dino.view.common.RoundedSquareButtonComponent
+import com.brightbox.dino.view.theme.DinoLauncherTheme
+import com.brightbox.dino.view.theme.LocalSpacing
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
