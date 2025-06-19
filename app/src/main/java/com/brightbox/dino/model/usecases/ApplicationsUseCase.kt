@@ -81,17 +81,17 @@ class ApplicationsUseCase @Inject constructor(
 
     fun openAppInfo(packageName: String) {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-            Intent.setData = Uri.fromParts("package", packageName, null)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
+        intent.data = "package:$packageName".toUri()
         application.applicationContext.startActivity(intent)
     }
 
     fun uninstallApp(packageName: String) {
         val intent = Intent(Intent.ACTION_DELETE).apply {
-            Intent.setData = "package:${packageName}".toUri()
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
+        intent.data = "package:$packageName".toUri()
         application.applicationContext.startActivity(intent)
     }
 

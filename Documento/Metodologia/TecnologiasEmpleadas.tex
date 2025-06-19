@@ -1,4 +1,5 @@
 \section{Metodología.}
+\label{sec:metodologia}
 
 \subsection{Tecnologías empleadas.}
 
@@ -169,4 +170,4 @@ Room es una biblioteca de persistencia que forma parte de Android Jetpack \cite{
 \centering
 \end{figure}
 
-La selección de Room como solución de persistencia de datos por encima de alternativas basadas en la nube, como Firebase, se fundamenta en las características específicas del launcher y sus requerimientos funcionales en la sección \ref{chap:requerimientos_funcionales}. El proyecto no requiere que los datos estén disponibles en múltiples dispositivos o se sincronicen en tiempo real, ya que el launcher está diseñado para funcionar de manera individual en cada dispositivo. Además, el tipo de información que maneja la aplicación no demanda características de red en tiempo real ni almacenamiento de datos complejos o de gran tamaño. La naturaleza personal y privada de estos datos hace innecesaria la implementación de sistemas de autenticación de cuentas de usuario o gestión de perfiles en la nube, simplificando la arquitectura del sistema y minimizando el uso de recursos que puedan llegar a consumir las funciones de red.
+La selección de Room como solución de persistencia de datos por encima de alternativas basadas en la nube, como Firebase, se fundamenta en las características específicas del launcher y sus requerimientos funcionales en la sección \ref{sec:requerimientos_funcionales}. El proyecto no requiere que los datos estén disponibles en múltiples dispositivos o se sincronicen en tiempo real, ya que el launcher está diseñado para funcionar de manera individual en cada dispositivo. Además, el tipo de información que maneja la aplicación no demanda características de red en tiempo real ni almacenamiento de datos complejos o de gran tamaño. La naturaleza personal y privada de estos datos hace innecesaria la implementación de sistemas de autenticación de cuentas de usuario o gestión de perfiles en la nube, simplificando la arquitectura del sistema y minimizando el uso de recursos que puedan llegar a consumir las funciones de red.

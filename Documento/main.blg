@@ -21,10 +21,10 @@ Reallocating 'name_of_file' (item size: 1) to 37 items.
 A level-1 auxiliary file: ArquitecturaYDiseno/Arquitectura.aux
 Reallocating 'name_of_file' (item size: 1) to 31 items.
 A level-1 auxiliary file: ArquitecturaYDiseno/Diseno.aux
-Reallocating 'name_of_file' (item size: 1) to 35 items.
-A level-1 auxiliary file: Desarrollo/Estructura/Proyecto.aux
-Reallocating 'name_of_file' (item size: 1) to 38 items.
-A level-1 auxiliary file: Desarrollo/Estructura/BaseDeDatos.aux
+Reallocating 'name_of_file' (item size: 1) to 26 items.
+A level-1 auxiliary file: Desarrollo/Estructura.aux
+Reallocating 'name_of_file' (item size: 1) to 40 items.
+A level-1 auxiliary file: Desarrollo/InterfacesDeLaAplicacion.aux
 Reallocating 'name_of_file' (item size: 1) to 32 items.
 A level-1 auxiliary file: Pruebas/PruebasDeUsabilidad.aux
 Reallocating 'name_of_file' (item size: 1) to 13 items.
@@ -39,7 +39,7 @@ Warning--empty year in RendimientoEscolar
 Warning--empty journal in Santillan2020
 You've used 39 entries,
             1876 wiz_defined-function locations,
-            703 strings with 11631 characters,
+            703 strings with 11624 characters,
 and the built_in function-call counts, 7880 in all, are:
 = -- 674
 > -- 370

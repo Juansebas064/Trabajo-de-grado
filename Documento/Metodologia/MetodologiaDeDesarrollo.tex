@@ -59,17 +59,17 @@ Para historias de mayor complejidad o con aspectos técnicos específicos, se in
 
 \textit{GitHub Flow} es una metodología de control de versiones y colaboración en desarrollo de software que se caracteriza por su simplicidad y enfoque en la entrega continua. Desarrollada por GitHub como una alternativa más ágil y menos compleja que \textit{Git Flow}, esta metodología se fundamenta en un flujo de trabajo lineal que prioriza la rapidez de integración y el despliegue frecuente de cambios. La filosofía central de GitHub Flow se basa en mantener la rama principal (main) siempre en un estado desplegable, lo que significa que cualquier código que se integre a esta rama debe estar completamente funcional y listo para producción.
 
-El proceso de GitHub Flow se estructura en seis pasos: \textbf{Primero}, se crea una nueva rama a partir de la rama principal para cada nueva funcionalidad, corrección de errores o mejora que se desee implementar. Esta rama debe tener un nombre descriptivo (ejemplo: \texttt{apps-limit}) que refleje claramente el propósito del trabajo a realizar.
+Se buscó que la gestión del proyecto fuera simple pero con una estructura bien definida, este flujo de trabajo se adaptó perfectamente a las necesidades de estandarizar la gestión de ramas de \textit{Git} y de integrar de manera continua los cambios con la rama principal. El proceso de GitHub Flow se estructura en seis pasos: \textbf{Primero}, se crea una nueva rama a partir de la rama principal para cada nueva funcionalidad, corrección de errores o mejora que se desee implementar. Esta rama debe tener un nombre descriptivo (ejemplo: \texttt{apps-limit}) que refleje claramente el propósito del trabajo a realizar.
 
 \textbf{Segundo}, se realizan los commits necesarios en esta rama de trabajo, manteniendo un historial claro y conciso de los cambios implementados.
 
 \textbf{Tercero}, se abre un \textit{Pull Request (PR)} hacia la rama principal, iniciando el proceso de revisión de código. El PR actúa como mecanismo de documentación y discusión sobre los cambios propuestos y protege a la rama principal de ser directamente modificada.
 
-\textbf{Cuarto}, se lleva a cabo la revisión del código en el PR, donde otros miembros del equipo evalúan la calidad, funcionalidad y adherencia a los estándares establecidos.
+\textbf{Cuarto}, se lleva a cabo la revisión del código en el PR, donde otros miembros del equipo (en el caso de haber varios) evalúan la calidad, funcionalidad y adherencia a los estándares establecidos.
 
 \textbf{Quinto}, una vez que el PR ha sido aprobado y todas las verificaciones automáticas han pasado exitosamente, se procede a la integración del código en la rama principal mediante un \textit{merge}.
 
-\textbf{Sexto}, inmediatamente después de la integración, se procede al despliegue de los cambios en el ambiente de producción, aprovechando que la rama principal se mantiene siempre en estado desplegable.
+\textbf{Sexto}, inmediatamente después de la integración, se procede al despliegue de los cambios en el ambiente de producción, aprovechando que la rama principal se mantiene siempre en estado desplegable (en este caso, la instalación en el dispositivo Android).
 
 En la Figura \ref{fig:ramas_de_github} podemos ver algunas de las ramas que se utilizaron a lo largo del desarrollo del launcher.
 \begin{figure}[ht]
