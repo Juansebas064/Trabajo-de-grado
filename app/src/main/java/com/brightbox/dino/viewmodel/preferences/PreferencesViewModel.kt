@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brightbox.dino.events.preferences.GeneralPreferencesEvent
-import com.brightbox.dino.states.preferences.PreferencesState
-import com.brightbox.dino.usecases.PreferencesUseCase
+import com.brightbox.dino.model.states.preferences.PreferencesState
+import com.brightbox.dino.model.usecases.PreferencesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow

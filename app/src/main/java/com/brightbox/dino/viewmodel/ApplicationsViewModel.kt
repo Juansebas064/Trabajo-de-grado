@@ -11,12 +11,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brightbox.dino.R
-import com.brightbox.dino.constants.SearchEnginesEnum
+import com.brightbox.dino.model.constants.SearchEnginesEnum
 import com.brightbox.dino.model.ApplicationsModel
-import com.brightbox.dino.states.ApplicationsState
-import com.brightbox.dino.states.preferences.PreferencesState
-import com.brightbox.dino.usecases.ApplicationsUseCase
-import com.brightbox.dino.usecases.PreferencesUseCase
+import com.brightbox.dino.model.states.ApplicationsState
+import com.brightbox.dino.model.states.preferences.PreferencesState
+import com.brightbox.dino.model.usecases.ApplicationsUseCase
+import com.brightbox.dino.model.usecases.PreferencesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -9,7 +9,7 @@ import androidx.core.app.NotificationCompat
 import com.brightbox.dino.R
 import com.brightbox.dino.TimeLimitOverlayActivity
 import com.brightbox.dino.model.LimitsModel
-import com.brightbox.dino.usecases.LimitsUseCase
+import com.brightbox.dino.model.usecases.LimitsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

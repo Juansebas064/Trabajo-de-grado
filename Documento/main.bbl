@@ -155,4 +155,12 @@ A.~S. Garcia and M.~E. Escalera-Chávez, ``Vista de adicción hacia el
   teléfono móvil en estudiantes de nivel medio superior. ¿cómo es el
   comportamiento por género?,'' 11 2020.
 
+\bibitem{AndroidBestPractices}
+Google, ``Guía de arquitectura de apps  |  app architecture  |  android
+  developers.''
+
+\bibitem{ArchitectureComponents}
+Google, ``Android developers blog: Announcing architecture components 1.0
+  stable.''
+
 \end{thebibliography}

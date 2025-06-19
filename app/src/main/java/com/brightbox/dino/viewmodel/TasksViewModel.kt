@@ -7,11 +7,11 @@ import android.content.IntentFilter
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.brightbox.dino.constants.PrioritiesEnum
+import com.brightbox.dino.model.constants.PrioritiesEnum
 import com.brightbox.dino.events.TasksEvent
 import com.brightbox.dino.model.TasksModel
-import com.brightbox.dino.states.TasksState
-import com.brightbox.dino.usecases.TasksUseCase
+import com.brightbox.dino.model.states.TasksState
+import com.brightbox.dino.model.usecases.TasksUseCase
 import com.brightbox.dino.utils.formatMillisecondsToSQLiteDate
 import com.brightbox.dino.utils.formatSQLiteDateToMilliseconds
 import dagger.hilt.android.lifecycle.HiltViewModel

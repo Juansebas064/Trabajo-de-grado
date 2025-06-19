@@ -26,4 +26,9 @@
 \contentsline {subsection}{\numberline {5.2}Levantamiento de requerimientos.}{19}{subsection.5.2}%
 \contentsline {subsubsection}{\numberline {5.2.1}Requerimientos funcionales.}{20}{subsubsection.5.2.1}%
 \contentsline {subsubsection}{\numberline {5.2.2}Requerimientos no funcionales.}{20}{subsubsection.5.2.2}%
-\contentsline {section}{\numberline {6}Referencias}{21}{section.6}%
+\contentsline {section}{\numberline {6}Arquitectura y diseño.}{22}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Arquitectura.}{22}{subsection.6.1}%
+\contentsline {subsubsection}{\numberline {6.1.1}Prácticas recomendadas por Google.}{22}{subsubsection.6.1.1}%
+\contentsline {subsubsection}{\numberline {6.1.2}Patrón de arquitectura MVVM.}{23}{subsubsection.6.1.2}%
+\contentsline {subsection}{\numberline {6.2}Estructura del proyecto.}{25}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Referencias}{28}{section.7}%

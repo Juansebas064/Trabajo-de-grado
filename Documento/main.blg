@@ -15,6 +15,8 @@ Reallocating 'name_of_file' (item size: 1) to 37 items.
 A level-1 auxiliary file: Metodologia/TecnologiasEmpleadas.aux
 Reallocating 'name_of_file' (item size: 1) to 46 items.
 A level-1 auxiliary file: Metodologia/LevantamientoDeRequerimientos.aux
+Reallocating 'name_of_file' (item size: 1) to 37 items.
+A level-1 auxiliary file: ArquitecturaYDiseno/Arquitectura.aux
 Reallocating 'name_of_file' (item size: 1) to 13 items.
 Database file #1: Bibliografia.bib
 Warning--empty journal in Kus2016
@@ -25,36 +27,36 @@ Warning--empty journal in Navarro2003
 Warning--empty journal in RendimientoEscolar
 Warning--empty year in RendimientoEscolar
 Warning--empty journal in Santillan2020
-You've used 32 entries,
+You've used 34 entries,
             1876 wiz_defined-function locations,
-            675 strings with 10791 characters,
-and the built_in function-call counts, 7142 in all, are:
-= -- 621
-> -- 351
+            682 strings with 11058 characters,
+and the built_in function-call counts, 7370 in all, are:
+= -- 637
+> -- 359
 < -- 0
-+ -- 132
-- -- 100
-* -- 505
-:= -- 1051
++ -- 136
+- -- 102
+* -- 511
+:= -- 1081
 add.period$ -- 25
-call.type$ -- 32
-change.case$ -- 32
+call.type$ -- 34
+change.case$ -- 34
 chr.to.int$ -- 0
-cite$ -- 40
-duplicate$ -- 332
-empty$ -- 696
-format.name$ -- 100
-if$ -- 1719
+cite$ -- 42
+duplicate$ -- 340
+empty$ -- 732
+format.name$ -- 102
+if$ -- 1777
 int.to.chr$ -- 0
-int.to.str$ -- 32
+int.to.str$ -- 34
 missing$ -- 22
-newline$ -- 99
-num.names$ -- 32
-pop$ -- 124
+newline$ -- 105
+num.names$ -- 34
+pop$ -- 134
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 267
+skip$ -- 283
 stack$ -- 0
 substring$ -- 351
 swap$ -- 119
@@ -63,7 +65,7 @@ text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 8
-while$ -- 55
-width$ -- 34
-write$ -- 262
+while$ -- 57
+width$ -- 36
+write$ -- 274
 (There were 8 warnings)
