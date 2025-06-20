@@ -29,10 +29,6 @@ class ApplicationsUseCase @Inject constructor(
 
     // Get all apps from the database
     fun getApplicationsFromDatabase(appNameFilter: String? = null): Flow<List<ApplicationsModel>> {
-        Log.d(
-            "ApplicationsUseCase",
-            "getApplicationsFromDatabase: map called, filter = $appNameFilter"
-        )
         val appList = db.applicationsDao().getApplications().map { apps ->
             apps.sortedBy { it.name.lowercase() }
         }

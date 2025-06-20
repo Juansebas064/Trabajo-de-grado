@@ -1,52 +1,55 @@
 \babel@toc {spanish}{}\relax 
-\contentsline {section}{Resumen}{3}{section*.2}%
-\contentsline {section}{Introducción.}{4}{section*.3}%
-\contentsline {section}{\numberline {1}Formulaci\'on del problema.}{5}{section.1}%
-\contentsline {subsection}{\numberline {1.1}Descripci\'on del problema.}{5}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}Definici\'on del problema.}{6}{subsection.1.2}%
-\contentsline {section}{\numberline {2}Marco referencial.}{7}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Marco te\'orico.}{7}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Estado del arte.}{8}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Marco conceptual.}{9}{subsection.2.3}%
-\contentsline {section}{\numberline {3}Alcance.}{11}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Declaración del alcance.}{11}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Supuestos.}{11}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Restricciones.}{11}{subsection.3.3}%
-\contentsline {section}{\numberline {4}Objetivos.}{12}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Objetivo general.}{12}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Objetivos espec\'ificos.}{12}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Resultados esperados.}{12}{subsection.4.3}%
-\contentsline {section}{\numberline {5}Metodología.}{13}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Tecnologías empleadas.}{13}{subsection.5.1}%
-\contentsline {subsubsection}{\numberline {5.1.1}Desarrollo nativo vs. multiplataforma.}{13}{subsubsection.5.1.1}%
-\contentsline {subsubsection}{\numberline {5.1.2}Versión objetivo de la API de Android.}{13}{subsubsection.5.1.2}%
-\contentsline {subsubsection}{\numberline {5.1.3}Selección del lenguaje: Kotlin.}{13}{subsubsection.5.1.3}%
-\contentsline {subsubsection}{\numberline {5.1.4}Librería de UI: Jetpack Compose.}{15}{subsubsection.5.1.4}%
-\contentsline {subsubsection}{\numberline {5.1.5}Persistencia de datos: Room.}{17}{subsubsection.5.1.5}%
-\contentsline {subsection}{\numberline {5.2}Levantamiento de requerimientos.}{19}{subsection.5.2}%
-\contentsline {subsubsection}{\numberline {5.2.1}Requerimientos funcionales.}{20}{subsubsection.5.2.1}%
-\contentsline {subsubsection}{\numberline {5.2.2}Requerimientos no funcionales.}{20}{subsubsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.3}Scrumban: Implementación.}{22}{subsection.5.3}%
-\contentsline {subsubsection}{\numberline {5.3.1}Sprints.}{22}{subsubsection.5.3.1}%
-\contentsline {subsubsection}{\numberline {5.3.2}Gestión de actividades: GitHub Projects.}{22}{subsubsection.5.3.2}%
-\contentsline {subsubsection}{\numberline {5.3.3}GitHub Flow.}{23}{subsubsection.5.3.3}%
-\contentsline {section}{\numberline {6}Arquitectura y diseño.}{27}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Arquitectura.}{27}{subsection.6.1}%
-\contentsline {subsubsection}{\numberline {6.1.1}Prácticas recomendadas por Google.}{27}{subsubsection.6.1.1}%
-\contentsline {subsubsection}{\numberline {6.1.2}Patrón de arquitectura MVVM.}{28}{subsubsection.6.1.2}%
-\contentsline {subsection}{\numberline {6.2}Diseño.}{31}{subsection.6.2}%
-\contentsline {subsubsection}{\numberline {6.2.1}Aplicaciones similares.}{31}{subsubsection.6.2.1}%
-\contentsline {subsubsection}{\numberline {6.2.2}Mockups y prototipo.}{31}{subsubsection.6.2.2}%
-\contentsline {section}{\numberline {7}Desarrollo}{36}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Estructura.}{36}{subsection.7.1}%
-\contentsline {subsubsection}{\numberline {7.1.1}Proyecto.}{36}{subsubsection.7.1.1}%
-\contentsline {subsubsection}{\numberline {7.1.2}Base de datos.}{37}{subsubsection.7.1.2}%
-\contentsline {subsection}{\numberline {7.2}Secciones de la aplicación.}{39}{subsection.7.2}%
-\contentsline {subsubsection}{\numberline {7.2.1}Pantalla de inicio (Home).}{39}{subsubsection.7.2.1}%
-\contentsline {subsubsection}{\numberline {7.2.2}Menú de aplicaciones.}{41}{subsubsection.7.2.2}%
-\contentsline {subsubsection}{\numberline {7.2.3}Ajustes y personalización.}{43}{subsubsection.7.2.3}%
-\contentsline {subsubsection}{\numberline {7.2.4}Límite de tiempo de aplicaciones.}{45}{subsubsection.7.2.4}%
-\contentsline {subsection}{\numberline {7.3}Limitaciones.}{45}{subsection.7.3}%
-\contentsline {section}{\numberline {8}Pruebas.}{48}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Pruebas de usabilidad.}{48}{subsection.8.1}%
-\contentsline {section}{\numberline {9}Referencias}{53}{section.9}%
+\contentsline {section}{Resumen}{5}{section*.4}%
+\contentsline {section}{Introducción.}{6}{section*.5}%
+\contentsline {section}{\numberline {1}Formulaci\'on del problema.}{7}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Descripci\'on del problema.}{7}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Definici\'on del problema.}{8}{subsection.1.2}%
+\contentsline {section}{\numberline {2}Marco referencial.}{9}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Marco te\'orico.}{9}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Estado del arte.}{10}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Marco conceptual.}{11}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Alcance.}{13}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Declaración del alcance.}{13}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Supuestos.}{13}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Restricciones.}{13}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Objetivos.}{14}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Objetivo general.}{14}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Objetivos espec\'ificos.}{14}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Resultados esperados.}{14}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Metodología.}{15}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Tecnologías empleadas.}{15}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Desarrollo nativo vs. multiplataforma.}{15}{subsubsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.2}Versión objetivo de la API de Android.}{15}{subsubsection.5.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.3}Selección del lenguaje: Kotlin.}{15}{subsubsection.5.1.3}%
+\contentsline {subsubsection}{\numberline {5.1.4}Librería de UI: Jetpack Compose.}{17}{subsubsection.5.1.4}%
+\contentsline {subsubsection}{\numberline {5.1.5}Persistencia de datos: Room.}{19}{subsubsection.5.1.5}%
+\contentsline {subsection}{\numberline {5.2}Levantamiento de requerimientos.}{21}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Requerimientos funcionales.}{22}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Requerimientos no funcionales.}{22}{subsubsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.3}Scrumban: Implementación.}{24}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}Sprints.}{24}{subsubsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}Gestión de actividades: GitHub Projects.}{24}{subsubsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.3}GitHub Flow.}{25}{subsubsection.5.3.3}%
+\contentsline {section}{\numberline {6}Arquitectura y diseño.}{29}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Arquitectura.}{29}{subsection.6.1}%
+\contentsline {subsubsection}{\numberline {6.1.1}Prácticas recomendadas por Google.}{29}{subsubsection.6.1.1}%
+\contentsline {subsubsection}{\numberline {6.1.2}Patrón de arquitectura MVVM.}{30}{subsubsection.6.1.2}%
+\contentsline {subsection}{\numberline {6.2}Diseño.}{33}{subsection.6.2}%
+\contentsline {subsubsection}{\numberline {6.2.1}Aplicaciones similares.}{33}{subsubsection.6.2.1}%
+\contentsline {subsubsection}{\numberline {6.2.2}Mockups y prototipo.}{33}{subsubsection.6.2.2}%
+\contentsline {section}{\numberline {7}Desarrollo}{38}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Estructura.}{38}{subsection.7.1}%
+\contentsline {subsubsection}{\numberline {7.1.1}Proyecto.}{38}{subsubsection.7.1.1}%
+\contentsline {subsubsection}{\numberline {7.1.2}Base de datos.}{39}{subsubsection.7.1.2}%
+\contentsline {subsection}{\numberline {7.2}Secciones de la aplicación.}{41}{subsection.7.2}%
+\contentsline {subsubsection}{\numberline {7.2.1}Pantalla de inicio (Home).}{41}{subsubsection.7.2.1}%
+\contentsline {subsubsection}{\numberline {7.2.2}Menú de aplicaciones.}{43}{subsubsection.7.2.2}%
+\contentsline {subsubsection}{\numberline {7.2.3}Ajustes y personalización.}{45}{subsubsection.7.2.3}%
+\contentsline {subsubsection}{\numberline {7.2.4}Límite de tiempo de aplicaciones.}{47}{subsubsection.7.2.4}%
+\contentsline {subsection}{\numberline {7.3}Limitaciones.}{47}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Pruebas.}{50}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Pruebas de usabilidad.}{50}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Pruebas unitarias.}{55}{subsection.8.2}%
+\contentsline {section}{\numberline {9}Conclusiones.}{56}{section.9}%
+\contentsline {section}{\numberline {10}Trabajos futuros.}{57}{section.10}%
+\contentsline {section}{\numberline {11}Referencias}{58}{section.11}%
