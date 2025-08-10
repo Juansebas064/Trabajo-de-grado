@@ -1,6 +1,6 @@
-PWD /home/juan/Coding/DinoLauncher/Documento
+PWD /home/juan/Coding/Trabajo-de-grado/Documento
 INPUT /home/juan/.miktex/texmfs/data/miktex/data/le/pdftex/pdflatex.fmt
-INPUT /home/juan/Coding/DinoLauncher/Documento/main.tex
+INPUT /home/juan/Coding/Trabajo-de-grado/Documento/main.tex
 OUTPUT main.log
 INPUT /home/juan/.miktex/texmfs/install/tex/latex/base/article.cls
 INPUT /home/juan/.miktex/texmfs/install/tex/latex/base/article.cls
