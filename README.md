@@ -22,13 +22,18 @@ El objetivo es desarrollar un Launcher para Android que ayude a los estudiantes 
 - Registro de tareas
 
 
+## 📷 Capturas de pantalla
+<img width="1080" height="800" alt="Diseño sin título" src="https://github.com/user-attachments/assets/f460027b-c94a-4b8f-9bee-2c7c6ba9bfdc" />
+
+
+<!--
 ## 🏁 Metodología
 
 El desarrollo de este launcher se basa en sprints y actividades derivados de los objetivos específicos del proyecto, organizados como hitos.  
 Cada sprint corresponde a una etapa clave en el avance del trabajo de grado.
 
 
-<!-- 
+
 ## 📂 Estructura del repositorio
 
 - `app/` : Código fuente principal del launcher en Kotlin  
@@ -41,7 +46,7 @@ Cada sprint corresponde a una etapa clave en el avance del trabajo de grado.
 
 - **Kotlin** para el desarrollo de la aplicación Android
 - **Jetpack Compose** como librería de UI
-- **Room**, ORM para la base de datos SQLite
+- **Room** para persistencia de datos en SQLite
 - **LaTeX** para la documentación académica
 
 ## ⏫ Trabajos futuros
