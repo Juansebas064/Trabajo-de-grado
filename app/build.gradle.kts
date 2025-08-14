@@ -59,13 +59,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.junit.jupiter)
-    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.room.runtime)
@@ -81,4 +76,15 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.androidx.work.runtime)
     implementation(libs.coil.compose)
+
+
+
+    // Testing
+    testImplementation(libs.bundles.test)
+     testImplementation(libs.junit)
+     testImplementation(libs.kotlinx.coroutines.test)
+     testImplementation(libs.mockk)
+     testImplementation(libs.core.testing)
+     testImplementation(libs.kotest.runner.junit5)
+    testImplementation(kotlin("test"))
 }

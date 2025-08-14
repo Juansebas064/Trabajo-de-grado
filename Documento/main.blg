@@ -27,6 +27,8 @@ Reallocating 'name_of_file' (item size: 1) to 40 items.
 A level-1 auxiliary file: Desarrollo/InterfacesDeLaAplicacion.aux
 Reallocating 'name_of_file' (item size: 1) to 32 items.
 A level-1 auxiliary file: Pruebas/PruebasDeUsabilidad.aux
+Reallocating 'name_of_file' (item size: 1) to 29 items.
+A level-1 auxiliary file: Pruebas/PruebasUnitarias.aux
 Reallocating 'name_of_file' (item size: 1) to 13 items.
 Database file #1: Bibliografia.bib
 Warning--empty journal in Kus2016
@@ -37,36 +39,36 @@ Warning--empty journal in Navarro2003
 Warning--empty journal in RendimientoEscolar
 Warning--empty year in RendimientoEscolar
 Warning--empty journal in Santillan2020
-You've used 40 entries,
+You've used 38 entries,
             1876 wiz_defined-function locations,
-            706 strings with 11682 characters,
-and the built_in function-call counts, 7994 in all, are:
-= -- 682
-> -- 374
+            700 strings with 11573 characters,
+and the built_in function-call counts, 7766 in all, are:
+= -- 666
+> -- 366
 < -- 0
-+ -- 145
-- -- 105
-* -- 526
-:= -- 1147
++ -- 141
+- -- 103
+* -- 520
+:= -- 1117
 add.period$ -- 25
-call.type$ -- 40
-change.case$ -- 40
+call.type$ -- 38
+change.case$ -- 38
 chr.to.int$ -- 0
-cite$ -- 48
-duplicate$ -- 364
-empty$ -- 840
-format.name$ -- 105
-if$ -- 1945
+cite$ -- 46
+duplicate$ -- 356
+empty$ -- 804
+format.name$ -- 103
+if$ -- 1887
 int.to.chr$ -- 0
-int.to.str$ -- 40
+int.to.str$ -- 38
 missing$ -- 22
-newline$ -- 123
-num.names$ -- 37
-pop$ -- 167
+newline$ -- 117
+num.names$ -- 35
+pop$ -- 157
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 331
+skip$ -- 315
 stack$ -- 0
 substring$ -- 351
 swap$ -- 119
@@ -75,7 +77,7 @@ text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 8
-while$ -- 60
-width$ -- 42
-write$ -- 307
+while$ -- 58
+width$ -- 40
+write$ -- 295
 (There were 8 warnings)

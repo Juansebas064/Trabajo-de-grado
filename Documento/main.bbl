@@ -1,5 +1,12 @@
 \begin{thebibliography}{10}
 
+\bibitem{AndroidStudio}
+Google, ``Cómo descargar android studio y app tools - android developers.''
+
+\bibitem{Room}
+Google, ``Cómo guardar contenido en una base de datos local con room  |  app
+  data and files  |  android developers.''
+
 \bibitem{Montag2019}
 C.~Montag, B.~Lachmann, M.~Herrlich, and K.~Zweig, ``Addictive features of
   social media/messenger platforms and freemium games against the background of
@@ -114,9 +121,6 @@ G.~V. Kamenetzky, L.~Cuenya, A.~M. Elgier, F.~L. Seal, S.~Fosacheca, L.~Martin,
   and A.~E. Mustaca, ``Respuestas de frustración en humanos,'' {\em Terapia
   psicológica}, vol.~27, pp.~191--201, 12 2009.
 
-\bibitem{AndroidStudio}
-Google, ``Cómo descargar android studio y app tools - android developers.''
-
 \bibitem{Stackoverflow2024}
 StackOverflow, ``2024 stack overflow developer survey.''
 
@@ -126,10 +130,6 @@ Google, ``Android’s kotlin-first approach  |  android developers.''
 \bibitem{Jetpack}
 Google, ``Recursos para desarrolladores de android jetpack - android
   developers.''
-
-\bibitem{Room}
-Google, ``Cómo guardar contenido en una base de datos local con room  |  app
-  data and files  |  android developers.''
 
 \bibitem{Vanguardia2012}
 R.~Vanguardia, P.~. Año, .~Volumen, .~Numero, D.~M. Quant, and A.~Sánchez,
@@ -155,9 +155,6 @@ A.~S. Garcia and M.~E. Escalera-Chávez, ``Vista de adicción hacia el
   teléfono móvil en estudiantes de nivel medio superior. ¿cómo es el
   comportamiento por género?,'' 11 2020.
 
-\bibitem{GithubProjects}
-J.~S.~R. Aguilar, ``Sprint board · trabajo de grado - launcher android.''
-
 \bibitem{AndroidBestPractices}
 Google, ``Guía de arquitectura de apps  |  app architecture  |  android
   developers.''
@@ -176,9 +173,6 @@ Google, ``Android developers blog: Announcing architecture components 1.0
 \bibitem{Olauncher}
 ``tanujnotes/olauncher: Minimal af launcher for android. reduce your screen
   time. daily wallpapers..''
-
-\bibitem{Mockups}
-J.~S.~R. Aguilar, ``Mockups – figma.''
 
 \bibitem{Flows}
 Google, ``Kotlin flows on android  |  android developers.''

@@ -2,7 +2,6 @@
 agp = "8.8.2"
 kotlin = "2.0.0"
 coreKtx = "1.16.0"
-junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.9.0"
@@ -28,14 +27,17 @@ constraintLayoutCompose = "1.1.1"
 appcompat = "1.6.1"
 material = "1.10.0"
 activity = "1.10.1"
-constraintlayout = "2.2.1"
+junit = "4.13.2"
+kotlinx-coroutines-test = "1.10.1"
+mockk = "1.13.13"
+core-testing = "2.2.0"
+turbine = "1.0.0"
+kotest-runner-junit5 = "5.5.5"
 coil = "3.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockkVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "livedata" }
@@ -64,11 +66,18 @@ material-icons-extended = { module = "androidx.compose.material:material-icons-e
 androidx-room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomRuntimeAndroid" }
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences" }
 androidx-work-runtime = { group = "androidx.work", name = "work-runtime", version.ref = "workRuntime" }
-androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintLayoutCompose" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+mockk-agent-jvm = { group = "io.mockk", name = "mockk-agent-jvm", version.ref = "mockk" }
+core-testing = { module = "androidx.arch.core:core-testing", version.ref = "core-testing" }
+kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest-runner-junit5" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -78,3 +87,7 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization" }
 hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "daggerhilt" }
+testlogger = { id = "com.adarshr.test-logger", version = "3.2.0" }
+
+[bundles]
+test = ["junit", "kotlinx-coroutines-test", "mockk", "core-testing", "kotest-runner-junit5"]

@@ -50,8 +50,16 @@
 \include{Portada}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Tabla de contenido %%%%%%%%%%%%%%%%%%%%
-\renewcommand\contentsname{\centering Tabla de Contenido}
+\renewcommand\contentsname{\centering Tabla de contenido}
 \tableofcontents
+
+\pagebreak
+\renewcommand\contentsname{\centering Lista de tablas}
+\listoftables
+
+\pagebreak
+\renewcommand\contentsname{\centering Lista de figuras}
+\listoffigures
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Resumen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \include{Resumen}
@@ -84,8 +92,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Desarrollo %%%%%%%%%%%%%%%%%%%%%%%%%
 \input{Pruebas/8Pruebas.tex}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Conclusiones %%%%%%%%%%%%%%%%%%%%%%%%%
+\input{ConclusionesYTrabajosFuturos/Conclusiones.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Trabajos futuros %%%%%%%%%%%%%%%%%%%%%%%%%
+\input{ConclusionesYTrabajosFuturos/TrabajosFuturos.tex}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Referencias%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
 \bibliography{Bibliografia}
 
 
